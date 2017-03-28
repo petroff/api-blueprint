@@ -5149,3 +5149,101 @@ YCLIENTS поддерживает уведомления о создании, и
                 "exchange": "50"
               },
             ]
+
+# Group Изображения
+
+Объект группы изображений имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  |  ID группы  |
+|  entity  | string  | Название сущности, к которой привязана группа |
+|  entity_id  | number  | Id сущности  |
+|  images  | array | Список изображений  |
+
+Объект изображения имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  |  ID изображения  |
+|  path  | string  | Путь к изображению |
+|  width  | number  | Длина изображения  |
+|  height  | number | Ширина изображения  |
+|  type  | string | Тип изображения  |
+|  image_group_id  | number | Id группы изображений  |
+|  version  | string | Версия изображения  |
+
+## Обработка изображений [/images/{entity}/]
+
+### Загрузка изображения [POST]
+
+Объект ответа имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  image_binded  | boolean  |  Статус привязки изображений к сущности  |
+|  image_group  | object  | Объект группа изображений |
+
++ Parameters
+
+    + entity: "master/service" (required, string) - название сущности
+
+
++ Request (form-data)
+
+    + Тело запроса
+        + salon_id (optional, number) - Id салона для привязки изображения (для entity=service)
+        + service_id (optional, number) - Id услуги для привязки изображения (для entity=service)
+        + master_id (optional, number) - Id сотрудника для привязки изображения (для entity=master)
+        + image (required, file) - передаваемое изображение (image/jpeg, image/png)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+            {
+              "image_binded": false,
+              "image_group ": {
+                "id": 72256,
+                "entity": "",
+                "entity_id": 0,
+                "images": {
+                  "basic": {
+                    "id": 186826,
+                    "path": "http://dev12.dev.salonpicker.ru/uploads/setting_service_image/c/cf/cf01a5585348731_20170328195919.jpeg",
+                    "width": 373,
+                    "height": 280,
+                    "type": "jpeg",
+                    "image_group_id": 72256,
+                    "version": "basic"
+                  }
+                }
+              }
+            }
+
+### Удаление изображений [DELETE]
+
+Объект ответа имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  success  | boolean  |  Результат удаления  |
+
++ Request (form-data)
+
+    + Тело запроса
+        + image_group_id (required, number) - Id группы изображения для удаления
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+            {
+              "success": true
+            }            
