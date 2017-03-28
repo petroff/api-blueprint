@@ -874,6 +874,80 @@ working days и booking_days имеют одинаковый формат:
               }
             ]
 
+## Список ближайших сеансов сотрудника [/book_staff_seances/{company_id}/{staff_id}/{?service_ids%5B%5D,event_ids%5B%5D,datetime}]
+
+Объект ближайших сеансов сотрудника имеет следующие поля:
+
+| Поле | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  seance_date  |  string   | Ближайшая дата с доступными сеансами   |
+|  seances  | Seances  | Список доступных сеансов  |
+
+### Получить список ближайших доступных сеансов [GET]
+
+Доступны следующие фильтры:
+
+    + service_ids: Массив ID услуг. Если нужны сеансы, когда можно забронировать указанные услуги
+    + event_ids: Массив ID акций. Если нужны сеансы, когда можно забронировать указанные акции
+    + datetime: дата (в формате iso8601), за которую необходимо получить ближайшие сеансы
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + staff_id (required, number) - ID сотрудника
+    + service_ids%5B%5D (optional, array of number) - ID услуг.
+        Фильтр по списку идентификаторов услуг
+    + event_ids%5B%5D (optional, array of number) - ID акций.
+        Фильтр по списку идентификаторов акций
+    + datetime (optional, string) - дата в формате iso8601.
+        Фильтр по дате
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token
+
++ Response 200 (application/json)
+
+
+    + Attributes (Seance)
+
+
+    + Body
+
+            {
+              "seance_date": "2017-04-13",
+              "seances": [
+                {
+                  "time": "10:00",
+                  "seance_length": 3600,
+                  "datetime": "2017-04-13T10:00:00+04:00"
+                },
+                {
+                  "time": "10:15",
+                  "seance_length": 3600,
+                  "datetime": "2017-04-13T10:15:00+04:00"
+                },
+                {
+                  "time": "10:30",
+                  "seance_length": 3600,
+                  "datetime": "2017-04-13T10:30:00+04:00"
+                },
+                {
+                  "time": "10:45",
+                  "seance_length": 3600,
+                  "datetime": "2017-04-13T10:45:00+04:00"
+                },
+                {
+                  "time": "11:00",
+                  "seance_length": 3600,
+                  "datetime": "2017-04-13T11:00:00+04:00"
+                }
+              ]
+            }
+
 ## СМС код подтверждения номера телефона [/book_code/{company_id}]
 
 + Тело запроса
@@ -5021,4 +5095,57 @@ YCLIENTS поддерживает уведомления о создании, и
                     phone: "+79876543210"
                 }
               }
+            ]
+
+
+# Group Страны
+
+Объект страны имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  |  ID страны  |
+|  title  | string  | Краткое название страны  |
+|  full_title  | string  | Полное название страны  |
+|  phone_code  | number  | Телефонный код  |
+|  phone_template  | string  | Шаблон номера телефона страны  |
+|  phone_example  | string  | Пример номера телефона страны  |
+|  currency  | string | Валюта |
+|  exchange  | float  | Ставка обмена валют по отношению к рублю  |
+
+
+## Получение стран [/countries/]
+### Получить список стран [GET]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              {
+                "id": "1",
+                "title": "Россия",
+                "full_title": "Российская Федерация",
+                "phone_code": "7",
+                "phone_template": "+7 xxx xxx-xx-xx",
+                "phone_example": "+7 981 123 45-67",
+                "currency": "₽",
+                "exchange": "1"
+              },
+              {
+                "id": "2",
+                "title": "Латвия",
+                "full_title": "Латвийская Республика",
+                "phone_code": "371",
+                "phone_template": "+371 xx xxx xxx",
+                "phone_example": "+371 21 654 987",
+                "currency": "€",
+                "exchange": "50"
+              },
             ]
