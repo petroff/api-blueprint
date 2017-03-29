@@ -881,15 +881,15 @@ working days и booking_days имеют одинаковый формат:
 | Поле | Тип | Описание |
 | ------------- | ------------- | ------------- |
 |  seance_date  |  string   | Ближайшая дата с доступными сеансами   |
-|  seances  | Seances  | Список доступных сеансов  |
+|  seances  | Array  | Список доступных сеансов  |
 
 ### Получить список ближайших доступных сеансов [GET]
 
 Доступны следующие фильтры:
 
-    + service_ids: Массив ID услуг. Если нужны сеансы, когда можно забронировать указанные услуги
-    + event_ids: Массив ID акций. Если нужны сеансы, когда можно забронировать указанные акции
-    + datetime: дата (в формате iso8601), за которую необходимо получить ближайшие сеансы
++ service_ids: Массив ID услуг. Если нужны сеансы, когда можно забронировать указанные услуги
++ event_ids: Массив ID акций. Если нужны сеансы, когда можно забронировать указанные акции
++ datetime: дата (в формате iso8601), за которую необходимо получить ближайшие сеансы
 
 + Parameters
 
@@ -913,6 +913,8 @@ working days и booking_days имеют одинаковый формат:
 
 
     + Attributes (Seance)
+        + seance_date (string)
+        + seances (array[Seance])
 
 
     + Body
@@ -5159,7 +5161,7 @@ YCLIENTS поддерживает уведомления о создании, и
 |  id  | number  |  ID группы  |
 |  entity  | string  | Название сущности, к которой привязана группа |
 |  entity_id  | number  | Id сущности  |
-|  images  | array | Список изображений  |
+|  images  | object | Список изображений  |
 
 Объект изображения имеет следующие поля:
 
@@ -5191,11 +5193,10 @@ YCLIENTS поддерживает уведомления о создании, и
 
 + Request (form-data)
 
-    + Тело запроса
-        + salon_id (optional, number) - Id салона для привязки изображения (для entity=service)
-        + service_id (optional, number) - Id услуги для привязки изображения (для entity=service)
-        + master_id (optional, number) - Id сотрудника для привязки изображения (для entity=master)
-        + image (required, file) - передаваемое изображение (image/jpeg, image/png)
+    + salon_id (optional, number) - Id салона для привязки изображения (для entity=service)
+    + service_id (optional, number) - Id услуги для привязки изображения (для entity=service)
+    + master_id (optional, number) - Id сотрудника для привязки изображения (для entity=master)
+    + image (required, file) - передаваемое изображение (image/jpeg, image/png)
 
     + Headers
 
@@ -5204,6 +5205,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
+
             {
               "image_binded": false,
               "image_group ": {
@@ -5234,8 +5236,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 + Request (form-data)
 
-    + Тело запроса
-        + image_group_id (required, number) - Id группы изображения для удаления
+    + image_group_id (required, number) - Id группы изображения для удаления
 
     + Headers
 
@@ -5244,6 +5245,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
+    
             {
               "success": true
             }            
