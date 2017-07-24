@@ -4943,6 +4943,13 @@ YCLIENTS поддерживает уведомления о создании, и
 - Сотрудник
 - Клиент
 - Запись
+- Товар
+- Операция продажи товара
+- Операция прихода товара
+- Операция списания товара
+- Операция списания расходника
+- Операция перемещения товара
+- Финансовая операция
 
 Каждое событие при отправке имеет следующий набор полей
 
@@ -4975,6 +4982,12 @@ YCLIENTS поддерживает уведомления о создании, и
 |  good  | number  | 1 - отправлять события по сущности товар, 0 - нет  отправлять  |
 |  client  | number  | 1 - отправлять события по сущности клиент, 0 - нет  отправлять  |
 |  record  | number  | 1 - отправлять события по сущности запись, 0 - нет  отправлять  |
+|  goods_operations_sale  | number  | 1 - отправлять события по сущности продажа товара, 0 - нет  отправлять  |
+|  goods_operations_receipt  | number  | 1 - отправлять события по сущности приход товара, 0 - нет  отправлять  |
+|  goods_operations_consumable  | number  | 1 - отправлять события по сущности списание расходника, 0 - нет  отправлять  |
+|  goods_operations_stolen  | number  | 1 - отправлять события по сущности списание товара, 0 - нет  отправлять  |
+|  goods_operations_move  | number  | 1 - отправлять события по сущности перемещение товара, 0 - нет  отправлять  |
+|  finances_operation  | number  | 1 - отправлять события по сущности финансовая операция, 0 - нет  отправлять  |
 
 
 ### Получить настройки уведомлений о событиях [GET]
@@ -5003,7 +5016,13 @@ YCLIENTS поддерживает уведомления о создании, и
               "good": 1,
               "master": 1,
               "client": 1,
-              "record": 1
+              "record": 1,
+              "goods_operations_sale": 1,
+              "goods_operations_receipt": 1,
+              "goods_operations_consumable": 1,
+              "goods_operations_stolen": 1,
+              "goods_operations_move": 1,
+              "finances_operation": 1
             }
 
 
@@ -5026,7 +5045,13 @@ YCLIENTS поддерживает уведомления о создании, и
         + staff (optional, number) - 1 - отправлять события по сущности сотрудник, 0 - нет  отправлять
         + client (optional, number) - 1 - отправлять события по сущности клиент, 0 - нет  отправлять
         + record (optional, number) - 1 - отправлять события по сущности запись, 0 - нет  отправлять
-
+        + goods_operations_sale (optional, number) - 1 - отправлять события по сущности продажа товара, 0 - нет  отправлять
+        + goods_operations_receipt (optional, number) - 1 - отправлять события по сущности приход товара, 0 - нет  отправлять
+        + goods_operations_consumable (optional, number) - 1 - отправлять события по сущности списание расходника, 0 - нет  отправлять
+        + goods_operations_stolen (optional, number) - 1 - отправлять события по сущности списание товара, 0 - нет  отправлять
+        + goods_operations_move (optional, number) - 1 - отправлять события по сущности перемещение товара, 0 - нет  отправлять
+        + finances_operation (optional, number) - 1 - отправлять события по сущности финансовая операция, 0 - нет  отправлять
+        
 
     + Headers
 
@@ -5043,7 +5068,13 @@ YCLIENTS поддерживает уведомления о создании, и
               "good": 1,
               "master": 1,
               "client": 1,
-              "record": 1
+              "record": 1,
+              "goods_operations_sale": 1,
+              "goods_operations_receipt": 1,
+              "goods_operations_consumable": 1,
+              "goods_operations_stolen": 1,
+              "goods_operations_move": 1,
+              "finances_operation": 1
             }
 
 + Response 201 (application/json)
@@ -5058,7 +5089,13 @@ YCLIENTS поддерживает уведомления о создании, и
               "service": 1,
               "master": 1,
               "client": 1,
-              "record": 1
+              "record": 1,
+              "goods_operations_sale": 1,
+              "goods_operations_receipt": 1,
+              "goods_operations_consumable": 1,
+              "goods_operations_stolen": 1,
+              "goods_operations_move": 1,
+              "finances_operation": 1
             }
 
 
