@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Pull last changes
+git pull origin master
+# Lint and validate blueprint
+drafter apiary.apib -l
+# Publish
+apiary publish --api-name=$API_NAME

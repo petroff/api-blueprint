@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# PArse blueprint and output it on stdout
+drafter -f json apiary.apib
