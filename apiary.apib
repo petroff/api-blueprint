@@ -4592,7 +4592,7 @@ JSON-Объект записи содержит следующие поля:
     + supplier_id (optioanal, integer) - ID контрагента
     + comment (optional, string) - комментарий
     + date (required, string) - дата проведения транзакции
- 
+
 + Request (application/json)
 
     + Headers
@@ -4600,7 +4600,7 @@ JSON-Объект записи содержит следующие поля:
             Authorization: Bearer access_token, User user_token
 
     + Body
-        
+
         {
             "type_id": 2640,
             "amount": 434,
@@ -4615,7 +4615,7 @@ JSON-Объект записи содержит следующие поля:
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -4653,7 +4653,7 @@ JSON-Объект записи содержит следующие поля:
             },
             "meta": []
         }
-        
+
 ## Получение финансовой транзакции [/finance_transactions/{company_id}/{transaction_id}]
 ### Получение финансовой транзакции [GET]
 
@@ -4679,7 +4679,7 @@ JSON-Объект записи содержит следующие поля:
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -4717,7 +4717,7 @@ JSON-Объект записи содержит следующие поля:
             },
             "meta": []
         }
-        
+
 ## Операции над финансовой транзакцией [/finance_transactions/{company_id}/{transaction_id}]
 ### Обновление финансовой транзакции [PUT]
 
@@ -4739,9 +4739,9 @@ JSON-Объект записи содержит следующие поля:
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            
+
     + Body
-        
+
         {
             "type_id": 2640,
             "amount": 333,
@@ -4756,7 +4756,7 @@ JSON-Объект записи содержит следующие поля:
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -4799,7 +4799,7 @@ JSON-Объект записи содержит следующие поля:
 + Parameters
     + company_id (required, integer) - ID компании
     + transaction_id (required, integer) - ID транзакции
-    
+
 + Request (application/json)
 
     + Headers
@@ -5051,7 +5051,7 @@ YCLIENTS поддерживает уведомления о создании, и
         + goods_operations_stolen (optional, number) - 1 - отправлять события по сущности списание товара, 0 - нет  отправлять
         + goods_operations_move (optional, number) - 1 - отправлять события по сущности перемещение товара, 0 - нет  отправлять
         + finances_operation (optional, number) - 1 - отправлять события по сущности финансовая операция, 0 - нет  отправлять
-        
+
 
     + Headers
 
@@ -5468,7 +5468,7 @@ YCLIENTS поддерживает уведомления о создании, и
             Authorization: Bearer access_token, User user_token
 
     + Body
-        
+
             {
                 "type_id": {type_id},
                 "comment": {comment},
@@ -5479,7 +5479,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5539,7 +5539,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5601,7 +5601,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5681,9 +5681,9 @@ YCLIENTS поддерживает уведомления о создании, и
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            
+
     + Body
-        
+
         {
             "document_id": 22254960,
             "good_id": 232674,
@@ -5700,7 +5700,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5764,7 +5764,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5837,7 +5837,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
@@ -5913,16 +5913,16 @@ YCLIENTS поддерживает уведомления о создании, и
     + coment (optional, string) - комментарий
     + date_created (required, string) - дата создания документа
     + transactions (required, array) - массив обьектов содержащих параметры транзакций, аналогично запросу на создание товарной транзакции
-    
-    
+
+
 + Request (application/json)
 
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            
+
     + Body
-        
+
         {
             "type_id": 1,
             "comment": "test document comment",
@@ -5946,7 +5946,7 @@ YCLIENTS поддерживает уведомления о создании, и
 + Response 200 (application/json)
 
     + Body
-        
+
         {
             "success": true,
             "data": {
