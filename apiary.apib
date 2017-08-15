@@ -4424,6 +4424,7 @@ JSON-Объект записи содержит следующие поля:
 | Поле  | Тип | Описание |
 | ------------- | ------------- | ------------- |
 |  id  | number  | ID транзакции  |
+|  document_id | number | ID документа |
 |  expense  | expense  | Тип платежа  |
 |  date  | string  | Дата создания транзакции  |
 |  amount  | float  | Сумма транзакции  |
@@ -4433,7 +4434,7 @@ JSON-Объект записи содержит следующие поля:
 |  account  | account  |  Касса  |
 |  client  | client  | Клиент  |
 
-Объекты master, account, supplier имеют следующие поля:
+Объекты expense, master, account, supplier имеют следующие поля:
 
 | Поле  | Тип | Описание |
 | ------------- | ------------- | ------------- |
@@ -4448,7 +4449,7 @@ JSON-Объект записи содержит следующие поля:
 |  name  | string  | Имя  |
 |  phone  | string  | Номер телефона  |
 
-## Получение транзакций, подходящих под фильтры [/transactions/{company_id}{?page,count,account_id,supplier_id,user_id,client_id,master_id,type,real_money,deleted,start_date,client,end_date,balance_is}]
+## Получение транзакций, подходящих под фильтры [/transactions/{company_id}{?page,count,account_id,supplier_id,user_id,client_id,master_id,type,real_money,deleted,start_date,client,end_date,balance_is,document_id}]
 ### Получить транзакции [GET]
 #### Фильтрация транзакций
 + page: Номер страницы
@@ -4464,8 +4465,7 @@ JSON-Объект записи содержит следующие поля:
 + start_date:  дата начала периода
 + end_date: дата окончания периода
 + balance_is: 0 - любой баланс, 1 - положительный, 2 - оттрицательный
-
-
++ document_id: идентификатор документа
 
 + Parameters
 
@@ -4483,7 +4483,7 @@ JSON-Объект записи содержит следующие поля:
     + start_date:'' (optional, number) -  дата начала периода
     + end_date:'' (optional, number) - дата окончания периода
     + balance_is:0 (optional, number) - 0 - любой баланс, 1 - положительный, 2 - оттрицательный
-
+    + document_id:0 (optional, number) - идентификатор документа
 
 + Request (application/json)
 
@@ -4498,6 +4498,7 @@ JSON-Объект записи содержит следующие поля:
             [
               {
                 "id": "4815162342",
+                "document_id": 22256641,
                 "expense": {
                   "id": "5",
                   "title": "Оказание услуг"
@@ -4552,6 +4553,7 @@ JSON-Объект записи содержит следующие поля:
             [
               {
                 "id": "4815162342",
+                "document_id": 22256641,
                 "expense": {
                   "id": "5",
                   "title": "Оказание услуг"
@@ -4583,15 +4585,18 @@ JSON-Объект записи содержит следующие поля:
 ### Создание финансовой транзакции  [POST]
 
 + Parameters
-    + company_id (required, integer) - ID компании
-    + type_id (required, integer) - ID типа транзакции, статья платежа
-    + amount (required, float) - сумма
-    + account_id (required, integer) - ID кассы
-    + client_id (optioanal, integer) - ID клиента
-    + master_id (optioanal, integer) - ID мастера
-    + supplier_id (optioanal, integer) - ID контрагента
-    + comment (optional, string) - комментарий
-    + date (required, string) - дата проведения транзакции
+    + company_id (required, number) - ID компании
+
++ Attributes
+    + expense_id (required, number) - ID типа транзакции, статья платежа
+    + amount (required, number) - сумма
+    + account_id (required, number) - ID кассы
+    + client_id (optional, number) - ID клиента
+    + master_id (optional, number) - ID мастера
+    + supplier_id (optional, number) - ID контрагента
+    + comment (optional, number) - комментарий
+    + date (required, number) - дата проведения транзакции
+    + document_id (optional, number) - ID документа
 
 + Request (application/json)
 
@@ -4601,73 +4606,66 @@ JSON-Объект записи содержит следующие поля:
 
     + Body
 
-        {
-            "type_id": 2640,
-            "amount": 434,
-            "account_id": 35501,
-            "client_id": 4240788,
-            "supplier_id": 0,
-            "master_id": 0,
-            "comment": "Transaction comment",
-            "date": "2017-04-04 20:00:00"
-        }
+            {
+                "expense_id": 2640,
+                "amount": 100,
+                "account_id": 39105,
+                "client_id": 4240788,
+                "supplier_id": 0,
+                "master_id": 0,
+                "comment": "Transaction comment",
+                "date": "2017-04-04 20:00:00"
+            }
 
 + Response 200 (application/json)
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 9053737,
-                "date": "2017-04-04 20:00:00",
-                "type_id": 2640,
-                "account_id": 35501,
-                "amount": 434,
-                "client_id": 4240788,
-                "master_id": 0,
-                "supplier_id": 0,
-                "comment": "Transaction comment",
-                "item_id": 0,
-                "target_type_id": 0,
-                "record_id": 0,
-                "type": {
-                    "id": 2640,
-                    "title": "Оказание корпоративных услуг"
+            {
+                "success": true,
+                "data": {
+                    "id": 9053737,
+                    "date": "2017-04-04 20:00:00",
+                    "type_id": 2640,
+                    "expense_id": 2640,
+                    "account_id": 35501,
+                    "amount": 434,
+                    "client_id": 4240788,
+                    "master_id": 0,
+                    "supplier_id": 0,
+                    "comment": "Transaction comment",
+                    "item_id": 0,
+                    "target_type_id": 0,
+                    "record_id": 0,
+                    "expense": {
+                        "id": 2640,
+                        "title": "Оказание корпоративных услуг"
+                    },
+                    "account": {
+                        "id": 35501,
+                        "title": "Касса",
+                        "type_id": 0,
+                        "type": 0,
+                        "comment": "",
+                        "company_id": 4564
+                    },
+                    "client": {
+                        "id": "4240788",
+                        "name": "Client",
+                        "phone": "71000000001"
+                    },
+                    "master": [],
+                    "supplier": []
                 },
-                "account": {
-                    "id": 35501,
-                    "title": "Касса",
-                    "type_id": 0,
-                    "type": 0,
-                    "comment": "",
-                    "company_id": 4564
-                },
-                "client": {
-                    "id": "4240788",
-                    "name": "Client",
-                    "phone": "71000000001"
-                },
-                "master": [],
-                "supplier": []
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
-## Получение финансовой транзакции [/finance_transactions/{company_id}/{transaction_id}]
+## Операции над финансовой транзакцией [/finance_transactions/{company_id}/{transaction_id}]
 ### Получение финансовой транзакции [GET]
 
 + Parameters
-    + company_id (required, integer) - ID компании
-    + transaction_id (required, integer)- ID транзакции
-    + type_id (required, integer) - ID типа транзакции, статья платежа
-    + amount (required, float) - сумма
-    + account_id (required, integer) - ID кассы
-    + client_id (optioanal, integer) - ID клиента
-    + master_id (optioanal, integer) - ID мастера
-    + supplier_id (optioanal, integer) - ID контрагента
-    + comment (optional, string) - комментарий
-    + date (required, string) - дата проведения транзакции
+    + company_id (required, number) - ID компании
+    + transaction_id (required, number)- ID транзакции
 
 
 + Request (application/json)
@@ -4680,57 +4678,59 @@ JSON-Объект записи содержит следующие поля:
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 6022188,
-                "date": "2017-04-04 20:00:00",
-                "type_id": 2640,
-                "account_id": 35501,
-                "amount": 434,
-                "client_id": 4240788,
-                "master_id": 0,
-                "supplier_id": 0,
-                "comment": "Transaction comment",
-                "item_id": 0,
-                "target_type_id": 0,
-                "record_id": 0,
-                "type": {
-                    "id": 2640,
-                    "title": "Оказание корпоративных услуг"
+            {
+                "success": true,
+                "data": {
+                    "id": 9053737,
+                    "date": "2017-04-04 20:00:00",
+                    "type_id": 2640,
+                    "expense_id": 2640,
+                    "account_id": 35501,
+                    "amount": 434,
+                    "client_id": 4240788,
+                    "master_id": 0,
+                    "supplier_id": 0,
+                    "comment": "Transaction comment",
+                    "item_id": 0,
+                    "target_type_id": 0,
+                    "record_id": 0,
+                    "expense": {
+                        "id": 2640,
+                        "title": "Оказание корпоративных услуг"
+                    },
+                    "account": {
+                        "id": 35501,
+                        "title": "Касса",
+                        "type_id": 0,
+                        "type": 0,
+                        "comment": "",
+                        "company_id": 4564
+                    },
+                    "client": {
+                        "id": "4240788",
+                        "name": "Client",
+                        "phone": "71000000001"
+                    },
+                    "master": [],
+                    "supplier": []
                 },
-                "account": {
-                    "id": 35501,
-                    "title": "Касса",
-                    "type_id": 0,
-                    "type": 0,
-                    "comment": "",
-                    "company_id": 4564
-                },
-                "client": {
-                    "id": "4240788",
-                    "name": "Client",
-                    "phone": "71000000001"
-                },
-                "master": [],
-                "supplier": []
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
-## Операции над финансовой транзакцией [/finance_transactions/{company_id}/{transaction_id}]
 ### Обновление финансовой транзакции [PUT]
 
 + Parameters
 
-    + company_id (required, integer) - ID компании
-    + transaction_id (required, integer) - ID транзакции
-    + type_id (required, integer) - ID типа транзакции, статья платежа
-    + amount (required, float) - сумма
-    + account_id (required, integer) - ID кассы
-    + client_id (optioanal, integer) - ID клиента
-    + master_id (optioanal, integer) - ID мастера
-    + supplier_id (optioanal, integer) - ID контрагента
+    + company_id (required, number) - ID компании
+    + transaction_id (required, number) - ID транзакции
+
++ Attributes
+    + type_id (required, number) - ID типа транзакции, статья платежа
+    + amount (required, number) - сумма
+    + account_id (required, number) - ID кассы
+    + client_id (optional, number) - ID клиента
+    + master_id (optional, number) - ID мастера
+    + supplier_id (optional, number) - ID контрагента
     + comment (optional, string) - комментарий
     + date (required, string) - дата проведения транзакции
 
@@ -4742,58 +4742,59 @@ JSON-Объект записи содержит следующие поля:
 
     + Body
 
-        {
-            "type_id": 2640,
-            "amount": 333,
-            "account_id": 35501,
-            "client_id": 4240788,
-            "master_id": 0,
-            "supplier_id": 0,
-            "comment": "Updated comment",
-            "date": "2017-03-22 20:50:01"
-        }
+            {
+                "type_id": 2640,
+                "amount": 333,
+                "account_id": 35501,
+                "client_id": 4240788,
+                "master_id": 0,
+                "supplier_id": 0,
+                "comment": "Updated comment",
+                "date": "2017-03-22 20:50:01"
+            }
 
 + Response 200 (application/json)
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 6022188,
-                "date": "2017-04-04 20:00:00",
-                "type_id": 2640,
-                "account_id": 35501,
-                "amount": 333,
-                "client_id": 4240788,
-                "master_id": 0,
-                "supplier_id": 0,
-                "comment": "Updated comment",
-                "item_id": 0,
-                "target_type_id": 0,
-                "record_id": 0,
-                "type": {
-                    "id": 2640,
-                    "title": "Оказание корпоративных услуг"
+            {
+                "success": true,
+                "data": {
+                    "id": 9053737,
+                    "date": "2017-04-04 20:00:00",
+                    "type_id": 2640,
+                    "expense_id": 2640,
+                    "account_id": 35501,
+                    "amount": 434,
+                    "client_id": 4240788,
+                    "master_id": 0,
+                    "supplier_id": 0,
+                    "comment": "Transaction comment",
+                    "item_id": 0,
+                    "target_type_id": 0,
+                    "record_id": 0,
+                    "expense": {
+                        "id": 2640,
+                        "title": "Оказание корпоративных услуг"
+                    },
+                    "account": {
+                        "id": 35501,
+                        "title": "Касса",
+                        "type_id": 0,
+                        "type": 0,
+                        "comment": "",
+                        "company_id": 4564
+                    },
+                    "client": {
+                        "id": "4240788",
+                        "name": "Client",
+                        "phone": "71000000001"
+                    },
+                    "master": [],
+                    "supplier": []
                 },
-                "account": {
-                    "id": 35501,
-                    "title": "Касса",
-                    "type_id": 0,
-                    "type": 0,
-                    "comment": "",
-                    "company_id": 4564
-                },
-                "client": {
-                    "id": "4240788",
-                    "name": "Client",
-                    "phone": "71000000001"
-                },
-                "master": [],
-                "supplier": []
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
 ### Удаление транзакции [DELETE]
 + Parameters
@@ -5314,7 +5315,8 @@ YCLIENTS поддерживает уведомления о создании, и
 
 | Поле  | Тип | Описание |
 | ------------- | ------------- | ------------- |
-|  id  | number  |  ID транзакции  |
+|  id | number  |  ID транзакции  |
+|  document_id | number  |  ID документа |
 |  type_id  | number  | ID типа транзакции  |
 |  type  | string  | Тип транзакции  |
 |  good  | good  | Товар  |
@@ -5380,12 +5382,8 @@ YCLIENTS поддерживает уведомления о создании, и
 |  phone  | string  | Телефон клиента  |
 
 
-## Получение товарных транзакций [/storages/transactions/{company_id}{?page,count,start_date,end_date}]
-### Получить товарные транзакции [GET]
-+ page: Номер страницы
-+ count: Количество транзакций на странице
-+ start_date: Дата начала периода
-+ end_date: Дата окончания периода
+## Поиск товарных транзакций [/storages/transactions/{company_id}{?page,count,start_date,end_date,document_id}]
+### Поиск товарных транзакций [GET]
 
 + Parameters
 
@@ -5394,6 +5392,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + count:20 (optional, number) - количество транзакций на странице
     + start_date:'' (optional, string) - дата начала периода
     + end_date:'' (optional, string) - дата окончания периода
+    + document_id: ID документа
 
 
 + Request (application/json)
@@ -5407,57 +5406,450 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             [
-              {
-                "id": "123456789",
-                "type_id": "987654321",
-                "type": "Нечто",
-                "good": {
-                    id: "111222333",
-                    title: "Somethilk"
-                },
-                "storage": {
-                    id: "333222111",
-                    title: "Storage 1"
-                },
-                "unit": {
-                    id: "333222111",
-                    title: "миллилитр"
-                },
-                "create_date": "2012-12-21T19:08:00+0400",
-                "cost_per_unit": "1.07",
-                "cost": "0.00",
-                "discount": "10.00",
-                "master": {
-                    id: "112233445",
-                    title: "Василий Иванов"
-                },
-                "supplier": {
-                    id: "11112222",
-                    title: "Best Supplier Ever"
-                },
-                "service": {
-                    id: "1234321",
-                    title: "Услуга 4"
-                },
-                "clients": {
-                    id: "4321234",
-                    name: "Джордж Смит",
-                    phone: "+79876543210"
+                {
+                    "id": 123456789,
+                    "document_id": 22256643,
+                    "type_id": "987654321",
+                    "type": "Нечто",
+                    "good": {
+                        id: "111222333",
+                        title: "Something"
+                    },
+                    "storage": {
+                        id: "333222111",
+                        title: "Storage 1"
+                    },
+                    "unit": {
+                        id: "333222111",
+                        title: "миллилитр"
+                    },
+                    "create_date": "2012-12-21T19:08:00+0400",
+                    "cost_per_unit": "1.07",
+                    "cost": "0.00",
+                    "discount": "10.00",
+                    "master": {
+                        id: "112233445",
+                        title: "Василий Иванов"
+                    },
+                    "supplier": {
+                        id: "11112222",
+                        title: "Best Supplier Ever"
+                    },
+                    "service": {
+                        id: "1234321",
+                        title: "Услуга 4"
+                    },
+                    "clients": {
+                        id: "4321234",
+                        name: "Джордж Смит",
+                        phone: "+79876543210"
+                    }
                 }
-              }
             ]
 
-## Создание документа товарных транзакций [/storage_operations/documents/{company_id}/]
-Для создания товарных транзакций необходимо создать документ, содержащий общие для товарных транзакций параметры.
-К каждому докменту может быть прикреплено есколько товарных транзакций.
+
+## Создание товарной транзакции [/storage_operations/goods_transactions/{company_id}/]
+### Создать транзакцию [POST]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+
++ Attributes
+
+    + document_id (required, number)- ID документа
+    + good_id (required, number) - ID товара
+    + amount  (required, number)- количество
+    + cost_per_unit (required, number) - стоимтость за единицу товара
+    + discount (required, number) - скидка в %
+    + cost (required, number) - итоговая сумма транзакции
+    + master_id (optional, number) - ID мастера продавшего товар
+    + client_id (optional, number) - ID клиента купившего товар
+    + supplier_id (optional, number) - ID поставщика
+    + comment (optional, string) - коммент
+    + paid (optional, boolean) - признак оплаты
+    + account_id (optional, number) - касса в которую происходит оплата
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
+    + Body
+
+            {
+                "document_id": 22254960,
+                "good_id": 232674,
+                "amount": 1,
+                "cost_per_unit": 100,
+                "discount": 10,
+                "cost": 90,
+                "master_id": 26781,
+                "client_id": 0,
+                "supplier_id": 0,
+                "comment": "Transaction comment"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": {
+                    "id": 3428010,
+                    "document_id": 22254960,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "company_id": 4564,
+                    "good_id": 232674,
+                    "amount": -1,
+                    "cost_per_unit": 100,
+                    "discount": 10,
+                    "cost": 90,
+                    "unit_id": 1,
+                    "storage_id": 36539,
+                    "supplier_id": 0,
+                    "client_id": 0,
+                    "master_id": 26781,
+                    "create_date": "2017-04-25 21:50:01",
+                    "comment": "Transaction comment",
+                    "deleted": false,
+                    "good": {
+                        "id": 232674,
+                        "title": "Edition De Luxe"
+                    },
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "supplier": [],
+                    "client": [],
+                    "master": {
+                        "id": "26781",
+                        "name": "Анджелина Джоли"
+                    },
+                    "unit": {
+                        "id": 1,
+                        "title": "Штука"
+                    }
+                },
+                "meta": []
+            }
+
+## Операции над товарной транзакцией [/storage_operations/goods_transactions/{company_id}/{transaction_id}]
+### Получение транзакции [GET]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + transaction_id (required, number)- ID транзакции
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": {
+                    "id": 3428010,
+                    "document_id": 22254960,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "company_id": 4564,
+                    "good_id": 232674,
+                    "amount": -1,
+                    "cost_per_unit": 100,
+                    "discount": 10,
+                    "cost": 90,
+                    "unit_id": 1,
+                    "storage_id": 36539,
+                    "supplier_id": 0,
+                    "client_id": 0,
+                    "master_id": 26781,
+                    "create_date": "2017-04-25 21:50:01",
+                    "comment": "Transaction comment",
+                    "deleted": false,
+                    "good": {
+                        "id": 232674,
+                        "title": "Edition De Luxe"
+                    },
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "supplier": [],
+                    "client": [],
+                    "master": {
+                        "id": "26781",
+                        "name": "Анджелина Джоли"
+                    },
+                    "unit": {
+                        "id": 1,
+                        "title": "Штука"
+                    }
+                },
+                "meta": []
+            }
+
+### Обновление транзакции [PUT]
+
++ Parameters
+
+    + transaction_id (required, number)- ID транзакции
+    + company_id (required, number) - ID компании
+
++ Attributes
+    + document_id (required, number)- ID документа
+    + good_id (required, number) - ID товара
+    + amount  (required, number)- количество
+    + cost_per_unit (required, number) - стоимтость за единицу товара
+    + discount (required, number) - скидка в %
+    + cost (required, number) - итоговая сумма транзакции
+    + master_id (optional, number) - ID мастера продавшего товар
+    + client_id (optional, number) - ID клиента купившего товар
+    + supplier_id (optional, number) - ID поставщика
+    + comment (optional, string) - коммент
+    + paid (optional, boolean) - признак оплаты
+    + account_id (optional, number) - касса в которую происходит оплата
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": {
+                    "id": 3428010,
+                    "document_id": 22254960,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "company_id": 4564,
+                    "good_id": 232674,
+                    "amount": -1,
+                    "cost_per_unit": 100,
+                    "discount": 10,
+                    "cost": 90,
+                    "unit_id": 1,
+                    "storage_id": 36539,
+                    "supplier_id": 0,
+                    "client_id": 0,
+                    "master_id": 26781,
+                    "create_date": "2017-04-25 21:50:01",
+                    "comment": "Updated transaction comment",
+                    "deleted": false,
+                    "good": {
+                        "id": 232674,
+                        "title": "Edition De Luxe"
+                    },
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "supplier": [],
+                    "client": [],
+                    "master": {
+                        "id": "26781",
+                        "name": "Анджелина Джоли"
+                    },
+                    "unit": {
+                        "id": 1,
+                        "title": "Штука"
+                    }
+                },
+                "meta": []
+            }
+
+### Удаление транзакции [DELETE]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + transaction_id (required, number)- ID транзакции
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 202
+
+#Group Складские операции
+
+## Складские операции [/storage_operations/operation/{company_id}/]
+
+Создание складской операции предполагает создание документа и нескольких товарных транзакций в рамках одного запроса  к API.
+При указании признака оплаты создаются необходимые финансовые транзакции
+
+### Создание складской операции [POST]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+
++ Attributes
+
+    + type_id (required, number) - тип документа (1 продажа, 3 приход, 7 списание)
+    + storage_id (required, number) - ID склада
+    + coment (optional, string) - комментарий
+    + date_created (required, string) - дата создания документа
+    + transactions (required, array) - массив обьектов содержащих параметры транзакций, аналогично запросу на создание товарной транзакции
+    + paid (optional, boolean) - признак оплаты
+    + account_id (optional, number) - ID кассы в случае оплаты
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
+    + Body
+
+            {
+                "type_id": 1,
+                "comment": "test document comment",
+                "create_date": "2017-04-25 14:00:00",
+                "storage_id": 91271,
+                "transactions": [
+                    {
+                        "good_id": 232674,
+                        "amount": 1,
+                        "cost_per_unit": 100,
+                        "discount": 10,
+                        "cost": 90,
+                        "master_id": 0,
+                        "client_id": 0,
+                        "supplier_id": 0,
+                        "comment": "test transaction comment"
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": {
+                    "document": {
+                        "id": 22255506,
+                        "type_id": 1,
+                        "type": {
+                            "id": 1,
+                            "title": "Продажа товара"
+                        },
+                        "storage_id": 91271,
+                        "user_id": 999290,
+                        "company_id": 4564,
+                        "number": 1254,
+                        "comment": "test document comment",
+                        "create_date": "2017-04-25 14:00:00",
+                        "storage": {
+                            "id": 91271,
+                            "title": "Секретное место"
+                        },
+                        "company": {
+                        "id": 4564,
+                        "title": "Бизнес образец",
+                        "country_id": 1,
+                        "city_id": 2,
+                        "timezone": 3,
+                        "address": "",
+                        "coordinate_lat": "25.247901",
+                        "coordinate_lon": "55.275397399999974",
+                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "zip": "",
+                        "phones": [],
+                        "site": ""
+                        },
+                        "user": {
+                            "id": "999290",
+                            "name": "User name",
+                            "phone": "70000000001"
+                        }
+                    },
+                    "transactions": [
+                        {
+                            "id": 3428012,
+                            "document_id": 22255506,
+                            "type_id": 1,
+                            "type": {
+                                "id": 1,
+                                "title": "Продажа товара"
+                            },
+                            "company_id": 4564,
+                            "good_id": 232674,
+                            "amount": -1,
+                            "cost_per_unit": 100,
+                            "discount": 10,
+                            "cost": 90,
+                            "unit_id": 1,
+                            "storage_id": 91271,
+                            "supplier_id": 0,
+                            "client_id": 0,
+                            "master_id": 0,
+                            "create_date": "2017-04-25 14:00:00",
+                            "comment": "test transaction comment",
+                            "deleted": false,
+                            "good": {
+                                "id": 232674,
+                                "title": "Edition De Luxe"
+                            },
+                            "storage": {
+                                "id": 91271,
+                                "title": "Секретное место"
+                            },
+                            "supplier": [],
+                            "client": [],
+                            "master": [],
+                            "unit": {
+                                "id": 1,
+                                "title": "Штука"
+                            }
+                        }
+                    ]
+                },
+                "meta": []
+            }
+
+
+#Group Документы складских операций
+
+## Документ операции [/storage_operations/documents/{company_id}/]
+Документ операции является обьединяющей сущностью для товарных и финансовых транзакций.
 
 ### Создать документ [POST]
 
 + Parameters
+    + company_id (required, number) - ID компании
 
-    + company_id (required, integer) - ID компании
-    + type_id (required, integer) - тип документа (1 продажа, 3 приход, 7 списание)
-    + storage_id (required, integer) - ID склада
++ Attributes
+    + type_id (required, number) - тип документа (1 продажа, 3 приход, 7 списание)
+    + storage_id (required, number) - ID склада
     + comment (optional, string) - комментарий
     + create_date (required, string) - дата проведения складской операции
 
@@ -5470,65 +5862,65 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-                "type_id": {type_id},
-                "comment": {comment},
-                "storage_id": {storage_id},
-                "create_date": {create_date}
+                "type_id": 1,
+                "comment": "Комментарий документа",
+                "storage_id": 36539,
+                "create_date": "2017-04-24 20:00:00"
             }
 
 + Response 200 (application/json)
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 22255503,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
+            {
+                "success": true,
+                "data": {
+                    "id": 22255503,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "storage_id": 36539,
+                    "user_id": 999290,
+                    "company_id": 4564,
+                    "number": 1251,
+                    "comment": "Document comment",
+                    "create_date": "2017-04-24 20:00:00",
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "company": {
+                        "id": 4564,
+                        "title": "Бизнес образец",
+                        "country_id": 1,
+                        "city_id": 2,
+                        "timezone": 3,
+                        "address": "",
+                        "coordinate_lat": "25.247901",
+                        "coordinate_lon": "55.275397399999974",
+                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "zip": "",
+                        "phones": [],
+                        "site": ""
+                    },
+                    "user": {
+                        "id": "999290",
+                        "name": "User name",
+                        "phone": "70000000001"
+                    }
                 },
-                "storage_id": 36539,
-                "user_id": 999290,
-                "company_id": 4564,
-                "number": 1251,
-                "comment": "Document comment",
-                "create_date": "2017-04-24 20:00:00",
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "company": {
-                    "id": 4564,
-                    "title": "Бизнес образец",
-                    "country_id": 1,
-                    "city_id": 2,
-                    "timezone": 3,
-                    "address": "",
-                    "coordinate_lat": "25.247901",
-                    "coordinate_lon": "55.275397399999974",
-                    "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
-                    "zip": "",
-                    "phones": [],
-                    "site": ""
-                },
-                "user": {
-                    "id": "999290",
-                    "name": "User name",
-                    "phone": "70000000001"
-                }
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
-## Операции с документом [/storage_operations/documents/{company_id}/{document_id}]
+## Операции над документом [/storage_operations/documents/{company_id}/{document_id}]
 ### Получить документ [GET]
 
 + Parameters
 
-    + company_id (required, integer) - ID компании
-    + document_id (required, integer) - ID документа
+    + company_id (required, number) - ID компании
+    + document_id (required, number) - ID документа
 
 + Request (application/json)
 
@@ -5540,56 +5932,59 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 22255503,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
+            {
+                "success": true,
+                "data": {
+                    "id": 22255503,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "storage_id": 36539,
+                    "user_id": 999290,
+                    "company_id": 4564,
+                    "number": 1251,
+                    "comment": "Document comment",
+                    "create_date": "2017-04-24 20:00:00",
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "company": {
+                        "id": 4564,
+                        "title": "Бизнес образец",
+                        "country_id": 1,
+                        "city_id": 2,
+                        "timezone": 3,
+                        "address": "",
+                        "coordinate_lat": "25.247901",
+                        "coordinate_lon": "55.275397399999974",
+                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "zip": "",
+                        "phones": [],
+                        "site": ""
+                    },
+                    "user": {
+                        "id": "999290",
+                        "name": "User name",
+                        "phone": "70000000001"
+                    }
                 },
-                "storage_id": 36539,
-                "user_id": 999290,
-                "company_id": 4564,
-                "number": 1251,
-                "comment": "Document comment",
-                "create_date": "2017-04-24 20:00:00",
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "company": {
-                    "id": 4564,
-                    "title": "Бизнес образец",
-                    "country_id": 1,
-                    "city_id": 2,
-                    "timezone": 3,
-                    "address": "",
-                    "coordinate_lat": "25.247901",
-                    "coordinate_lon": "55.275397399999974",
-                    "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
-                    "zip": "",
-                    "phones": [],
-                    "site": ""
-                },
-                "user": {
-                    "id": "999290",
-                    "name": "User name",
-                    "phone": "70000000001"
-                }
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
-### Обновить документ [PUT]
+### Обновить документ [PUT /storage_operations/documents/{company_id}/{document_id}]
 
 + Parameters
 
-    + company_id (required, integer) - ID компании
-    + document_id (required, integer) - ID документа
-    + type_id (required, integer) - тип документа (1 продажа, 3 приход, 7 списание)
-    + storage_id (required, integer) - ID склада
+    + company_id (required, number) - ID компании
+    + document_id (required, number) - ID документа
+
++ Attributes
+
+    + type_id (required, number) - тип документа (1 продажа, 3 приход, 7 списание)
+    + storage_id (required, number) - ID склада
     + date_created (required, string) - дата создания документа
 
 + Request (application/json)
@@ -5602,54 +5997,54 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 22255503,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
+            {
+                "success": true,
+                "data": {
+                    "id": 22255503,
+                    "type_id": 1,
+                    "type": {
+                        "id": 1,
+                        "title": "Продажа товара"
+                    },
+                    "storage_id": 36539,
+                    "user_id": 999290,
+                    "company_id": 4564,
+                    "number": 1251,
+                    "comment": "Updated document comment",
+                    "create_date": "2017-04-25 20:00:00",
+                    "storage": {
+                        "id": 36539,
+                        "title": "Товары"
+                    },
+                    "company": {
+                        "id": 4564,
+                        "title": "Бизнес образец",
+                        "country_id": 1,
+                        "city_id": 2,
+                        "timezone": 3,
+                        "address": "",
+                        "coordinate_lat": "25.247901",
+                        "coordinate_lon": "55.275397399999974",
+                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "zip": "",
+                        "phones": [],
+                        "site": ""
+                    },
+                    "user": {
+                        "id": "999290",
+                        "name": "User name",
+                        "phone": "70000000001"
+                    }
                 },
-                "storage_id": 36539,
-                "user_id": 999290,
-                "company_id": 4564,
-                "number": 1251,
-                "comment": "Updated document comment",
-                "create_date": "2017-04-25 20:00:00",
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "company": {
-                    "id": 4564,
-                    "title": "Бизнес образец",
-                    "country_id": 1,
-                    "city_id": 2,
-                    "timezone": 3,
-                    "address": "",
-                    "coordinate_lat": "25.247901",
-                    "coordinate_lon": "55.275397399999974",
-                    "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
-                    "zip": "",
-                    "phones": [],
-                    "site": ""
-                },
-                "user": {
-                    "id": "999290",
-                    "name": "User name",
-                    "phone": "70000000001"
-                }
-            },
-            "meta": []
-        }
+                "meta": []
+            }
 
-### Удалить документ [DELETE]
+### Удалить документ [DELETE /storage_operations/documents/{company_id}/{document_id}]
 
 + Parameters
 
-    + company_id (required, integer) - ID компании
-    + document_id (required, integer) - ID документа
+    + company_id (required, number) - ID компании
+    + document_id (required, number) - ID документа
 
 + Request (application/json)
 
@@ -5659,101 +6054,11 @@ YCLIENTS поддерживает уведомления о создании, и
 
 + Response 202 (application/json)
 
-## Создание товарной транзакции [/storage_operations/goods_transactions/{company_id}/]
-### Создать транзакцию [POST]
+### Получить финансовые транзакции документа [GET /storage_operations/documents/finance_transactions/{document_id}/]
 
 + Parameters
 
-    + company_id (required, integer) - ID компании
-    + document_id (required, integer)- ID документа
-    + good_id (required, integer) - ID товара
-    + amount  (required, float)- количество
-    + cost_per_unit (required, float) - стоимтость за единицу товара
-    + discount (required, float) - скидка в %
-    + cost (required, float) - итоговая сумма транзакции
-    + master_id (optional, integer) - ID мастера продавшего товар
-    + client_id (optional, integer) - ID клиента купившего товар
-    + supplier_id (optional, integer) - ID поставщика
-    + comment (optional, string) - коммент
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer access_token, User user_token
-
-    + Body
-
-        {
-            "document_id": 22254960,
-            "good_id": 232674,
-            "amount": 1,
-            "cost_per_unit": 100,
-            "discount": 10,
-            "cost": 90,
-            "master_id": 26781,
-            "client_id": 0,
-            "supplier_id": 0,
-            "comment": "Transaction comment"
-        }
-
-+ Response 200 (application/json)
-
-    + Body
-
-        {
-            "success": true,
-            "data": {
-                "id": 3428010,
-                "document_id": 22254960,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
-                },
-                "company_id": 4564,
-                "good_id": 232674,
-                "amount": -1,
-                "cost_per_unit": 100,
-                "discount": 10,
-                "cost": 90,
-                "unit_id": 1,
-                "storage_id": 36539,
-                "supplier_id": 0,
-                "client_id": 0,
-                "master_id": 26781,
-                "create_date": "2017-04-25 21:50:01",
-                "comment": "Transaction comment",
-                "deleted": false,
-                "good": {
-                    "id": 232674,
-                    "title": "Edition De Luxe"
-                },
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "supplier": [],
-                "client": [],
-                "master": {
-                    "id": "26781",
-                    "name": "Анджелина Джоли"
-                },
-                "unit": {
-                    "id": 1,
-                    "title": "Штука"
-                }
-            },
-            "meta": []
-        }
-
-## Операции над товарной транзакцией [/storage_operations/goods_transactions/{company_id}/{transaction_id}]
-### Получение транзакции [GET]
-
-+ Parameters
-
-    + company_id (required, integer) - ID компании
-    + transaction_id (required, integer)- ID транзакции
+    + document_id (required, number) - ID документа
 
 + Request (application/json)
 
@@ -5765,271 +6070,150 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Body
 
-        {
-            "success": true,
-            "data": {
-                "id": 3428010,
-                "document_id": 22254960,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
-                },
-                "company_id": 4564,
-                "good_id": 232674,
-                "amount": -1,
-                "cost_per_unit": 100,
-                "discount": 10,
-                "cost": 90,
-                "unit_id": 1,
-                "storage_id": 36539,
-                "supplier_id": 0,
-                "client_id": 0,
-                "master_id": 26781,
-                "create_date": "2017-04-25 21:50:01",
-                "comment": "Transaction comment",
-                "deleted": false,
-                "good": {
-                    "id": 232674,
-                    "title": "Edition De Luxe"
-                },
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "supplier": [],
-                "client": [],
-                "master": {
-                    "id": "26781",
-                    "name": "Анджелина Джоли"
-                },
-                "unit": {
-                    "id": 1,
-                    "title": "Штука"
-                }
-            },
-            "meta": []
-        }
-
-### Обновление транзакции [PUT]
-
-+ Parameters
-
-    + transaction_id (required, integer)- ID транзакции
-    + company_id (required, integer) - ID компании
-    + document_id (required, integer)- ID документа
-    + good_id (required, integer) - ID товара
-    + amount  (required, float)- количество
-    + cost_per_unit (required, float) - стоимтость за единицу товара
-    + discount (required, float) - скидка в %
-    + cost (required, float) - итоговая сумма транзакции
-    + master_id (optional, integer) - ID мастера продавшего товар
-    + client_id (optional, integer) - ID клиента купившего товар
-    + supplier_id (optional, integer) - ID поставщика
-    + comment (optional, string) - коммент
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer access_token, User user_token
-
-+ Response 200 (application/json)
-
-    + Body
-
-        {
-            "success": true,
-            "data": {
-                "id": 3428010,
-                "document_id": 22254960,
-                "type_id": 1,
-                "type": {
-                    "id": 1,
-                    "title": "Продажа товара"
-                },
-                "company_id": 4564,
-                "good_id": 232674,
-                "amount": -1,
-                "cost_per_unit": 100,
-                "discount": 10,
-                "cost": 90,
-                "unit_id": 1,
-                "storage_id": 36539,
-                "supplier_id": 0,
-                "client_id": 0,
-                "master_id": 26781,
-                "create_date": "2017-04-25 21:50:01",
-                "comment": "Updated transaction comment",
-                "deleted": false,
-                "good": {
-                    "id": 232674,
-                    "title": "Edition De Luxe"
-                },
-                "storage": {
-                    "id": 36539,
-                    "title": "Товары"
-                },
-                "supplier": [],
-                "client": [],
-                "master": {
-                    "id": "26781",
-                    "name": "Анджелина Джоли"
-                },
-                "unit": {
-                    "id": 1,
-                    "title": "Штука"
-                }
-            },
-            "meta": []
-        }
-
-### Удаление транзакции [DELETE]
-
-+ Parameters
-
-    + company_id (required, integer) - ID компании
-    + transaction_id (required, integer)- ID транзакции
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer access_token, User user_token
-
-+ Response 202
-
-## Складские операции [/storage_operations/operation/{company_id}/]
-
-Создание складской операции предполагает создание документа и нескольких товарных транзакций в рамках одного запроса  к API.
-
-### Создание складской операции [POST]
-
-+ Parameters
-
-    + company_id (required, integer) - ID компании
-    + type_id (required, integer) - тип документа (1 продажа, 3 приход, 7 списание)
-    + storage_id (required, integer) - ID склада
-    + coment (optional, string) - комментарий
-    + date_created (required, string) - дата создания документа
-    + transactions (required, array) - массив обьектов содержащих параметры транзакций, аналогично запросу на создание товарной транзакции
-
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer access_token, User user_token
-
-    + Body
-
-        {
-            "type_id": 1,
-            "comment": "test document comment",
-            "create_date": "2017-04-25 14:00:00",
-            "storage_id": 91271,
-            "transactions": [
-                {
-                    "good_id": 232674,
-                    "amount": 1,
-                    "cost_per_unit": 100,
-                    "discount": 10,
-                    "cost": 90,
-                    "master_id": 0,
-                    "client_id": 0,
-                    "supplier_id": 0,
-                    "comment": "test transaction comment"
-                }
-            ]
-        }
-
-+ Response 200 (application/json)
-
-    + Body
-
-        {
-            "success": true,
-            "data": {
-                "document": {
-                    "id": 22255506,
-                    "type_id": 1,
-                    "type": {
-                        "id": 1,
-                        "title": "Продажа товара"
-                    },
-                    "storage_id": 91271,
-                    "user_id": 999290,
-                    "company_id": 4564,
-                    "number": 1254,
-                    "comment": "test document comment",
-                    "create_date": "2017-04-25 14:00:00",
-                    "storage": {
-                        "id": 91271,
-                        "title": "Секретное место"
-                    },
-                    "company": {
-                    "id": 4564,
-                    "title": "Бизнес образец",
-                    "country_id": 1,
-                    "city_id": 2,
-                    "timezone": 3,
-                    "address": "",
-                    "coordinate_lat": "25.247901",
-                    "coordinate_lon": "55.275397399999974",
-                    "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
-                    "zip": "",
-                    "phones": [],
-                    "site": ""
-                    },
-                    "user": {
-                        "id": "999290",
-                        "name": "User name",
-                        "phone": "70000000001"
-                    }
-                },
-                "transactions": [
-                    {
-                        "id": 3428012,
-                        "document_id": 22255506,
-                        "type_id": 1,
-                        "type": {
-                            "id": 1,
-                            "title": "Продажа товара"
+            {
+                "success": true,
+                "data": [
+                        {
+                        "id": 9053737,
+                        "date": "2017-04-04 20:00:00",
+                        "type_id": 2640,
+                        "expense_id": 2640,
+                        "account_id": 35501,
+                        "amount": 434,
+                        "client_id": 4240788,
+                        "master_id": 0,
+                        "supplier_id": 0,
+                        "comment": "Transaction comment",
+                        "item_id": 0,
+                        "target_type_id": 0,
+                        "record_id": 0,
+                        "expense": {
+                            "id": 2640,
+                            "title": "Оказание корпоративных услуг"
                         },
+                        "account": {
+                            "id": 35501,
+                            "title": "Касса",
+                            "type_id": 0,
+                            "type": 0,
+                            "comment": "",
+                            "company_id": 4564
+                        },
+                        "client": {
+                            "id": "4240788",
+                            "name": "Client",
+                            "phone": "71000000001"
+                        },
+                        "master": [],
+                        "supplier": []
+                    },
+                    {
+                        "id": 9053738,
+                        "date": "2017-04-04 20:00:00",
+                        "type_id": 2640,
+                        "expense_id": 2640,
+                        "account_id": 35501,
+                        "amount": 434,
+                        "client_id": 4240788,
+                        "master_id": 0,
+                        "supplier_id": 0,
+                        "comment": "Transaction comment",
+                        "item_id": 0,
+                        "target_type_id": 0,
+                        "record_id": 0,
+                        "expense": {
+                            "id": 2640,
+                            "title": "Оказание корпоративных услуг"
+                        },
+                        "account": {
+                            "id": 35501,
+                            "title": "Касса",
+                            "type_id": 0,
+                            "type": 0,
+                            "comment": "",
+                            "company_id": 4564
+                        },
+                        "client": {
+                            "id": "4240788",
+                            "name": "Client",
+                            "phone": "71000000001"
+                        },
+                        "master": [],
+                        "supplier": []
+                    }
+                ],
+                "meta": []
+            }
+
+### Получить товарные транзакции документа [GET /storage_operations/documents/goods_transactions/{document_id}/]
+
++ Parameters
+
+    + document_id (required, number) - ID документа
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": [
+                    {
+                        "id": 3728232,
+                        "document_id": 22256643,
+                        "type_id": 1,
                         "company_id": 4564,
-                        "good_id": 232674,
-                        "amount": -1,
+                        "good_id": 587018,
+                        "amount": -10,
                         "cost_per_unit": 100,
-                        "discount": 10,
-                        "cost": 90,
-                        "unit_id": 1,
-                        "storage_id": 91271,
+                        "discount": 0,
+                        "cost": 1000,
+                        "unit_id": 88272,
+                        "storage_id": 36539,
                         "supplier_id": 0,
                         "client_id": 0,
-                        "master_id": 0,
-                        "create_date": "2017-04-25 14:00:00",
-                        "comment": "test transaction comment",
+                        "master_id": 49754,
+                        "create_date": "2017-07-06 19:42:00",
+                        "comment": "",
+                        "service_id": 0,
+                        "user_id": 3,
                         "deleted": false,
-                        "good": {
-                            "id": 232674,
-                            "title": "Edition De Luxe"
-                        },
-                        "storage": {
-                            "id": 91271,
-                            "title": "Секретное место"
-                        },
-                        "supplier": [],
-                        "client": [],
-                        "master": [],
-                        "unit": {
-                            "id": 1,
-                            "title": "Штука"
-                        }
+                        "pkg_amount": 0
+                    },
+                    {
+                        "id": 3728233,
+                        "document_id": 22256643,
+                        "type_id": 1,
+                        "company_id": 4564,
+                        "good_id": 232674,
+                        "amount": -10,
+                        "cost_per_unit": 127.5,
+                        "discount": 0,
+                        "cost": 1275,
+                        "unit_id": 1,
+                        "storage_id": 36539,
+                        "supplier_id": 0,
+                        "client_id": 0,
+                        "master_id": 49754,
+                        "create_date": "2017-07-06 19:42:00",
+                        "comment": "",
+                        "service_id": 0,
+                        "user_id": 3,
+                        "deleted": false,
+                        "pkg_amount": 0
                     }
-                ]
-            },
-            "meta": []
-        }
+                ],
+                "meta": {
+                    "count": 2
+                }
+            }
+
 
 # Group Страны
 
