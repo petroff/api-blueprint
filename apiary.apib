@@ -5291,128 +5291,175 @@ custom_fields: {
 
 + Response 202 (application/json)
 
-# Group Интеграция с телефонией
-
-## Создание события звонка [/vpbx/event/{hash}]
-### Создать событие [POST]
-#### Создание события
-+ type: тип события ('INCOMING' для входящих, 'OUTGOING' для исходящих)
-+ phone: номер телефона (кто звонит)
-
-+ Parameters
-
-    + hash (required, string) - hash компании (из раздела обзор/телефония)
+# Group Интеграция с сетевой телефонией
+## Подключение телефонии [/voip/integration/]
+### Подключить интеграцию [POST]
+#### Подключить интеграцию
 
 + Attributes
-
-    + type (required, string) - тип события ('INCOMING' для создания события звонка)
-    + phone (required, string) - номер телефона (кто звонит)
+    + crm_token (required, string) - токен интеграции
+    + command (required, string) - slug операции 'setup'
+    + type (required, string) - тип операции, в данном случае  'enable' 
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer access_token
-
-+ Response 200 (application/json)
+            Authorization: Bearer access_token, User user_token
+            Content-Type: application/json
 
     + Body
 
-            {"ok":true}
+            {
+                "command": "setup",
+                "type": "enable",
+                "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2"
+            }
 
 
-## Сохранение информации о звонке [/vpbx/history/{hash}]
-### Сохранить информацию [POST]
-#### Сохранение информации
-+ phone: номер телефона (кто звонит)
-+ link: ссылка на запись
-+ duration: продолжительность (в секундах)
-+ callid: внешний ID звонка
-+ status: статус звонка
-+ type: тип звонка
-+ user: агент (кому звонят)
-+ call_date - дата начала звонка
++ Response 202 (application/json)
 
+    + Body
 
-+ Parameters
+            {
+                "success": true,
+                "data": null,
+                "meta": {
+                    "message": "Accepted"
+                }
+            }
 
-    + hash (required, string) - hash компании (из раздела обзор/телефония)
+## Отключение телефонии [/voip/integration/]
+### Отключить интеграцию [POST]
+#### Отключить интеграцию
 
 + Attributes
-
-    + phone (required, string) - номер телефона (кто звонит)
-    + link (optional, string) - ссылка на запись
-    + duration (optional, number) - продолжительность (в секундах)
-    + callid (optional, string) - внешний ID звонка
-    + status (optional, string) - статус звонка ('success' для успешных вызовов, 'missed' для пропущенных)
-    + type (optional, string) - тип звонка ('INCOMING' для входящих, 'OUTGOING' для исходящих)
-    + user (optional, string) - агент (кому звонят)
-    + call_date (optional, string) - дата начала звонка
+    + crm_token (required, string) - токен интеграции
+    + command (required, string) - slug операции 'setup'
+    + type (required, string) - тип операции, в данном случае 'disable' 
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer access_token
-
-+ Response 200 (application/json)
+            Authorization: Bearer access_token, User user_token
+            Content-Type: application/json
 
     + Body
 
-            {"ok":true}
+            {
+                "command": "setup",
+                "type": "disable",
+                "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2"
+            }
 
 
-## Сохранение внешнего токена и факта подключения к АТС [/vpbx/install/{hash}]
-### Сохранить внешний токен и факт подключения к АТС [POST]
-+ token: внешний токен
-+ vpbx: подключенная АТС
++ Response 202 (application/json)
 
-+ Parameters
+    + Body
 
-    + hash (required, string) - hash компании (из раздела обзор/телефония)
+            {
+                "success": true,
+                "data": null,
+                "meta": {
+                    "message": "Accepted"
+                }
+            }
+
+## Уведомление о звонке [/voip/integration/]
+### Уведомление о звонке [POST]
+#### Уведомление о звонке
 
 + Attributes
-
-    + token (required, string) - внешний токен
-    + vpbx (optional, string) - подключенная АТС
+    + crm_token (required, string) - токен интеграции
+    + command (required, string) - slug операции 'event'
+    + type (required, string) - тип операции, в данном случае 'incoming' 
+    + phone (required, string) - номер звонящего абонента
+    + user (optional, string) - идентификатор абонента телефонии, sip
+    + diversion (required, string) - номер через который пришел звонок
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer access_token
-
-+ Response 200 (application/json)
+            Authorization: Bearer access_token, User user_token
+            Content-Type: application/json
 
     + Body
 
-            {"ok":true}
+            {
+                "command": "event",
+                "type": "incoming",
+                "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2",
+                "phone": "71010001100",
+                "user": "external_user_id",
+                "diversion": "71010001122"
+            }
 
 
-## Удаление внешнего токена и факта подключения к АТС [/vpbx/delete/{hash}]
-### Удалить внешний токен и факт подключения к АТС [POST]
-+ token: внешний токен
++ Response 202 (application/json)
 
-+ Parameters
+    + Body
 
-    + hash (required, string) - hash компании (из раздела обзор/телефония)
+            {
+                "success": true,
+                "data": null,
+                "meta": {
+                    "message": "Accepted"
+                }
+            }
+
+## Сохранение истории о входящем звонке [/voip/integration/]
+### Сохранение истории о звонке [POST]
+#### Сохранение истории о звонке
 
 + Attributes
-
-    + token (required, string) - внешний токен
+    + crm_token (required, string) - токен интеграции
+    + command (required, string) - операции 'history'
+    + type (required, string) - тип операции 'incoming'
+    + phone (required, string) - номер звонившего абонента
+    + user (optional, string) - идентификатор абонента телефонии, sip
+    + diversion (required, string) - номер через который пришел звонок
+    + duration (optional, number) - длительность звонка (в секундах)
+    + link (optional, string) - ссылка на запись звонка
+    + call_id (optional, string) - идентификатор звонка в системе voip
+    + status (optional, string) - статус звонка 'success'|'missed'
+    + date (optional, string) - дата и время звонка (ISO8601)
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer access_token
-
-+ Response 200 (application/json)
+            Authorization: Bearer access_token, User user_token
+            Content-Type: application/json
 
     + Body
 
-            {"ok":true}
+            {
+                "command": "history",
+                "type": "incoming",
+                "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2",
+                "phone": "71010001100",
+                "user": "external_user_id",
+                "diversion": "71010001122",
+                "duraiton": 90,
+                "link": "http://external.call.storage/call_record.mp3",
+                "call_id": "external_call_id",
+                "status": "success",
+                "date": "2018-03-20T12:00:28+00:00"
+            }
 
++ Response 202 (application/json)
+
+    + Body
+
+            {
+                "success": true,
+                "data": null,
+                "meta": {
+                    "message": "Accepted"
+                }
+            }
 
 # Group Уведомления о событиях "webhooks"
 
