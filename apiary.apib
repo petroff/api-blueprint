@@ -243,6 +243,24 @@ API позволяет работать с основными сущностям
 + discount: 10 (optional, number) - Скидка на услугу
 + cost: 10 (optional, number) - Итоговая стоимость услуги
 
+## GoodsTransactionsArray
+
++ id (required, number) - id складской транзакции
++ good_id (required, number) - ID товара
++ storage_id (required, number) - ID склада
++ amount (required, number) - сумма
++ type (required, number) - 1 - Продажа товара, 2 - Списание расходников, 3 - Приход товара, 4 - Списание товара
++ master_id (required, number) - ID сотрудника
++ discount (required, number) - Скидка
++ price (required, number) - Стоимость
++ cost (required, number) - Цена продажи
+
+## newTransactionsArray
+
++ id (required, number) - id складской транзакции
++ amount (required, number) - количество
++ account_id (required, number) - ID кассы
+
 ## ImageGroup
 
 + id: 141 (required, number) - id группы изображений
@@ -3615,6 +3633,7 @@ custom_fields: {
         + api_id: 2 (optional, number) - ID записи из внешней системы
         + attendance (optional, number) - 1 - Пользователь пришел, услуги оказаны, 0 - ожидание пользователя, -1 - пользователь не пришел на визит
         + activity_id (optional, number) - ID группового события
+        + fast_payment (optional, number) - Быстрая оплата 1 - наличными, 2 - безналичными, 129 - наличными и распечатать, 130 - безналичными и распечатать
 
     + Headers
 
@@ -3728,6 +3747,166 @@ custom_fields: {
     + Body
 
 + Response 204 (application/json)
+
+
+# Group Визиты
+
+Для работы с визитами
+
+## Получить визит [GET /visits/{visit_id}/]
+
++ Parameters
+    + visit_id: ID визита (number)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "attendance": 1,
+                "datetime": "2018-03-25T15:00:00+04:00",
+                "comment": 0,
+                "records": [
+                    {
+                        "id": 37955315,
+                        "company_id": 4564,
+                        "staff_id": 55436,
+                        "services": [],
+                        "events": [],
+                        "goods_transactions": [],
+                        "staff": {
+                            "id": 55436,
+                            "name": "Кевин Спейси",
+                            "specialization": "Мастер маникюра и педикюраf",
+                            "avatar": "http://dev9.dev.salonpicker.ru/uploads/masters/sm/b/bb/bb59d4cc17d9b16_20171215174158.png",
+                            "avatar_big": "http://dev9.dev.salonpicker.ru/uploads/masters/origin/c/cf/cfb8c5cee58000b_20171215174158.png",
+                            "rating": 4.89,
+                            "votes_count": 0
+                        },
+                        "client": {
+                            "id": 4240788,
+                            "name": "dev1",
+                            "phone": "+71000000001",
+                            "card": "000000415",
+                            "email": "",
+                            "success_visits_count": 58,
+                            "fail_visits_count": 9
+                        },
+                        "date": "2018-03-25 15:00:00",
+                        "datetime": "2018-03-25T15:00:00+03:00",
+                        "create_date": "2018-03-22T17:55:14+0300",
+                        "comment": "",
+                        "online": false,
+                        "visit_attendance": 1,
+                        "attendance": 1,
+                        "confirmed": 1,
+                        "seance_length": 3600,
+                        "length": 3600,
+                        "sms_before": 1,
+                        "sms_now": 1,
+                        "sms_now_text": "",
+                        "email_now": 1,
+                        "notified": 0,
+                        "master_request": 0,
+                        "api_id": "0",
+                        "from_url": "",
+                        "review_requested": 0,
+                        "visit_id": 8260852,
+                        "created_user_id": 999290,
+                        "deleted": 0,
+                        "paid_full": 0,
+                        "prepaid": 0,
+                        "prepaid_confirmed": 0,
+                        "last_change_date": "2018-03-28T17:46:48+0300",
+                        "custom_color": "",
+                        "custom_font_color": "",
+                        "record_labels": [],
+                        "activity_id": 0,
+                        "custom_fields": []
+                    }
+                ]
+            }
+
+
+## Изменить визит [PUT /visits/{visit_id}/{record_id}]
+
++ Parameters
+    + visit_id: ID визита (number)
+    + record_id: ID запись (number)
+
++ Attributes
+    + comment (required, string) - Коментарий
+    + attendance (required, number) - 1 - Пользователь пришел, услуги оказаны, 0 - ожидание пользователя, -1 - пользователь не пришел на визит
+    + services (optional, ServiceArray) - Параметры услуг (id, стоимость, скидка)
+    + goods_transactions (optional, GoodsTransactionsArray) - Параметры транзакции
+    + new_transactions (optional, newTransactionsArray) - Параметры транзакции
+    + deleted_transaction_ids (optional, number) - Массив id экземпляров
+    + fast_payment (optional, number) - Быстрая оплата 1 - наличными, 2 - безналичными, 129 - наличными и распечатать, 130 - безналичными и распечатать
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer access_token, User user_token
+
+    + Body
+
+            {
+              "attendance": 1,
+              "comment": "",
+              "new_transactions": [
+                {
+                  "id": 1482145166353,
+                  "amount": 100,
+                  "account_id": 23322
+                }
+              ],
+              "deleted_transaction_ids": [],
+              "goods_transactions": [
+                {
+                  "id": "2168657",
+                  "title": "Vital Creme Shampoo Plus",
+                  "barcode": "123",
+                  "article": "120277",
+                  "amount": "-1.000000000",
+                  "cost_per_unit": "15.00",
+                  "price": "15.00",
+                  "cost": "12.00",
+                  "master_id": "55436",
+                  "storage_id": "91303",
+                  "good_id": "232658",
+                  "discount": "20.0"
+                }
+              ],
+              "services": [
+                {
+                  "id": 389045,
+                  "title": "Массаж рук (10 мин)",
+                  "cost": 255,
+                  "cost_per_unit": 300,
+                  "discount": 15,
+                  "first_cost": 300,
+                  "record_id": 10403702
+                }
+              ]
+            }
+
+
++ Response 200 (application/json)
+
+
+## Чек PDF по визиту [GET /attendance/receipt_print/{visit_id}]
+
++ Parameters
+    + visit_id: ID визита (number)
+
++ Response 200 (application/pdf)
 
 
 # Group Групповые события
@@ -5299,14 +5478,13 @@ custom_fields: {
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'setup'
-    + type (required, string) - тип операции, в данном случае  'enable' 
+    + type (required, string) - тип операции, в данном случае  'enable'
 
 + Request (application/json)
 
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            Content-Type: application/json
 
     + Body
 
@@ -5336,14 +5514,13 @@ custom_fields: {
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'setup'
-    + type (required, string) - тип операции, в данном случае 'disable' 
+    + type (required, string) - тип операции, в данном случае 'disable'
 
 + Request (application/json)
 
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            Content-Type: application/json
 
     + Body
 
@@ -5373,7 +5550,7 @@ custom_fields: {
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'event'
-    + type (required, string) - тип операции, в данном случае 'incoming' 
+    + type (required, string) - тип операции, в данном случае 'incoming'
     + phone (required, string) - номер звонящего абонента
     + user (optional, string) - идентификатор абонента телефонии, sip
     + diversion (required, string) - номер через который пришел звонок
@@ -5383,7 +5560,6 @@ custom_fields: {
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            Content-Type: application/json
 
     + Body
 
@@ -5431,7 +5607,6 @@ custom_fields: {
     + Headers
 
             Authorization: Bearer access_token, User user_token
-            Content-Type: application/json
 
     + Body
 
