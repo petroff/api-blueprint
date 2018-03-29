@@ -2402,7 +2402,7 @@ JSON-Объект содержащий параметры записи поль�
                 "seance_length": 3600
               },
               {
-                "id": 1796",
+                "id": 1796,
                 "seance_length": 3600
               },
               {
@@ -5470,21 +5470,21 @@ custom_fields: {
 
 + Response 202 (application/json)
 
-# Group Интеграция с сетевой телефонией
-## Подключение телефонии [/voip/integration/]
-### Подключить интеграцию [POST]
-#### Подключить интеграцию
 
+#Group Интеграция с сетевой телефонией
+
+## Подключить интеграцию [POST /voip/integration/]
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'setup'
     + type (required, string) - тип операции, в данном случае  'enable'
 
-+ Request (application/json)
++ Request
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer access_token
+            Content-Type: application/json
 
     + Body
 
@@ -5494,8 +5494,7 @@ custom_fields: {
                 "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2"
             }
 
-
-+ Response 202 (application/json)
++ Response 202
 
     + Body
 
@@ -5507,20 +5506,19 @@ custom_fields: {
                 }
             }
 
-## Отключение телефонии [/voip/integration/]
-### Отключить интеграцию [POST]
-#### Отключить интеграцию
+## Отключить интеграцию [POST /voip/integration/]
 
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'setup'
     + type (required, string) - тип операции, в данном случае 'disable'
 
-+ Request (application/json)
++ Request
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer access_token
+            Content-Type: application/json
 
     + Body
 
@@ -5530,8 +5528,7 @@ custom_fields: {
                 "crm_token": "7cf262d6-1656-43f9-86ac-2826bdc125d2"
             }
 
-
-+ Response 202 (application/json)
++ Response 202
 
     + Body
 
@@ -5542,10 +5539,7 @@ custom_fields: {
                     "message": "Accepted"
                 }
             }
-
-## Уведомление о звонке [/voip/integration/]
-### Уведомление о звонке [POST]
-#### Уведомление о звонке
+## Уведомление о звонке [POST /voip/integration/]
 
 + Attributes
     + crm_token (required, string) - токен интеграции
@@ -5555,11 +5549,12 @@ custom_fields: {
     + user (optional, string) - идентификатор абонента телефонии, sip
     + diversion (required, string) - номер через который пришел звонок
 
-+ Request (application/json)
++ Request
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer access_token
+            Content-Type: application/json
 
     + Body
 
@@ -5572,8 +5567,7 @@ custom_fields: {
                 "diversion": "71010001122"
             }
 
-
-+ Response 202 (application/json)
++ Response 202
 
     + Body
 
@@ -5585,9 +5579,7 @@ custom_fields: {
                 }
             }
 
-## Сохранение истории о входящем звонке [/voip/integration/]
-### Сохранение истории о звонке [POST]
-#### Сохранение истории о звонке
+## Сохранение истории о звонке [POST /voip/integration/]
 
 + Attributes
     + crm_token (required, string) - токен интеграции
@@ -5602,11 +5594,12 @@ custom_fields: {
     + status (optional, string) - статус звонка 'success'|'missed'
     + date (optional, string) - дата и время звонка (ISO8601)
 
-+ Request (application/json)
++ Request
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer access_token
+            Content-Type: application/json
 
     + Body
 
@@ -5618,13 +5611,13 @@ custom_fields: {
                 "user": "external_user_id",
                 "diversion": "71010001122",
                 "duraiton": 90,
-                "link": "http://external.call.storage/call_record.mp3",
+                "link": "https://external.call.storage/call_record.mp3",
                 "call_id": "external_call_id",
                 "status": "success",
                 "date": "2018-03-20T12:00:28+00:00"
             }
 
-+ Response 202 (application/json)
++ Response 202
 
     + Body
 
