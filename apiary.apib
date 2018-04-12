@@ -7573,3 +7573,214 @@ YCLIENTS поддерживает уведомления о создании, и
             Authorization: Bearer access_token, User user_token
 
 + Response 204
+
+# Group Отправка СМС через операторов
+
+## Описание функционала и объекты API
+Для отправки SMS, оператору необходимо предоставить адрес (url_operator), на который будут уходить запросы описанные ниже.
+Авторизация запросов к API производится в соответствии с [RFC 6749 "Resource Owner Password Credentials Grant"](http://tools.ietf.org/html/rfc6749#section-4.3).
+При запросах к API в HTTP заголовок Authorization должен быть включен ключ доступа в следущем формате:
+Ключ авторизации (partner_token) должен быть указан в настройках модуля уведомлений компании.
+
+```
+Authorization: Bearer <partner token>
+```
+
+## Отправка СМС [/]
+
+В случае ошибки возвращается ее HTTP-код. В некоторых случаях также возвращается текстовое описание ошибки.
+Все методы API могут возвращать следующие коды ошибок:
+
+|  Error code  |  Http status code  |  Название  |  Описание  |
+| ------------- | ------------- | ------------- | ------------- |
+|  5  |  400  |  ENTITY_VALIDATION_ERROR  |  Тело запроса не прошло валидацию  |
+|  10  |  400  |  FIELD_VALIDATION_ERROR  |  Параметр не прошел валидацию  |
+|  15  |  403  |  ACCESS_FORBIDDEN  |  Действие недоступно, у приложения нет требуемых разрешений.  |
+|  20  |  401  |  INVALID_PARTNER_TOKEN  |  PARTNER_TOKEN отсутствует или невалиден  |
+|  30  |  404  |  RESOURCE_NOT_FOUND  |  Ресурс по запрошенному пути не существует  |
+
+### Отправка СМС [POST]
+
++ Attributes
+    + destination_params (required, object) - обьект, содержащий параметры ИД отправки и номер телефона
+    + from (required, string) - имя отправителя
+    + text (required, string) - текст отправления
+    + type (required, string) - тип отправления (sms, viber)
+    + dispatch_type (required, string) - тип рассылки (service - сервисная, adds - рекламная)
+    + delivery_callback_url (required, string) - url, на который приходят статусы сообщений
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
+    + Body
+
+            {
+                "destination_params": [
+                    {
+                        "id": "232674",
+                        "phone": "71000000002"
+                    }
+                ],
+                "from": "yclients",
+                "text": "поле для текста",
+                "type": "sms",
+                "dispatch_type": "service",
+                "delivery_callback_url": "http://api.yclients.com/api/v1/delivery/status"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "id": "232674",
+                    "ext_id": "609aff0fca92466d6a1747dd83f05943a8c9600d"
+                }
+            ]
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "error_code": 10,
+                "errors": [
+                    {
+                        "field_name": "some string",
+                        "field_value": "some string",
+                        "error_message": "explicit error message"
+                    },
+                    {
+                        "field_name": "some string",
+                        "field_value": "some string",
+                        "error_message": "explicit error message"
+                    }
+
+                ]
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "error_code": 5,
+                "error_message": "explicit error message"
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "error_code": 20,
+                "error_message": "explicit error message"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error_code": 30,
+                "error_message": "explicit error message"
+            }
+
+
+## Получение статусов сообщений [/delivery/status]
+
+|  Номер  |  Название  |
+| ------------- | ------------- |
+|  1  |  Доставлено  |
+|  2  |  Не доставлено  |
+|  4  |  Отправлено на телефон  |
+|  8  |  Передано оператору  |
+|  16  |  Отклонено оператором  |
+
+В случае ошибки возвращается ее HTTP-код. В некоторых случаях также возвращается текстовое описание ошибки.
+Все методы API могут возвращать следующие коды ошибок:
+
+|  Error code  |  Http status code  |  Название  |  Описание  |
+| ------------- | ------------- | ------------- | ------------- |
+|  5  |  400  |  ENTITY_VALIDATION_ERROR  |  Тело запроса не прошло валидацию  |
+|  10  |  400  |  FIELD_VALIDATION_ERROR  |  Параметр не прошел валидацию  |
+|  15  |  403  |  ACCESS_FORBIDDEN  |  Действие недоступно, у приложения нет требуемых разрешений.  |
+|  20  |  401  |  INVALID_PARTNER_TOKEN  |  PARTNER_TOKEN отсутствует или невалиден  |
+|  30  |  404  |  RESOURCE_NOT_FOUND  |  Ресурс по запрошенному пути не существует  |
+
+## Получение статусов сообщений [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
+    + Body
+
+            [
+                {
+                    "id": "232674",
+                    "status": 1
+                }
+            ]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                 "success": true
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "error_code": 10,
+                "errors": [
+                    {
+                        "field_name": "some string",
+                        "field_value": "some string",
+                        "error_message": "explicit error message"
+                    },
+                    {
+                        "field_name": "some string",
+                        "field_value": "some string",
+                        "error_message": "explicit error message"
+                    }
+
+                ]
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "error_code": 5,
+                "error_message": "explicit error message"
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "error_code": 20,
+                "error_message": "explicit error message"
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "error_code": 30,
+                "error_message": "explicit error message"
+            }
