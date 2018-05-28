@@ -287,6 +287,11 @@ API позволяет работать с основными сущностям
 + loyalty_cards_manual_transactions_access: 1 (required, number) - ручное пополнение/списание с карт лояльности
 + network_services_access: 0 (required, number) - доступ к управлению сетевыми услугами
 
+## LicenseOption
+
++ id: 2 (required, number) - id опции
++ title: "KKM" (required, string) - Название опции
+
 # Group Онлайн-запись
 
 Для реализации клиентской части онлайн-записи используется следующий набор методов. Они адаптированы для пользовательских сценариев онлайн-записи, в отличии от других REST-методов, которые лучше использовать для интеграциионных целей.
@@ -7784,3 +7789,63 @@ Authorization: Bearer <partner token>
                 "error_code": 30,
                 "error_message": "explicit error message"
             }
+
+# Group Лицензии
+
+При наличии лицензии у компании
+объект лицензии имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  |  ID лицензии  |
+|  salon_id  | number  | ID компании  |
+|  staff_limit  | number  | Количество сотрудников (0 - не ограничено)  |
+|  deactivation_date  | string  | Дата деактивации  |
+|  start_date  | string  | Дата начала лицензии  |
+|  name  | string  | Название тарифа лицензии  |
+|  active  | boolean | Активность |
+|  options  | array | Массив подключенных опций |
+
+## Информация о лицензии [/license/{company_id}]
+
++ Параметры
+    + company_id (required, number, `1`) - ID компании
+
+### Получение информация о лицензии компании [GET]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+
+    + Attributes (LicenseOption)
+        + id (required, number)
+        + salon_id (required, number)
+        + staff_limit (required, number)
+        + deactivation_date (required, string)
+        + start_date (required, string)
+        + name (required, string)
+        + active (required, number)
+        + options (required, array[LicenseOption])
+
+    + Body
+
+          {
+                "id": 1,
+                "salon_id": 4523464,
+                "staff_limit": 5,
+                "deactivation_date": "08.11.2019",
+                "start_date": "07.05.2018",
+                "name": "Старт",
+                "active": 1,
+                "options": [
+                    {
+                        "id": 3,
+                        "title": "Онлайн-оплата"
+                    }
+                ]
+          }
