@@ -1384,7 +1384,7 @@ appointments: [{
                 "api_id": "0"
             }
 
-### Создать запись в групповом событии [POST /activity/{company_id}/{activity_id}/book/]
+### Создать запись в групповом событии [POST /activity/{company_id}/{activity_id}/book]
 
 + Parameters
     + company_id (required, number) - ID компании
@@ -3763,7 +3763,7 @@ custom_fields: {
 
 Для работы с визитами
 
-## Получить визит [GET /visits/{visit_id}/]
+## Получить визит [GET /visits/{visit_id}]
 
 + Parameters
     + visit_id: ID визита (number)
@@ -5517,7 +5517,7 @@ custom_fields: {
 Для использования api и активации доступа к настройкам в пользовательском интерфейсе необходимо активировать интеграцию, отправив запрос "Подключить интеграцию".
 После успешного подключения, в сетевом интерфейсе пользователя будет открыт доступ в раздел с настройками маршрутизации.
 
-### Подключить интеграцию [POST /voip/integration/]
+### Подключить интеграцию [POST /voip/integration]
 + Attributes
     + crm_token (required, string) - токен интеграции
     + command (required, string) - slug операции 'setup'
@@ -5555,7 +5555,7 @@ custom_fields: {
 Для отключения интеграции можно воспользоваться методом "Отключить интеграцию".
 После отключения интеграции закрывается доступ в раздел настроек пользовательского интерфейса, обработка запросов "Уведомление о звонке" и "Сохранение информации о звонке" не производится.
 
-### Отключить интеграцию [POST /voip/integration/]
+### Отключить интеграцию [POST /voip/integration]
 
 + Attributes
     + crm_token (required, string) - токен интеграции
@@ -5595,7 +5595,7 @@ custom_fields: {
 Уведомления отображаются для пользователей, определенных на основе настроек маршрутизации.
 При одновременном указании параметров "user" и "diversion" приоритетным при поиске маршрутов является "user".
 
-### Уведомление о звонке [POST /voip/integration/]
+### Уведомление о звонке [POST /voip/integration]
 
 + Attributes
     + crm_token (required, string) - токен интеграции
@@ -6205,7 +6205,7 @@ YCLIENTS поддерживает уведомления о создании, и
             ]
 
 
-## Создание товарной транзакции [/storage_operations/goods_transactions/{company_id}/]
+## Создание товарной транзакции [/storage_operations/goods_transactions/{company_id}]
 ### Создать транзакцию [POST]
 
 + Parameters
@@ -6456,7 +6456,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 #Group Складские операции
 
-## Складские операции [/storage_operations/operation/{company_id}/]
+## Складские операции [/storage_operations/operation/{company_id}]
 
 Создание складской операции предполагает создание документа и нескольких товарных транзакций в рамках одного запроса  к API.
 При указании признака оплаты создаются необходимые финансовые транзакции
@@ -6596,7 +6596,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 #Group Документы складских операций
 
-## Документ операции [/storage_operations/documents/{company_id}/]
+## Документ операции [/storage_operations/documents/{company_id}]
 Документ операции является обьединяющей сущностью для товарных и финансовых транзакций.
 
 ### Создать документ [POST]
@@ -6811,7 +6811,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 + Response 202 (application/json)
 
-### Получить финансовые транзакции документа [GET /storage_operations/documents/finance_transactions/{document_id}/]
+### Получить финансовые транзакции документа [GET /storage_operations/documents/finance_transactions/{document_id}]
 
 + Parameters
 
@@ -6902,7 +6902,7 @@ YCLIENTS поддерживает уведомления о создании, и
                 "meta": []
             }
 
-### Получить товарные транзакции документа [GET /storage_operations/documents/goods_transactions/{document_id}/]
+### Получить товарные транзакции документа [GET /storage_operations/documents/goods_transactions/{document_id}]
 
 + Parameters
 
@@ -6988,7 +6988,7 @@ YCLIENTS поддерживает уведомления о создании, и
 |  exchange  | float  | Ставка обмена валют по отношению к рублю  |
 
 
-## Получение стран [/countries/]
+## Получение стран [/countries]
 ### Получить список стран [GET]
 
 + Request (application/json)
@@ -7026,7 +7026,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 # Group Изображения
 
-## Обработка изображений [/images/{entity}/]
+## Обработка изображений [/images/{entity}]
 
 + Parameters
 
@@ -7111,7 +7111,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 # Group Сети салонов
 
-## Список сетей [/groups/]
+## Список сетей [/groups]
 
 ### Получение доступных пользователю сетей [GET]
 
