@@ -170,7 +170,7 @@ API позволяет работать с основными сущностям
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
     + Attributes
         + login: `testuser@yclients.com` (required, string) - Номер телефона или Email
@@ -357,7 +357,7 @@ API позволяет работать с основными сущностям
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 
 + Response 200 (application/json)
@@ -437,13 +437,13 @@ API позволяет работать с основными сущностям
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
 
 
-## Коллекция услуг доступных для бронирования [/book_services/{company_id}{?staff_id,datetime,service_ids%5B%5D,event_ids%5B%5D}]
+## Коллекция услуг доступных для бронирования [/book_services/{company_id}{?staff_id,datetime,service_ids,event_ids}]
 
 Объект услуг, доступных для бронирования имеет следующие поля:
 
@@ -512,16 +512,16 @@ API позволяет работать с основными сущностям
         Default: 0
     + datetime: `` (optional, string) - дата (в формате iso8601). Фильтр по дате бронирования услуги (например '2005-09-09T18:30')
         Default: ''
-    + service_ids%5B%5D (optional, array of number) - ID услуг.
+    + service_ids (optional, array of number) - ID услуг.
         Фильтр по списку идентификаторов уже выбранных (в рамках одной записи) услуг. Имеет смысл если зада фильтр по мастеру и дате.
-    + event_ids%5B%5D (optional, array of number) - ID акций.
+    + event_ids (optional, array of number) - ID акций.
         Фильтр по списку идентификаторов уже выбранных (в рамках одной записи) акций. Имеет смысл если зада фильтр по мастеру и дате.
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -561,7 +561,7 @@ API позволяет работать с основными сущностям
             ]
         }
 
-## Коллекция сотрудников доступных для бронирования [/book_staff/{company_id}{?service_ids%5B%5D,event_ids%5B%5D,datetime,without_seances}]
+## Коллекция сотрудников доступных для бронирования [/book_staff/{company_id}{?service_ids,event_ids,datetime,without_seances}]
 
 Каждый объект из массива сотрудников, доступных для бронирования имеет следующие поля:
 
@@ -596,9 +596,9 @@ API позволяет работать с основными сущностям
 + Parameters
 
     + company_id (required, number) - ID компании
-    + service_ids%5B%5D (optional, array of number) - ID услуг.
+    + service_ids (optional, array of number) - ID услуг.
         Фильтр по списку идентификаторов услуг
-    + event_ids%5B%5D (optional, array of number) - ID акций.
+    + event_ids (optional, array of number) - ID акций.
         Фильтр по списку идентификаторов акций
     + datetime (optional, string) - дата в формате iso8601.
         Фильтр по дате бронирования услуги (например '2005-09-09T18:30')
@@ -610,7 +610,7 @@ API позволяет работать с основными сущностям
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -671,7 +671,7 @@ API позволяет работать с основными сущностям
             }
         ]
 
-## Даты доступные для бронирования [/book_dates/{company_id}{?service_ids%5B%5D,event_ids%5B%5D,staff_id,date}]
+## Даты доступные для бронирования [/book_dates/{company_id}{?service_ids,event_ids,staff_id,date}]
 
 
 Объект даты, доступные для бронирования имеет следующие поля:
@@ -707,9 +707,9 @@ working days и booking_days имеют одинаковый формат:
 + Parameters
 
     + company_id (required, number) - ID компании
-    + service_ids%5B%5D (optional, array of number) - ID услуг.
+    + service_ids (optional, array of number) - ID услуг.
         Фильтр по списку идентификаторов услуг
-    + event_ids%5B%5D (optional, array of number) - ID акций.
+    + event_ids (optional, array of number) - ID акций.
         Фильтр по списку идентификаторов акций
     + staff_id: `0` (optional, number) - ID сотрудника. Фильтр по идентификатору сотрудника
         Default: 0
@@ -721,7 +721,7 @@ working days и booking_days имеют одинаковый формат:
 
      + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -856,7 +856,7 @@ working days и booking_days имеют одинаковый формат:
           ]
         }
 
-## Сеансы доступные для бронирования [/book_times/{company_id}/{staff_id}/{date}{?service_ids%5B%5D,event_ids%5B%5D}]
+## Сеансы доступные для бронирования [/book_times/{company_id}/{staff_id}/{date}{?service_ids,event_ids}]
 
 Объект сеансы, доступные для бронирования имеет следующие поля:
 
@@ -878,9 +878,9 @@ working days и booking_days имеют одинаковый формат:
 + Parameters
 
     + company_id (required, number) - ID компании
-    + service_ids%5B%5D (optional, array of number) - ID услуг.
+    + service_ids (optional, array of number) - ID услуг.
         Фильтр по списку идентификаторов услуг
-    + event_ids%5B%5D (optional, array of number) - ID акций.
+    + event_ids (optional, array of number) - ID акций.
         Фильтр по списку идентификаторов акций
     + date (required, string) - дата в формате iso8601.
         Фильтр по дате бронирования (например '2015-09-30')
@@ -891,7 +891,7 @@ working days и booking_days имеют одинаковый формат:
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -929,7 +929,7 @@ working days и booking_days имеют одинаковый формат:
               }
             ]
 
-## Список ближайших сеансов сотрудника [/book_staff_seances/{company_id}/{staff_id}/{?service_ids%5B%5D,event_ids%5B%5D,datetime}]
+## Список ближайших сеансов сотрудника [/book_staff_seances/{company_id}/{staff_id}/{?service_ids,event_ids,datetime}]
 
 Объект ближайших сеансов сотрудника имеет следующие поля:
 
@@ -950,9 +950,9 @@ working days и booking_days имеют одинаковый формат:
 
     + company_id (required, number) - ID компании
     + staff_id (required, number) - ID сотрудника
-    + service_ids%5B%5D (optional, array of number) - ID услуг.
+    + service_ids (optional, array of number) - ID услуг.
         Фильтр по списку идентификаторов услуг
-    + event_ids%5B%5D (optional, array of number) - ID акций.
+    + event_ids (optional, array of number) - ID акций.
         Фильтр по списку идентификаторов акций
     + datetime (optional, string) - дата в формате iso8601.
         Фильтр по дате
@@ -962,7 +962,7 @@ working days и booking_days имеют одинаковый формат:
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -1026,7 +1026,7 @@ working days и booking_days имеют одинаковый формат:
 
      + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
     + Body
 
@@ -1094,7 +1094,7 @@ JSON-Объект содержащий параметры онлайн запи�
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
     + Body
 
@@ -1233,7 +1233,7 @@ appointments: [{
 
      + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
     + Body
 
@@ -1310,7 +1310,7 @@ appointments: [{
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -1405,7 +1405,7 @@ appointments: [{
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -1453,7 +1453,7 @@ appointments: [{
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
     + Body
 
@@ -1526,7 +1526,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 201 (application/json)
 
@@ -1653,7 +1653,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -1729,7 +1729,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -1789,7 +1789,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
     + Body
 
                {
@@ -1839,7 +1839,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -1866,7 +1866,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
   + Body
 
             {
@@ -1888,7 +1888,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 
 + Response 204
@@ -1929,7 +1929,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -1964,7 +1964,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
   + Body
 
             {
@@ -2003,7 +2003,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -2024,7 +2024,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
   + Body
 
             {
@@ -2055,7 +2055,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 204
 
@@ -2112,7 +2112,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 
 + Response 200 (application/json)
@@ -2215,7 +2215,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
   + Body
 
@@ -2295,7 +2295,7 @@ JSON-Объект содержащий параметры записи поль�
                 "seance_length": 3600
               },
               {
-                "id": 1796",
+                "id": 1796,
                 "seance_length": 3600
               },
               {
@@ -2332,7 +2332,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
   + Body
 
@@ -2436,7 +2436,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 204 (application/json)
@@ -2487,7 +2487,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456
+            Authorization: Bearer partner_token
 
 
 + Response 200 (application/json)
@@ -2586,7 +2586,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 
 + Response 200 (application/json)
@@ -2700,7 +2700,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
   + Body
 
@@ -2758,7 +2758,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
   + Body
 
@@ -2805,7 +2805,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 204 (application/json)
@@ -2850,7 +2850,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 200 (application/json)
@@ -2941,7 +2941,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3002,7 +3002,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -3047,7 +3047,7 @@ JSON-Объект содержащий параметры записи поль�
 
     + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3097,7 +3097,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 204 (application/json)
 
@@ -3128,7 +3128,7 @@ JSON-Объект содержащий параметры записи поль�
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 200 (application/json)
@@ -3263,7 +3263,7 @@ JSON-Объект записи содержит следующие поля:
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 200 (application/json)
@@ -3426,7 +3426,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3564,7 +3564,7 @@ custom_fields: {
 
   + Headers
 
-            Authorization: Bearer wec23fh8cDfFV4432fc352456, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -3647,7 +3647,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3752,7 +3752,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3772,7 +3772,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -3863,7 +3863,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -3916,6 +3916,11 @@ custom_fields: {
 + Parameters
     + visit_id: ID визита (number)
 
++ Request
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
 + Response 200 (application/pdf)
 
 
@@ -3941,7 +3946,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4011,7 +4016,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4068,6 +4073,12 @@ custom_fields: {
     + company_id (required, number) - ID компании
     + activity_id (required, number) - ID групповой записи
 
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
 + Response 202 (application/json)
 
     + Body
@@ -4086,6 +4097,12 @@ custom_fields: {
 + Parameters
     + company_id (required, number) - ID компании
     + activity_id (required, number) - ID групповой записи
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4125,7 +4142,7 @@ custom_fields: {
                 "meta": []
             }
 
-### Поиск групповых записей [GET /activity/{company_id}/search/?from={from}&till={till}]
+### Поиск групповых записей [GET /activity/{company_id}/search/{?from,till}]
 
 + Parameters
     + company_id (required, number) - ID компании
@@ -4137,6 +4154,12 @@ custom_fields: {
     + service_id (optional, number) - ID услуги
     + count (optional, number) - количество событий на страницу результата (default 25, max 300)
     + page (optional, number) - страница выдачи результата (начиная с 1)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4181,7 +4204,7 @@ custom_fields: {
                 ]
             }
 
-### Поиск дат групповых записей [GET /activity/{company_id}/search_dates/?from={from}&till={till}]
+### Поиск дат групповых записей [GET /activity/{company_id}/search_dates/{?from,till}]
 
 + Parameters
     + company_id (required, number) - ID компании
@@ -4191,6 +4214,12 @@ custom_fields: {
 + Attributes
     + staff_id (optional, number) - ID мастера
     + service_id (optional, number) - ID услуги
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4255,7 +4284,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4318,7 +4347,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4363,7 +4392,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4532,7 +4561,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4582,7 +4611,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4628,7 +4657,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4667,7 +4696,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 204 (application/json)
 
@@ -4737,7 +4766,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4821,7 +4850,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4877,7 +4906,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -4932,7 +4961,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -4979,7 +5008,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5020,7 +5049,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5069,7 +5098,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5160,7 +5189,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5214,7 +5243,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 
 + Response 200 (application/json)
@@ -5273,7 +5302,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5343,7 +5372,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5409,7 +5438,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5476,7 +5505,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 202 (application/json)
 
@@ -5498,7 +5527,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
             Content-Type: application/json
 
     + Body
@@ -5537,7 +5566,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
             Content-Type: application/json
 
     + Body
@@ -5580,7 +5609,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
             Content-Type: application/json
 
     + Body
@@ -5629,7 +5658,7 @@ custom_fields: {
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
             Content-Type: application/json
 
     + Body
@@ -5730,7 +5759,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5784,7 +5813,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -5856,7 +5885,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5892,7 +5921,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5923,7 +5952,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -5946,7 +5975,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6005,7 +6034,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6127,7 +6156,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6202,7 +6231,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -6281,7 +6310,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6358,7 +6387,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6421,7 +6450,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 202
 
@@ -6452,7 +6481,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -6585,7 +6614,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -6654,7 +6683,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6719,7 +6748,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6778,7 +6807,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 202 (application/json)
 
@@ -6792,7 +6821,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6883,7 +6912,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -6966,7 +6995,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token
+            Authorization: Bearer partner_token
 
 + Response 200 (application/json)
 
@@ -7026,7 +7055,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -7069,7 +7098,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -7099,7 +7128,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -7271,7 +7300,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -7459,7 +7488,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 200 (application/json)
 
@@ -7500,7 +7529,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -7551,7 +7580,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
     + Body
 
@@ -7575,7 +7604,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Headers
 
-            Authorization: Bearer access_token, User user_token
+            Authorization: Bearer partner_token, User user_token
 
 + Response 204
 
@@ -7601,7 +7630,7 @@ Authorization: Bearer <partner token>
 |  5  |  400  |  ENTITY_VALIDATION_ERROR  |  Тело запроса не прошло валидацию  |
 |  10  |  400  |  FIELD_VALIDATION_ERROR  |  Параметр не прошел валидацию  |
 |  15  |  403  |  ACCESS_FORBIDDEN  |  Действие недоступно, у приложения нет требуемых разрешений.  |
-|  20  |  401  |  INVALID_PARTNER_TOKEN  |  PARTNER_TOKEN отсутствует или невалиден  |
+|  20  |  401  |  INVALID_PARTNER_TOKEN  |  partner_token отсутствует или невалиден  |
 |  30  |  404  |  RESOURCE_NOT_FOUND  |  Ресурс по запрошенному пути не существует  |
 
 ### Отправка СМС [POST]
@@ -7714,7 +7743,7 @@ Authorization: Bearer <partner token>
 |  5  |  400  |  ENTITY_VALIDATION_ERROR  |  Тело запроса не прошло валидацию  |
 |  10  |  400  |  FIELD_VALIDATION_ERROR  |  Параметр не прошел валидацию  |
 |  15  |  403  |  ACCESS_FORBIDDEN  |  Действие недоступно, у приложения нет требуемых разрешений.  |
-|  20  |  401  |  INVALID_PARTNER_TOKEN  |  PARTNER_TOKEN отсутствует или невалиден  |
+|  20  |  401  |  INVALID_PARTNER_TOKEN  |  partner_token отсутствует или невалиден  |
 |  30  |  404  |  RESOURCE_NOT_FOUND  |  Ресурс по запрошенному пути не существует  |
 
 ## Получение статусов сообщений [POST]
