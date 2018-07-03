@@ -292,6 +292,21 @@ API позволяет работать с основными сущностям
 + id: 2 (required, number) - id опции
 + title: "KKM" (required, string) - Название опции
 
+## Document
+
++ id: 2 (required, number) - id опции
++ type_id: 7 (required, number) - id типа документа
++ type_title: "Визит" (required, string) - название типа документа
++ storage_id: 4 (required, number) - id склада
++ user_id: 2452 (required, number) - id пользователя
++ company_id: 4545 (required, number) - id компании
++ number: 543 (required, number) - номер документа в компании
++ comment: "" (required, string) - комментарий
++ date_created: "2018-07-03 11:00:00" (required, string) - дата создания
++ category_id: 1 (required, number) - id категории
++ visit_id: 234234 (required, number) - id визита
++ record_id: 5445 (required, number) - id записи
+
 # Group Онлайн-запись
 
 Для реализации клиентской части онлайн-записи используется следующий набор методов. Они адаптированы для пользовательских сценариев онлайн-записи, в отличии от других REST-методов, которые лучше использовать для интеграциионных целей.
@@ -3302,7 +3317,23 @@ JSON-Объект записи содержит следующие поля:
                     "ya_type":"",
                     "from_url":"",
                     "review_requested":0,
-                    "GCal_id":""
+                    "GCal_id":"",
+                    "documents": [
+                        {
+                          "id": 8172893,
+                          "type_id": 7,
+                          "storage_id": 0,
+                          "user_id": 746310,
+                          "company_id": 4564,
+                          "number": 4163,
+                          "comment": "",
+                          "date_created": "2018-07-03 11:00:00",
+                          "category_id": 0,
+                          "visit_id": 3,
+                          "record_id": 2,
+                          "type_title": "Визит"
+                        }
+                    ]
                 },
                 {
                     "id":9,
@@ -3372,7 +3403,23 @@ JSON-Объект записи содержит следующие поля:
                           "font_color": "#ffffff"
                         }
                     ],
-                    "activity_id": 0
+                    "activity_id": 0,
+                    "documents": [
+                        {
+                          "id": 8172893,
+                          "type_id": 7,
+                          "storage_id": 0,
+                          "user_id": 746310,
+                          "company_id": 4564,
+                          "number": 4163,
+                          "comment": "",
+                          "date_created": "2018-07-03 11:00:00",
+                          "category_id": 0,
+                          "visit_id": 3,
+                          "record_id": 2,
+                          "type_title": "Визит"
+                        }
+                    ]
                 }
             ]
         }
@@ -3487,6 +3534,7 @@ custom_fields: {
         + attendance (optional, number) - 1 - Пользователь пришел, услуги оказаны, 0 - ожидание пользователя, -1 - пользователь не пришел на визит
         + custom_color (optional, string) - Цвет записи
         + record_labels (optional, array) - Массив идентификаторов категорий записи
+        + documents (required, array[Document]) - Массив документов по записи
 
     + Body
 
@@ -3548,6 +3596,22 @@ custom_fields: {
                       "icon": "odnoklassniki",
                       "font_color": "#ffffff"
                     }
+                    ],
+                    "documents": [
+                        {
+                          "id": 8172893,
+                          "type_id": 7,
+                          "storage_id": 0,
+                          "user_id": 746310,
+                          "company_id": 4564,
+                          "number": 4163,
+                          "comment": "",
+                          "date_created": "2018-07-03 11:00:00",
+                          "category_id": 0,
+                          "visit_id": 3,
+                          "record_id": 2,
+                          "type_title": "Визит"
+                        }
                     ]
                 }
 
@@ -3619,7 +3683,23 @@ custom_fields: {
                   "font_color": "#ffffff"
                 }
             ],
-            "activity_id": 0
+            "activity_id": 0,
+            "documents": [
+                {
+                  "id": 8172893,
+                  "type_id": 7,
+                  "storage_id": 0,
+                  "user_id": 746310,
+                  "company_id": 4564,
+                  "number": 4163,
+                  "comment": "",
+                  "date_created": "2018-07-03 11:00:00",
+                  "category_id": 0,
+                  "visit_id": 3,
+                  "record_id": 2,
+                  "type_title": "Визит"
+                }
+            ]
         }
 
 ### Изменить запись [PUT]
@@ -3698,6 +3778,7 @@ custom_fields: {
         + email_remain_hours: 2 (optional, number) - За сколько часов до визита следует выслать email напоминание клиенту (0 - если не нужно)
         + api_id: 2 (optional, number) - ID записи из внешней системы
         + attendance (optional, number) - 1 - Пользователь пришел, услуги оказаны, 0 - ожидание пользователя, -1 - пользователь не пришел на визит
+        + documents (required, array[Document]) - Массив документов по записи
 
     + Body
 
@@ -3742,7 +3823,23 @@ custom_fields: {
                     "api_id":"",
                     "from_url":"",
                     "review_requested":0,
-                    "activity_id": 0
+                    "activity_id": 0,
+                    "documents": [
+                        {
+                          "id": 8172893,
+                          "type_id": 7,
+                          "storage_id": 0,
+                          "user_id": 746310,
+                          "company_id": 4564,
+                          "number": 4163,
+                          "comment": "",
+                          "date_created": "2018-07-03 11:00:00",
+                          "category_id": 0,
+                          "visit_id": 3,
+                          "record_id": 2,
+                          "type_title": "Визит"
+                        }
+                    ]
                 }
 
 ### Удалить запись [DELETE]
@@ -3838,7 +3935,23 @@ custom_fields: {
                         "custom_font_color": "",
                         "record_labels": [],
                         "activity_id": 0,
-                        "custom_fields": []
+                        "custom_fields": [],
+                        "documents": [
+                            {
+                              "id": 8172893,
+                              "type_id": 7,
+                              "storage_id": 0,
+                              "user_id": 746310,
+                              "company_id": 4564,
+                              "number": 4163,
+                              "comment": "",
+                              "date_created": "2018-07-03 11:00:00",
+                              "category_id": 0,
+                              "visit_id": 3,
+                              "record_id": 2,
+                              "type_title": "Визит"
+                            }
+                        ]
                     }
                 ]
             }
