@@ -315,7 +315,7 @@ API позволяет работать с основными сущностям
 
 Каждый клиент сервиса YCLIENTS, может создать неограниченное количество форм онлайн-записи с разным дизайном и для разных сценариев записи.
 
-Обычно, id формы бровнирования хранится в поддомене, например: https://w123.yclients.com, где 123 - id формы записи. С помощью этого парметра можно получить все остальные необходимые для реализации онлайн-записи параметры, понять будет происходить запись в конкретную компанию или в сеть компаний.
+Обычно, id формы бровнирования хранится в поддомене, например: https://w123.yclients.com, где 123 - id формы записи. С помощью этого парметра можно получить все остальные необходимые для реализации онлайн-записи параметры, понять, будет происходить запись в конкретную компанию или в сеть компаний.
 
 Для сетевого виджета необходимо будет дополнительно обратится к методу [GET] /companies с фильтром company_id и получить список копаний, в которые будет производится запись.
 
@@ -326,13 +326,18 @@ API позволяет работать с основными сущностям
 | ------------- | ------------- | ------------- |
 | steps  | Массив объектов  | Шаги формы бронирования со своими настройками  |
 | style  | Object  | Настройки дизайна формы бронирования  |
-| lang_id  | number  | Язык формы бронирования (идентификатор из массива langs)  |
 | group_id  | number  | Идентификатор сети компаний (0 - если форма записи для несетевой компании)  |
 | company_id  | number  | Идентификатор компании (возвращается всегда, используется для получения дополнительных настроек) |
-| phone_confirmation  | boolean  | Нужно ли подтверждать телефон по смс (Если groupid = 0(не групповая форма), иначе смотреть в настройки каждой компании отдельно )
-| sms_enabled  | boolean  | Доступна ли отправка смс
+| phone_confirmation  | boolean  | Нужно ли подтверждать телефон по смс (если groupid = 0 (не групповая форма), иначе смотреть в настройки каждой компании отдельно)
+| lang  | string  | Язык формы бронирования (код из массива langs)  |
 | langs  | array of object  | Список языков виджета
 | comment_required  | boolean | Является ли поле с комментарием к записи обязательным для заполнения
+| metrika_counter_id  | string  | Идентификатор Яндекс.Метрики
+| google_analytics_id  | string  | Идентификатор Google Analytics
+| facebook_pixel_id  | string  | Идентификатор Facebook Pixel
+| vkontakte_pixel_id  | string  | Идентификатор Вконтакте пиксель
+| app_metrika_id  | string  | Идентификатор Yandex AppMetrika
+| sms_enabled  | boolean  | Доступна ли отправка смс
 | comment_input_name  | string (optional)  | Заголовок для поля с вводом комментария к записи (если не залдано то используется по умолчанию значение)
 | booking_notify_text  | string (optional)  | Текст уведомления, которое выводится (если задано) на шаге ввода контактных данных
 
@@ -381,46 +386,44 @@ API позволяет работать с основными сущностям
         {
             "steps": [
                 {
-                    "step":"master",
-                    "title":"Выберите спеца",
-                    "num":2,
-                    "hidden":"0",
-                    "default":"-1"
+                    "step": "master",
+                    "title": "Выберите спеца",
+                    "num": 2,
+                    "hidden": "0",
+                    "default": "-1"
                 },
                 {
-                    "step":"service",
-                    "title":"Выберите услугу",
-                    "num":1,
-                    "hidden":"1",
-                    "default":"196"
+                    "step": "service",
+                    "title": "Выберите услугу",
+                    "num": 1,
+                    "hidden": "1",
+                    "default": "196"
                 },
                 {
-                    "step":"datetime",
-                    "title":"Выберите дату и время сеанса",
-                    "num":3,
-                    "hidden":false,
-                    "date_hidden":"0",
-                    "time_hidden":"0",
-                    "date_default":"2015-07-23",
-                    "time_default":"27900"
+                    "step": "datetime",
+                    "title": "Выберите дату и время сеанса",
+                    "num": 3,
+                    "hidden": false,
+                    "date_hidden": "0",
+                    "time_hidden": "0",
+                    "date_default": "2015-07-23",
+                    "time_default": "27900"
                 },
                 {
-                    "step":"contact",
-                    "title":"",
-                    "num":3,
-                    "hidden":false,
-                    "default":0
+                    "step": "contact",
+                    "title": "",
+                    "num": 3,
+                    "hidden": false,
+                    "default": 0
                 },
                 {
-                    "step":"comfirm",
-                    "title":"",
-                    "num":4,
-                    "hidden":false,
-                    "default":0
-                }],
-            "lang": "ru_RU",
-            "phone_confirmation": false,
-            "sms_enabled": true,
+                    "step": "comfirm",
+                    "title": "",
+                    "num": 4,
+                    "hidden": false,
+                    "default": 0
+                }
+            ],
             "style": {
                 "show_header": true,
                 "logo": "https://yclients.com/uploads/logo.png",
@@ -429,7 +432,150 @@ API позволяет работать с основными сущностям
                 "main_color": "666",
                 "secondary_color": "999",
                 "buttons_color": "FFF",
-            }
+            },
+            "group_id": 1,
+            "company_id": 1,
+            "phone_confirmation": false,
+            "lang": "ru-RU",
+            "langs": [
+                {
+                    "id": 1,
+                    "code": "ru-RU",
+                    "title": "Русский"
+                },
+                {
+                    "id": 2,
+                    "code": "en-US",
+                    "title": "English"
+                },
+                {
+                    "id": 4,
+                    "code": "lv-LV",
+                    "title": "Latviešu valoda"
+                },
+                {
+                    "id": 5,
+                    "code": "et-EE",
+                    "title": "Eesti keel"
+                },
+                {
+                    "id": 6,
+                    "code": "lt-LT",
+                    "title": "Летува́"
+                },
+                {
+                    "id": 7,
+                    "code": "uk-UK",
+                    "title": "Українська"
+                },
+                {
+                    "id": 8,
+                    "code": "fr-FR",
+                    "title": "Français"
+                },
+                {
+                    "id": 9,
+                    "code": "it-IT",
+                    "title": "Italiano"
+                },
+                {
+                    "id": 10,
+                    "code": "es-ES",
+                    "title": "Español"
+                },
+                {
+                    "id": 13,
+                    "code": "ka-KA",
+                    "title": "ქართული"
+                },
+                {
+                    "id": 14,
+                    "code": "hy-AM",
+                    "title": "Հայերեն"
+                },
+                {
+                    "id": 15,
+                    "code": "kk-KK",
+                    "title": "қазақ тілі"
+                },
+                {
+                    "id": 16,
+                    "code": "hr-HR",
+                    "title": "Hrvatski jezik"
+                },
+                {
+                    "id": 17,
+                    "code": "cs-CS",
+                    "title": "český jazyk"
+                },
+                {
+                    "id": 18,
+                    "code": "ro-RO",
+                    "title": "Limba Română"
+                },
+                {
+                    "id": 19,
+                    "code": "cn-CN",
+                    "title": "中文"
+                },
+                {
+                    "id": 20,
+                    "code": "ar-AR",
+                    "title": "العَرَبِيَّة"
+                },
+                {
+                    "id": 21,
+                    "code": "bg-BG",
+                    "title": "Български"
+                },
+                {
+                    "id": 22,
+                    "code": "he-IL",
+                    "title": "עברית"
+                },
+                {
+                    "id": 23,
+                    "code": "hu-HU",
+                    "title": "Magyar nyelv"
+                },
+                {
+                    "id": 24,
+                    "code": "Lt-sr-SP",
+                    "title": "Srpski jezik"
+                },
+                {
+                    "id": 25,
+                    "code": "sk-SK",
+                    "title": "Slovenský jazyk"
+                },
+                {
+                    "id": 26,
+                    "code": "mn-MN",
+                    "title": "Монгол хэл"
+                },
+                {
+                    "id": 27,
+                    "code": "az-AZ",
+                    "title": "Azərbaycan dili"
+                },
+                {
+                    "id": 28,
+                    "code": "pl-PL",
+                    "title": "Polszczyzna"
+                },
+                {
+                    "id": 30,
+                    "code": "sl-SL",
+                    "title": "Slòvēnskī"
+                }
+            ],
+            "comment_required": false,
+            "metrika_counter_id": "50217133",
+            "google_analytics_id": "UA-125358345-1",
+            "facebook_pixel_id": "2218788388343154",
+            "vkontakte_pixel_id": "VK-RTRG-96471-KZ24cpR",
+            "app_metrika_id": "46ab3b93-1bc6-457d-82f0-c1b51f39b01e",
+            "sms_enabled": true
         }
 
 
