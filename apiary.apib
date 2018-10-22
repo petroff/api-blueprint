@@ -4341,6 +4341,7 @@ custom_fields: {
                   "cost_per_unit": "15.00",
                   "price": "15.00",
                   "cost": "12.00",
+                  "operation_unit_type": 2,
                   "master_id": "55436",
                   "storage_id": "91303",
                   "good_id": "232658",
@@ -6638,6 +6639,7 @@ YCLIENTS поддерживает уведомления о создании, и
 |  good  | good  | Товар  |
 |  storage  | storage  | Склад  |
 |  unit  | unit  | Единица измерения  |
+|  operation_unit_type  | number  | Тип единицы измерения: 1 - для продажи, 2 - для списания  |
 |  create_date  | string | Дата создания  |
 |  cost_per_unit  | float  | Цена за единицу  |
 |  cost  | float | Цена  |
@@ -6739,6 +6741,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         id: "333222111",
                         title: "миллилитр"
                     },
+                    "operation_unit_type": 1,
                     "create_date": "2012-12-21T19:08:00+0400",
                     "cost_per_unit": "1.07",
                     "cost": "0.00",
@@ -6779,6 +6782,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + cost_per_unit (required, number) - стоимтость за единицу товара
     + discount (required, number) - скидка в %
     + cost (required, number) - итоговая сумма транзакции
+    + operation_unit_type (required, number) - тип единицы измерения: 1 - для продажи, 2 - для списания
     + master_id (optional, number) - ID мастера продавшего товар
     + client_id (optional, number) - ID клиента купившего товар
     + supplier_id (optional, number) - ID поставщика
@@ -6801,6 +6805,7 @@ YCLIENTS поддерживает уведомления о создании, и
                 "cost_per_unit": 100,
                 "discount": 10,
                 "cost": 90,
+                "operation_unit_type": 1,
                 "master_id": 26781,
                 "client_id": 0,
                 "supplier_id": 0,
@@ -6892,6 +6897,7 @@ YCLIENTS поддерживает уведомления о создании, и
                     "discount": 10,
                     "cost": 90,
                     "unit_id": 1,
+                    "operation_unit_type": 1,
                     "storage_id": 36539,
                     "supplier_id": 0,
                     "client_id": 0,
@@ -6929,12 +6935,13 @@ YCLIENTS поддерживает уведомления о создании, и
     + company_id (required, number) - ID компании
 
 + Attributes
-    + document_id (required, number)- ID документа
+    + document_id (required, number) - ID документа
     + good_id (required, number) - ID товара
-    + amount  (required, number)- количество
+    + amount  (required, number) - количество
     + cost_per_unit (required, number) - стоимтость за единицу товара
     + discount (required, number) - скидка в %
     + cost (required, number) - итоговая сумма транзакции
+    + operation_unit_type (required, number) - тип единицы измерения: 1 - для продажи, 2 - для списания
     + master_id (optional, number) - ID мастера продавшего товар
     + client_id (optional, number) - ID клиента купившего товар
     + supplier_id (optional, number) - ID поставщика
@@ -6969,6 +6976,7 @@ YCLIENTS поддерживает уведомления о создании, и
                     "discount": 10,
                     "cost": 90,
                     "unit_id": 1,
+                    "operation_unit_type": 1,
                     "storage_id": 36539,
                     "supplier_id": 0,
                     "client_id": 0,
@@ -7030,7 +7038,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + type_id (required, number) - тип документа (1 продажа, 3 приход, 7 списание)
     + storage_id (required, number) - ID склада
-    + coment (optional, string) - комментарий
+    + comment (optional, string) - комментарий
     + date_created (required, string) - дата создания документа
     + transactions (required, array) - массив обьектов содержащих параметры транзакций, аналогично запросу на создание товарной транзакции
     + paid (optional, boolean) - признак оплаты
@@ -7052,6 +7060,7 @@ YCLIENTS поддерживает уведомления о создании, и
                 "transactions": [
                     {
                         "good_id": 232674,
+                        "operation_unit_type": 1,
                         "amount": 1,
                         "cost_per_unit": 100,
                         "discount": 10,
@@ -7491,6 +7500,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "discount": 0,
                         "cost": 1000,
                         "unit_id": 88272,
+                        "operation_unit_type": 1,
                         "storage_id": 36539,
                         "supplier_id": 0,
                         "client_id": 0,
@@ -7513,6 +7523,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "discount": 0,
                         "cost": 1275,
                         "unit_id": 1,
+                        "operation_unit_type": 2,
                         "storage_id": 36539,
                         "supplier_id": 0,
                         "client_id": 0,
