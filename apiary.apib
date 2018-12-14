@@ -7997,22 +7997,27 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-              "success": true,
-              "data": [
-                {
-                    "code": "my_text_field",
-                    "entity_type": null,
-                    "id": 15,
-                    "type": {
-                        "code": "list",
-                        "title": "список"
-                    },
-                    "show_in_ui": true,
-                    "title": "sometitle",
-                    "user_can_edit": true
-                }
-              ],
-              "meta": []
+                "success": true,
+                "data": [
+                    {
+                        "id": 1,
+                        "salon_id": 1,
+                        "custom_field": {
+                            "id": 1,
+                            "code": "my_text_field",
+                            "entity_type": null,
+                            "show_in_ui": true,
+                            "title": "поле для теста",
+                            "user_can_edit": true,
+                            "type": {
+                              "code": "text",
+                              "title": "Текст"
+                            },
+                            "values": null
+                        }
+                    }
+                ],
+                "meta": []
             }
 
 ### Добавление поля для записей [POST]
@@ -8048,18 +8053,24 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-                "status": true,
-                "data": {
-                    "code": "my_text_field",
-                    "entity_type": null,
-                    "id": 18,
-                    "type": {
-                        "code": "text",
-                        "title": "текст"
-                    },
-                    "show_in_ui": true,
-                    "title": "поле для теста",
-                    "user_can_edit": true
+                "success": true,
+                "data":
+                 {
+                    "id": 1,
+                    "salon_id": 1,
+                    "custom_field": {
+                        "id": 1,
+                        "code": "my_text_field",
+                        "entity_type": null,
+                        "show_in_ui": true,
+                        "title": "поле для теста",
+                        "user_can_edit": true,
+                        "type": {
+                          "code": "text",
+                          "title": "Текст"
+                        },
+                        "values": null
+                    }
                 },
                 "meta": []
             }
