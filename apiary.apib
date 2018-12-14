@@ -1,8 +1,8 @@
 FORMAT: 1A
-HOST: http://api.yclients.com/api/v1
+HOST: https://api.yclients.com/api/v1
 
 [email]:  support@yclients.com
-[api_host]: http://api.yclients.com/api/v1
+[api_host]: https://api.yclients.com/api/v1
 
 # YCLIENTS API v2.0
 
@@ -60,7 +60,7 @@ API для интеграции с YCLEINTS содержит две группы
 требуется *авторизация партнера*. Т.е. передача
 уникального hash-ключа партнера.
 
-Авторизация запросов к API производится в соответствии с [RFC 6749 "Resource Owner Password Credentials Grant"](http://tools.ietf.org/html/rfc6749#section-4.3).
+Авторизация запросов к API производится в соответствии с [RFC 6749 "Resource Owner Password Credentials Grant"](https://tools.ietf.org/html/rfc6749#section-4.3).
 При запросах к API в HTTP заголовок Authorization должен быть включен ключ доступа в следущем формате:
 
 ```
@@ -254,6 +254,7 @@ API позволяет работать с основными сущностям
 + discount (required, number) - Скидка
 + price (required, number) - Стоимость
 + cost (required, number) - Цена продажи
++ operation_unit_type (required, number) - Тип единицы измерения: 1 - для продажи, 2 - для списания
 
 ## newTransactionsArray
 
@@ -271,7 +272,7 @@ API позволяет работать с основными сущностям
 ## Image
 
 + id: 141 (required, number) - id изображения
-+ path: 'http://yclients.com/uploads/masters/norm/4/41/41574b90f81d8d7_20170327194249.jpeg' (required, string) - Путь к изображению
++ path: 'https://yclients.com/uploads/masters/norm/4/41/41574b90f81d8d7_20170327194249.jpeg' (required, string) - Путь к изображению
 + width: 10 (required, number) - Ширина изображения
 + height: 20 (required, number) - Высота изображения
 + type: 'jpeg' (required, string) - Тип изображения
@@ -684,7 +685,7 @@ API позволяет работать с основными сущностям
                     "comment":"",
                     "weight":"23",
                     "active":1,
-                    "image":"http:\/\/yclients.com\/images\/test_img2.png",
+                    "image":"https:\/\/yclients.com\/images\/test_img2.png",
                     }
             ],
             "categories": [
@@ -757,7 +758,7 @@ API позволяет работать с основными сущностям
                 "show_rating":"1",
                 "rating":"3",
                 "votes_count":"1",
-                "avatar":"http:\/\/salonpicker.ru\/images\/no-master.png",
+                "avatar":"https:\/\/salonpicker.ru\/images\/no-master.png",
                 "comments_count":"0",
                 "weight":"11",
                 "information":"<span><\/span>",
@@ -798,7 +799,7 @@ API позволяет работать с основными сущностям
                 "show_rating":"1",
                 "rating":"4",
                 "votes_count":"1",
-                "avatar":"http:\/\/salonpicker.ru\/images\/no-master.png",
+                "avatar":"https:\/\/salonpicker.ru\/images\/no-master.png",
                 "comments_count":"0",
                 "weight":"8",
                 "information":"<span><\/span>"
@@ -1492,7 +1493,7 @@ appointments: [{
                   "show_rating": "1",
                   "rating": "5",
                   "votes_count": "1",
-                  "avatar": "http://salonpicker.ru/images/no-master.png",
+                  "avatar": "https://salonpicker.ru/images/no-master.png",
                   "comments_count": "0"
                 },
                 "date": "2016-05-20T14:30:00",
@@ -1703,7 +1704,7 @@ JSON-Объект содержащий параметры записи поль�
                           "show_rating": "1",
                           "rating": "5",
                           "votes_count": "1",
-                          "avatar": "http://salonpicker.ru/images/no-master.png",
+                          "avatar": "https://salonpicker.ru/images/no-master.png",
                           "comments_count": "0"
                         },
                         "date": "2012-04-02 12:00:00",
@@ -1747,7 +1748,7 @@ JSON-Объект содержащий параметры записи поль�
                           "show_rating": "1",
                           "rating": "0",
                           "votes_count": "0",
-                          "avatar": "http://salonpicker.ru/images/no-master.png",
+                          "avatar": "https://salonpicker.ru/images/no-master.png",
                           "comments_count": "0"
                         },
                         "date": "2012-04-21 19:45:00",
@@ -1861,7 +1862,7 @@ JSON-Объект содержащий параметры записи поль�
                 "id": "1050",
                 "title": "Ля Визаж",
                 "short_descr": "Салон красоты",
-                "logo": "http://salonpicker.ru/images/icon.png",
+                "logo": "https://salonpicker.ru/images/icon.png",
                 "active": "1",
                 "phone": "+7 495 509-24-46",
                 "country_id": 1,
@@ -1885,7 +1886,7 @@ JSON-Объект содержащий параметры записи поль�
                 "id": "1051",
                 "title": "Ля Визаж 2",
                 "short_descr": "Салон красоты",
-                "logo": "http://salonpicker.ru/images/icon.png",
+                "logo": "https://salonpicker.ru/images/icon.png",
                 "active": "1",
                 "phone": "+7 495 509-24-46",
                 "country_id": 1,
@@ -1931,7 +1932,7 @@ JSON-Объект содержащий параметры записи поль�
                 "id": "1050",
                 "title": "Новая компания",
                 "short_descr": "Салон красоты",
-                "logo": "http://salonpicker.ru/images/icon.png",
+                "logo": "https://salonpicker.ru/images/icon.png",
                 "active": "1",
                 "phone": "",
                 "country_id": 1,
@@ -2302,7 +2303,7 @@ JSON-Объект содержащий параметры записи поль�
                 "images": {
                   "basic": {
                     "id": "186791",
-                    "path": "http://yclients.com/uploads/setting_service_image/b/be/be09e5eb621d364_20170323150015.jpeg",
+                    "path": "https://yclients.com/uploads/setting_service_image/b/be/be09e5eb621d364_20170323150015.jpeg",
                     "width": "372",
                     "height": "280",
                     "type": "jpeg",
@@ -2648,7 +2649,7 @@ JSON-Объект содержащий параметры записи поль�
                 "images": {
                   "sm": {
                     "id": "186817",
-                    "path": "http://yclients.com/uploads/masters/sm/9/90/9041171cfdabe4c_20170327201442.jpeg",
+                    "path": "https://yclients.com/uploads/masters/sm/9/90/9041171cfdabe4c_20170327201442.jpeg",
                     "width": "100",
                     "height": "100",
                     "type": "jpeg",
@@ -2657,7 +2658,7 @@ JSON-Объект содержащий параметры записи поль�
                   },
                   "norm": {
                     "id": "186818",
-                    "path": "http://yclients.com/uploads/masters/norm/a/aa/aa37b29b7eb322d_20170327201442.jpeg",
+                    "path": "https://yclients.com/uploads/masters/norm/a/aa/aa37b29b7eb322d_20170327201442.jpeg",
                     "width": "180",
                     "height": "220",
                     "type": "jpeg",
@@ -2666,7 +2667,7 @@ JSON-Объект содержащий параметры записи поль�
                   },
                   "origin": {
                     "id": "186819",
-                    "path": "http://yclients.com/uploads/masters/origin/6/65/654dbeb4ea0bbc3_20170327201442.jpeg",
+                    "path": "https://yclients.com/uploads/masters/origin/6/65/654dbeb4ea0bbc3_20170327201442.jpeg",
                     "width": "800",
                     "height": "600",
                     "type": "jpeg",
@@ -3914,9 +3915,9 @@ custom_fields: {
                         "staff": {
                             "id": 55436,
                             "name": "Кевин Спейси",
-                            "specialization": "Мастер маникюра и педикюраf",
-                            "avatar": "http://dev9.dev.salonpicker.ru/uploads/masters/sm/b/bb/bb59d4cc17d9b16_20171215174158.png",
-                            "avatar_big": "http://dev9.dev.salonpicker.ru/uploads/masters/origin/c/cf/cfb8c5cee58000b_20171215174158.png",
+                            "specialization": "Мастер маникюра и педикюра",
+                            "avatar": "https://yclients.com/uploads/masters/sm/b/bb/bb59d4cc17d9b16_20171215174158.png",
+                            "avatar_big": "https://yclients.com/uploads/masters/origin/c/cf/cfb8c5cee58000b_20171215174158.png",
                             "rating": 4.89,
                             "votes_count": 0
                         },
@@ -6258,7 +6259,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-              "url": "http://dev.tools.test.com/test/Hooks",
+              "url": "https://dev.tools.test.com/test/Hooks",
               "active": 0,
               "salon": 1,
               "service_category": 0,
@@ -6310,7 +6311,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-              "url": "http://dev.tools.test.com/test/Hooks",
+              "url": "https://dev.tools.test.com/test/Hooks",
               "active": 0,
               "salon": 1,
               "service_category": 0,
@@ -6332,7 +6333,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + Body
 
             {
-              "url": "http://dev.tools.test.com/test/Hooks",
+              "url": "https://dev.tools.test.com/test/Hooks",
               "active": 0,
               "salon": 1,
               "service_category": 0,
@@ -6715,7 +6716,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + document_id (required, number)- ID документа
     + good_id (required, number) - ID товара
     + amount  (required, number)- количество
-    + cost_per_unit (required, number) - стоимтость за единицу товара
+    + cost_per_unit (required, number) - стоимость за единицу товара
     + discount (required, number) - скидка в %
     + cost (required, number) - итоговая сумма транзакции
     + operation_unit_type (required, number) - тип единицы измерения: 1 - для продажи, 2 - для списания
@@ -6874,7 +6875,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + document_id (required, number) - ID документа
     + good_id (required, number) - ID товара
     + amount  (required, number) - количество
-    + cost_per_unit (required, number) - стоимтость за единицу товара
+    + cost_per_unit (required, number) - стоимость за единицу товара
     + discount (required, number) - скидка в %
     + cost (required, number) - итоговая сумма транзакции
     + operation_unit_type (required, number) - тип единицы измерения: 1 - для продажи, 2 - для списания
@@ -7042,7 +7043,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "address": "",
                         "coordinate_lat": "25.247901",
                         "coordinate_lon": "55.275397399999974",
-                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "logo": "https://yclients.com/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
                         "zip": "",
                         "phones": [],
                         "site": ""
@@ -7161,7 +7162,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "address": "",
                         "coordinate_lat": "25.247901",
                         "coordinate_lon": "55.275397399999974",
-                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "logo": "https://yclients.com/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
                         "zip": "",
                         "phones": [],
                         "site": ""
@@ -7221,7 +7222,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "address": "",
                         "coordinate_lat": "25.247901",
                         "coordinate_lon": "55.275397399999974",
-                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "logo": "https://yclients.com/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
                         "zip": "",
                         "phones": [],
                         "site": ""
@@ -7286,7 +7287,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "address": "",
                         "coordinate_lat": "25.247901",
                         "coordinate_lon": "55.275397399999974",
-                        "logo": "http://dev7.dev.salonpicker.ru/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
+                        "logo": "https://yclients.com/uploads/s_120d9410f1472a4e6bdbafefe7eeba42.png",
                         "zip": "",
                         "phones": [],
                         "site": ""
@@ -7579,7 +7580,7 @@ YCLIENTS поддерживает уведомления о создании, и
                 "images": {
                   "basic": {
                     "id": 186826,
-                    "path": "http://yclients.com/uploads/setting_service_image/c/cf/cf01a5585348731_20170328195919.jpeg",
+                    "path": "https://yclients.com/uploads/setting_service_image/c/cf/cf01a5585348731_20170328195919.jpeg",
                     "width": 373,
                     "height": 280,
                     "type": "jpeg",
@@ -8129,7 +8130,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 ## Описание функционала и объекты API
 Для отправки SMS, оператору необходимо предоставить адрес (url_operator), на который будут уходить запросы описанные ниже.
-Авторизация запросов к API производится в соответствии с [RFC 6749 "Resource Owner Password Credentials Grant"](http://tools.ietf.org/html/rfc6749#section-4.3).
+Авторизация запросов к API производится в соответствии с [RFC 6749 "Resource Owner Password Credentials Grant"](https://tools.ietf.org/html/rfc6749#section-4.3).
 При запросах к API в HTTP заголовок Authorization должен быть включен ключ доступа в следущем формате:
 Ключ авторизации (partner_token) должен быть указан в настройках модуля уведомлений компании.
 
@@ -8179,7 +8180,7 @@ Authorization: Bearer <partner token>
                 "text": "поле для текста",
                 "type": "sms",
                 "dispatch_type": "service",
-                "delivery_callback_url": "http://api.yclients.com/api/v1/delivery/status"
+                "delivery_callback_url": "https://api.yclients.com/api/v1/delivery/status"
             }
 
 + Response 200 (application/json)
