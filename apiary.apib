@@ -8946,6 +8946,7 @@ Authorization: Bearer <partner token>
 | ------------- | ------------- | ------------- | ------------- |
 |  5  |  400  |  ENTITY_VALIDATION_ERROR  |  Тело запроса не прошло валидацию  |
 |  10  |  400  |  FIELD_VALIDATION_ERROR  |  Параметр не прошел валидацию  |
+|  32  |  200  |  FIELD_VALIDATION_ERROR  |  Недостаточно средств  |
 |  15  |  403  |  ACCESS_FORBIDDEN  |  Действие недоступно, у приложения нет требуемых разрешений.  |
 |  20  |  401  |  INVALID_PARTNER_TOKEN  |  partner_token отсутствует или невалиден  |
 |  30  |  404  |  RESOURCE_NOT_FOUND  |  Ресурс по запрошенному пути не существует  |
@@ -8990,6 +8991,18 @@ Authorization: Bearer <partner token>
                 {
                     "id": "232674",
                     "ext_id": "609aff0fca92466d6a1747dd83f05943a8c9600d"
+                }
+            ]
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "id": "232674",
+                    "error_code": 32,
+                    "error_message": "explicit error message"
                 }
             ]
 
@@ -9051,6 +9064,7 @@ Authorization: Bearer <partner token>
 |  4  |  Отправлено на телефон  |
 |  8  |  Передано оператору  |
 |  16  |  Отклонено оператором  |
+|  52  |  Недостаточно средств  |
 
 В случае ошибки возвращается ее HTTP-код. В некоторых случаях также возвращается текстовое описание ошибки.
 Все методы API могут возвращать следующие коды ошибок:
@@ -9066,7 +9080,7 @@ Authorization: Bearer <partner token>
 ## Получение статусов сообщений [POST]
 При отправке смс в запросе передается атрибут delivery_callback_url - это url, на который должны приходить статусы сообщений.
 
-Используйте его для отправки статусов сообщений.  Url, на который должны приходить статусы сообщений - https://www.yclients.com/smsprovider/status/callback/{partner_token}
+Используйте его для отправки статусов сообщений.  Url, на который должны приходить статусы сообщений - https://yclients.com/smsprovider/status/callback/{partner_token}
 
 + Request (application/json)
 
