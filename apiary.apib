@@ -3641,6 +3641,127 @@ custom_fields: {
                     ]
                 }
 
+## Коллекция записей партнёра [/records/partner/{?page,editable_length,salon_id,start_date,end_date,created_start_date,created_end_date,user_id}]
+
++ Параметр
+    + page (optional, number, `1`) - Номер страницы
+    + editable_length (optional, number, `50`) - Количество записей на странице, максимум 100
+
+### Получить список записей партнёра [GET]
+#### Фильтрация записей
++ salon_id: ID филиала
++ start_date: Дата визита начиная с (фильтр по дате визита). Если нужны записи, начиная с конкретной даты визита
++ end_date: Дата визита по (фильтр по дате визита)
++ created_start_date: Дата создания записи начиная с (фильтр по дате создания записи). Если нужны записи, созданные начиная с конкретной даты
++ created_end_date: Дата создания записи по (фильтр по дате создания записи)
++ user_id: ID пользователя
+
++ Parameters
+
+    + page:1 (optional, number) - Номер страницы
+    + editable_length:50 (optional, number) - Количество записей на странице, максимум 100
+    + salon_id:1 (optional, number) - ID филиала
+    + start_date:'17.01.2018' (optional, string) - Фильтр по дате визита с
+    + end_date:'17.01.2018' (optional, string) - Фильтр по дате визита по
+    + created_start_date:'17.01.2018' (optional, string) - Фильтр по дате создания записи с
+    + created_end_date:'17.01.2018' (optional, string) - Фильтр по дате создания записи по
+    + user_id:1 (optional, number) - ID пользователя
+
++ Request (application/json)
+
+  + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 1,
+                    "date": "2018-11-17 00:00:00",
+                    "datetime": "2018-11-17T00:00:00+0400",
+                    "create_date": "2018-11-17T16:08:08+0400",
+                    "comment": "",
+                    "deleted": false,
+                    "attendance": 0,
+                    "length": 3600,
+                    "notify_by_sms": 1,
+                    "notify_by_email": 12,
+                    "master_requested": true,
+                    "online": false,
+                    "api_id": "42",
+                    "last_change_date": "2018-11-18T16:58:59+0400",
+                    "prepaid": 0,
+                    "prepaid_confirmed": 0,
+                    "activity_id": 0,
+                    "services": [
+                        {
+                            "id": 1,
+                            "title": "Стрижка бороды",
+                            "cost": 100,
+                            "price_min": 500,
+                            "price_max": 1500,
+                            "discount": 0,
+                            "amount": 1
+                        }
+                    ],
+                    "company": {
+                        "id": 1,
+                        "title": "",
+                        "public_title": "",
+                        "business_group_id": 1,
+                        "business_type_id": 1,
+                        "country_id": 1,
+                        "city_id": 1,
+                        "timezone": 3,
+                        "timezone_name": "Europe/Moscow",
+                        "address": "",
+                        "coordinate_lat": 0,
+                        "coordinate_lon": 0,
+                        "logo": "http://yclients.com/images/icon.png",
+                        "zip": 0,
+                        "phone": "",
+                        "phones": [],
+                        "site": "",
+                        "allow_delete_record": true,
+                        "allow_change_record": true,
+                        "country": "Россия",
+                        "city": "Москва"
+                    },
+                    "staff": {
+                        "id": 1,
+                        "api_id": null,
+                        "name": "Иван",
+                        "company_id": 1,
+                        "specialization": "Барбер",
+                        "rating": 0,
+                        "show_rating": 1,
+                        "comments_count": 0,
+                        "votes_count": 0,
+                        "average_score": 0,
+                        "avatar": "http://yclients.com/images/no-master-sm.png",
+                        "prepaid": "forbidden"
+                    },
+                    "client": {
+                        "id": 1,
+                        "name": "Петр",
+                        "phone": "+7 999 123-45-67",
+                        "phone_code": "7",
+                        "email": "petr@example.com"
+                    },
+                    "custom_fields": {
+                        "dop-telephone": "70001234567"
+                    }
+                }
+            ],
+            "meta": {
+                "count": 1
+            }
+        }
+
 ## Запись [/record/{company_id}/{record_id}]
 
 + Parameters
