@@ -3654,7 +3654,7 @@ JSON-Объект содержащий параметры записи поль�
 
 
 #### Фильтрация клиентов
-+ phone:'79997906882' (optional, string) - Телефон для фильтрации клиентов
++ phone:'70001234567' (optional, string) - Телефон для фильтрации клиентов
 
 ### Получить сетевого клиента по номеру телефона. [GET]
 
@@ -3678,20 +3678,20 @@ JSON-Объект содержащий параметры записи поль�
             "success": true,
             "data": {
                 "salon_group_id": 312,
-                "phone": "79997906882",
+                "phone": "70001234567",
 
                 "clients": [
                     {
                         "id": 4240880,
                         "company_id": 4564,
                         "name": "lx",
-                        "email": "portnov21@gmail.com"
+                        "email": "client@example.com"
                     },
                     {
                         "id": 4243272,
                         "company_id": 24697,
                         "name": "lx",
-                        "email": "portnov21@gmail.com"
+                        "email": "client@example.com"
                     }
                 ]
             },
@@ -3776,12 +3776,12 @@ JSON-Объект записи содержит следующие поля:
 ### Получить список записей [GET]
 #### Фильтрация записей
 + staff_id: ID сотрудника. Если нужны записи к конкретному сотруднику
-+ client_id: ID клиента. Если нужны записи к конкретному клиенту
-+ created_user_id: ID пользователя создавшего запись. Если нужны записи созданные конкретным пользователем
-+ start_date: Дата сеанса начина с (фильтр по дате сеанса). Если нужны записи на сеанс начиная с конкретной даты
++ client_id: ID клиента. Если нужны записи конкретного клиента
++ created_user_id: ID пользователя, создавшего запись. Если нужны записи, созданные конкретным пользователем
++ start_date: Дата сеанса начиная с (фильтр по дате сеанса). Если нужны записи на сеанс начиная с конкретной даты
 + end_date: Дата сеанса по. Если нужны записи на сеанс до конкретной даты
-+ c_start_date: Дата создания записи начиная с(фильтр по дате создания записи). Если нужны записи созданные начиная с конкретной даты
-+ c_end_date: Дата создания записи по(фильтр по дате создания записи).
++ c_start_date: Дата создания записи начиная с (фильтр по дате создания записи). Если нужны записи, созданные начиная с конкретной даты
++ c_end_date: Дата создания записи по (фильтр по дате создания записи).
 + changed_after: Дата изменения/создания записи. Если нужны записи созданные/измененные начиная с конкретной даты и времени
 + changed_before: Дата изменения/создания записи. Если нужны записи созданные/измененные до конкретной даты и времени
 
@@ -3797,8 +3797,8 @@ JSON-Объект записи содержит следующие поля:
     + end_date:`2016-02-23` (optional, string) -  Дата сеанса по. Если нужны записи на сеанс до конкретной даты
     + c_start_date:`2016-02-23` (optional, string)  - Дата создания записи начиная с(фильтр по дате создания записи). Если нужны записи созданные начиная с конкретной даты
     + c_end_date:`2016-02-23` (optional, string) - Дата создания записи по(фильтр по дате создания записи).
-    + changed_after:`2016-02-23T12:00:00` (optional, string)  - Дата изменения/создания записи. Если нужны записи созданные/измененные начиная с конкретной даты и времени
-    + changed_before:`2016-02-23T12:00:00` (optional, string)  - Дата изменения/создания записи. Если нужны записи созданные/измененные до конкретной даты и времени
+    + changed_after:`2016-02-23T12:00:00` (optional, string) - Дата изменения/создания записи. Если нужны записи созданные/измененные начиная с конкретной даты и времени
+    + changed_before:`2016-02-23T12:00:00` (optional, string) - Дата изменения/создания записи. Если нужны записи созданные/измененные до конкретной даты и времени
 
 + Request (application/json)
 
@@ -3810,138 +3810,161 @@ JSON-Объект записи содержит следующие поля:
 + Response 200 (application/json)
 
         {
-            "count":10,
-            "data":[
+            "count": 10,
+            "data": [
                 {
-                    "id":2,
-                    "services":[],
-                    "master":{
-                        "id":9,
-                        "name":"Оксана",
-                        "spec":"наращивание волос"
+                    "id": 2,
+                    "company_id": 4564,
+                    "staff_id": 9,
+                    "services": [
+                        {
+                            "id": 1,
+                            "title": "Наращивание волос",
+                            "cost": 100,
+                            "manual_cost": 100,
+                            "cost_per_unit": 100,
+                            "discount": 0,
+                            "first_cost": 100,
+                            "amount": 1
+                        }
+                    ],
+                    "goods_transactions": [],
+                    "staff": {
+                        "id": 9,
+                        "api_id": null,
+                        "name": "Оксана",
+                        "specialization": "наращивание волос",
+                        "avatar": "http://yclients.com/images/no-master-sm.png",
+                        "avatar_big": "http://yclients.com/images/no-master.png",
+                        "rating": 0,
+                        "votes_count": 0
                     },
                     "client": null,
-                    "date":"2015-08-19 19:00:00",
-                    "create_date":"2015-07-30 11:09:35",
-                    "comment":"не записывать",
-                    "visit_attendance":0,
-                    "confirmed":1,
-                    "length":3600,
-                    "cost":0,
-                    "sms_before":0,
-                    "sms_now":0,
-                    "sms_now_text":"",
-                    "email_now":0,
-                    "notified":0,
-                    "partner_id":0,
-                    "partner_record_id":"",
-                    "coupon_id":0,
-                    "sklad_number":0,
-                    "master_request":0,
-                    "api_id":"",
-                    "ya_type":"",
-                    "from_url":"",
-                    "review_requested":0,
-                    "GCal_id":"",
+                    "date": "2019-01-16 16:00:00",
+                    "datetime": "2019-01-16T16:00:00+09:00",
+                    "create_date": "2019-01-16T20:35:11+0900",
+                    "comment": "не записывать",
+                    "online": false,
+                    "visit_attendance": 0,
+                    "attendance": 0,
+                    "confirmed": 1,
+                    "seance_length": 3600,
+                    "length": 3600,
+                    "sms_before": 0,
+                    "sms_now": 0,
+                    "sms_now_text": "",
+                    "email_now": 0,
+                    "notified": 0,
+                    "master_request": 0,
+                    "api_id": "",
+                    "from_url": "",
+                    "review_requested": 0,
+                    "visit_id": "8262996",
+                    "created_user_id": 1073232,
+                    "deleted": false,
+                    "paid_full": 0,
+                    "prepaid": false,
+                    "prepaid_confirmed": false,
+                    "last_change_date": "2019-01-16T20:35:15+0900",
+                    "custom_color": "",
+                    "custom_font_color": "",
+                    "record_labels": [],
+                    "activity_id": 0,
+                    "custom_fields": [],
                     "documents": [
                         {
-                          "id": 8172893,
-                          "type_id": 7,
-                          "storage_id": 0,
-                          "user_id": 746310,
-                          "company_id": 4564,
-                          "number": 4163,
-                          "comment": "",
-                          "date_created": "2018-07-03 11:00:00",
-                          "category_id": 0,
-                          "visit_id": 3,
-                          "record_id": 2,
-                          "type_title": "Визит"
+                            "id": 8172893,
+                            "type_id": 7,
+                            "storage_id": 0,
+                            "user_id": 746310,
+                            "company_id": 4564,
+                            "number": 4163,
+                            "comment": "",
+                            "date_created": "2018-07-03 11:00:00",
+                            "category_id": 0,
+                            "visit_id": 3,
+                            "record_id": 2,
+                            "type_title": "Визит"
                         }
                     ]
                 },
                 {
-                    "id":9,
-                    "services":[
-                        {
-                            "id":84,
-                            "title":"Плетение кос",
-                            "cost":400
-                        },
-                        {
-                            "id":86,
-                            "title":"Детская стрижка (до 6 лет)",
-                            "cost":700
-                        }
-                    ],
-                    "master":{
-                        "id":49,
-                        "name":"Сергей",
-                        "spec":"стилист"
+                    "id": 9,
+                    "company_id": 4564,
+                    "staff_id": 49,
+                    "services": [],
+                    "goods_transactions": [],
+                    "staff": {
+                        "id": 49,
+                        "api_id": null,
+                        "name": "Сергей",
+                        "specialization": "стилист",
+                        "avatar": "http://yclients.com/images/no-master-sm.png",
+                        "avatar_big": "http://yclients.com/images/no-master.png",
+                        "rating": 0,
+                        "votes_count": 0
                     },
-                    "client":{
-                        "id":700,
-                        "name":"елена",
-                        "phone":"+79170005555",
-                        "email":""
-                    },
-                    "date":"2015-08-02 11:45:00",
-                    "create_date":"2015-07-30 10:49:10",
-                    "comment":"",
-                    "visit_attendance":1,
-                    "confirmed":1,
-                    "length":10800,
-                    "cost":0,
-                    "sms_before":0,
-                    "sms_now":0,
-                    "sms_now_text":"",
-                    "email_now":0,
-                    "notified":0,
-                    "partner_id":0,
-                    "partner_record_id":"",
-                    "coupon_id":0,
-                    "sklad_number":0,
-                    "master_request":1,
-                    "api_id":"",
-                    "ya_type":"",
-                    "from_url":"",
-                    "review_requested":0,
-                    "GCal_id":"",
-                    "deleted": 0,
+                    "client": null,
+                    "date": "2019-01-16 16:00:00",
+                    "datetime": "2019-01-16T16:00:00+09:00",
+                    "create_date": "2019-01-16T20:35:11+0900",
+                    "comment": "",
+                    "online": true,
+                    "visit_attendance": 1,
+                    "attendance": 1,
+                    "confirmed": 1,
+                    "seance_length": 10800,
+                    "length": 10800,
+                    "sms_before": 0,
+                    "sms_now": 0,
+                    "sms_now_text": "",
+                    "email_now": 0,
+                    "notified": 0,
+                    "master_request": 1,
+                    "api_id": "",
+                    "from_url": "",
+                    "review_requested": 0,
+                    "visit_id": "8262996",
+                    "created_user_id": 1073232,
+                    "deleted": false,
+                    "paid_full": 0,
+                    "prepaid": false,
+                    "prepaid_confirmed": false,
                     "last_change_date": "2017-01-09T20:45:30+0900",
                     "custom_color": "f44336",
                     "custom_font_color": "#ffffff",
                     "record_labels": [
                         {
-                          "id": "67345",
-                          "title": "Сотрудник не важен",
-                          "color": "#009800",
-                          "icon": "unlock",
-                          "font_color": "#ffffff"
+                            "id": "67345",
+                            "title": "Сотрудник не важен",
+                            "color": "#009800",
+                            "icon": "unlock",
+                            "font_color": "#ffffff"
                         },
                         {
-                          "id": "104474",
-                          "title": "важная категория",
-                          "color": "#3b2c54",
-                          "icon": "odnoklassniki",
-                          "font_color": "#ffffff"
+                            "id": "104474",
+                            "title": "важная категория",
+                            "color": "#3b2c54",
+                            "icon": "odnoklassniki",
+                            "font_color": "#ffffff"
                         }
                     ],
                     "activity_id": 0,
+                    "custom_fields": [],
                     "documents": [
                         {
-                          "id": 8172893,
-                          "type_id": 7,
-                          "storage_id": 0,
-                          "user_id": 746310,
-                          "company_id": 4564,
-                          "number": 4163,
-                          "comment": "",
-                          "date_created": "2018-07-03 11:00:00",
-                          "category_id": 0,
-                          "visit_id": 3,
-                          "record_id": 2,
-                          "type_title": "Визит"
+                            "id": 8172893,
+                            "type_id": 7,
+                            "storage_id": 0,
+                            "user_id": 746310,
+                            "company_id": 4564,
+                            "number": 4163,
+                            "comment": "",
+                            "date_created": "2018-07-03 11:00:00",
+                            "category_id": 0,
+                            "visit_id": 3,
+                            "record_id": 2,
+                            "type_title": "Визит"
                         }
                     ]
                 }
@@ -4260,11 +4283,13 @@ custom_fields: {
             }
         }
 
-## Запись [/record/{company_id}/{record_id}]
+## Запись [/record/{company_id}/{record_id}{?include_consumables,include_finance_transactions}]
 
 + Parameters
     + company_id (required, number) - ID компании
     + record_id (required, number) - ID записи
+    + include_consumables (optional, number, `0`) - флаг для включения в ответ списка расходников по записи
+    + include_finance_transactions (optional, number, `0`) - флаг для включения в ответ финансовых транзакций по записи
 
 
 ### Получить запись [GET]
@@ -4278,37 +4303,66 @@ custom_fields: {
 + Response 200 (application/json)
 
         {
-            "id":2,
-            "services":[],
-            "master":{
-                "id":9,
-                "name":"Оксана",
-                "spec":"наращивание волос"
+            "id": 2,
+            "company_id": 4564,
+            "staff_id": 9,
+            "services": [
+                {
+                    "id": 1,
+                    "title": "Наращивание волос",
+                    "cost": 100,
+                    "manual_cost": 100,
+                    "cost_per_unit": 100,
+                    "discount": 0,
+                    "first_cost": 100,
+                    "amount": 1
+                }
+            ],
+            "goods_transactions": [],
+            "staff": {
+                "id": 9,
+                "api_id": null,
+                "name": "Оксана",
+                "specialization": "наращивание волос",
+                "avatar": "http://yclients.com/images/no-master-sm.png",
+                "avatar_big": "http://yclients.com/images/no-master.png",
+                "rating": 0,
+                "votes_count": 0
             },
-            "client": null,
-            "date":"2015-08-19 19:00:00",
-            "create_date":"2015-07-30 11:09:35",
-            "comment":"не записывать",
-            "visit_attendance":0,
-            "confirmed":1,
-            "length":3600,
-            "cost":0,
-            "sms_before":0,
-            "sms_now":0,
-            "sms_now_text":"",
-            "email_now":0,
-            "notified":0,
-            "partner_id":0,
-            "partner_record_id":"",
-            "coupon_id":0,
-            "sklad_number":0,
-            "master_request":0,
-            "api_id":"",
-            "ya_type":"",
-            "from_url":"",
-            "review_requested":0,
-            "GCal_id":"",
-            "last_change_date": "2017-01-09T20:45:30+0900",
+            "client": {
+                "id": 18936825,
+                "name": "lx",
+                "phone": "+70001234567",
+                "card": "",
+                "email": "client@example.com",
+                "success_visits_count": 37,
+                "fail_visits_count": 3
+            },
+            "date": "2019-01-17 03:30:00",
+            "datetime": "2019-01-17T03:30:00+09:00",
+            "create_date": "2019-01-17T19:41:44+0900",
+            "comment": "не записывать",
+            "visit_attendance": 0,
+            "attendance": 0,
+            "confirmed": 1,
+            "seance_length": 3600,
+            "length": 3600,
+            "sms_before": 0,
+            "sms_now": 0,
+            "sms_now_text": "",
+            "email_now": 0,
+            "notified": 0,
+            "master_request": 0,
+            "api_id": "",
+            "from_url": "",
+            "review_requested": 0,
+            "visit_id": "8263004",
+            "created_user_id": 1073232,
+            "deleted": false,
+            "paid_full": 0,
+            "prepaid": false,
+            "prepaid_confirmed": false,
+            "last_change_date": "2019-01-17T19:44:14+0900",
             "custom_color": "f44336",
             "custom_font_color": "#ffffff",
             "record_labels": [
@@ -4328,12 +4382,13 @@ custom_fields: {
                 }
             ],
             "activity_id": 0,
+            "custom_fields": [],
             "documents": [
                 {
                   "id": 8172893,
                   "type_id": 7,
                   "storage_id": 0,
-                  "user_id": 746310,
+                  "user_id": 1073232,
                   "company_id": 4564,
                   "number": 4163,
                   "comment": "",
@@ -4342,6 +4397,65 @@ custom_fields: {
                   "visit_id": 3,
                   "record_id": 2,
                   "type_title": "Визит"
+                }
+            ],
+            "consumables": [
+                {
+                    "id": 2173068,
+                    "document_id": 8174153,
+                    "type_id": 2,
+                    "company_id": 4564,
+                    "good_id": 4853087,
+                    "amount": -1,
+                    "cost_per_unit": 0.03,
+                    "discount": 0,
+                    "cost": 0.03,
+                    "unit_id": 216761,
+                    "operation_unit_type": 2,
+                    "storage_id": 91548,
+                    "supplier_id": 0,
+                    "client_id": 0,
+                    "master_id": 0,
+                    "create_date": "2019-01-17 08:30:00",
+                    "comment": "",
+                    "service_id": 1,
+                    "user_id": 1073232,
+                    "deleted": false,
+                    "pkg_amount": 0
+                }
+            ],
+            "finance_transactions": [
+                {
+                    "id": 6024243,
+                    "document_id": 8174152,
+                    "date": "2019-01-16 22:30:00",
+                    "type_id": 5,
+                    "expense_id": 5,
+                    "account_id": 90459,
+                    "amount": 100,
+                    "client_id": 18936825,
+                    "master_id": 0,
+                    "supplier_id": 0,
+                    "comment": "",
+                    "item_id": 1,
+                    "target_type_id": 1,
+                    "record_id": 2,
+                    "goods_transaction_id": 0,
+                    "expense": {
+                        "id": 5,
+                        "title": "Оказание услуг"
+                    },
+                    "account": {
+                        "id": 90459,
+                        "title": "Основная касса"
+                    },
+                    "client": {
+                        "id": 18936825,
+                        "name": "lx",
+                        "phone": "70001234567"
+                    },
+                    "master": [],
+                    "supplier": []
                 }
             ]
         }
