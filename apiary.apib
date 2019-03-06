@@ -1524,6 +1524,7 @@ appointments: [{
     + notify_by_sms: 2 (optional, number) - За сколько часов до визита следует выслать смс напоминание клиенту (0 - если не нужно)
     + notify_by_email: 2 (optional, number) - За сколько часов до визита следует выслать email напоминание клиенту (0 - если не нужно)
     + api_id: 2 (optional, number) - ID записи из внешней системы
+    + clients_count: 1 (optional, number) - количество занимаемых мест
 
 + Request (application/json)
 
@@ -4344,6 +4345,7 @@ custom_fields: {
                 "success_visits_count": 37,
                 "fail_visits_count": 3
             },
+            "clients_count": 1,
             "date": "2019-01-17 03:30:00",
             "datetime": "2019-01-17T03:30:00+09:00",
             "create_date": "2019-01-17T19:41:44+0900",
@@ -4488,6 +4490,7 @@ custom_fields: {
         + attendance (optional, number) - 1 - Пользователь пришел, услуги оказаны, 0 - ожидание пользователя, -1 - пользователь не пришел на визит
         + activity_id (optional, number) - ID группового события
         + fast_payment (optional, number) - Быстрая оплата 1 - наличными, 2 - безналичными, 129 - наличными и распечатать, 130 - безналичными и распечатать
+        + clients_count: 1 (optional, number) - Количество занимаемых в групповом событии мест (актуально только для записей в групповых событиях)
 
     + Headers
 
@@ -4516,6 +4519,7 @@ custom_fields: {
                         "name": "Дмитрий",
                         "email": "d@yclients.com",
                     },
+                    "clients_count": 1,
                     "save_if_busy": false,
                     "datetime": "2015-12-12T12:00:00+04:00",
                     "seance_length": 3600,
@@ -4567,6 +4571,7 @@ custom_fields: {
                         "name": "Дмитрий",
                         "email": "d@yclients.com",
                     },
+                    "clients_count": 1,
                     "staff":{
                         "id":8886,
                         "name":"Сергей",
