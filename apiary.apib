@@ -7458,11 +7458,12 @@ YCLIENTS поддерживает уведомления о создании, и
 |  amount  | number  | Количество  |
 
 
-## Получение товаров [/goods/{company_id}/{good_id}{?term,page,count}]
+## Получение товаров [/goods/{company_id}/{good_id}{?term,page,count,category_id}]
 ### Получить товары [GET]
 + term: Наименование, артикул или штрих-код
 + page (number, `1`) - Номер страницы (не используется, если передан good_id)
 + count (number, `25`) - Количество товаров на странице (не используется, если передан good_id)
++ category_id (number, `777`) - Id категории товаров (не используется, если передан good_id)
 
 + Parameters
 
@@ -7471,6 +7472,7 @@ YCLIENTS поддерживает уведомления о создании, и
     + term (optional, string) - наименование, артикул или штрих-код
     + page:1 (optional, number) - номер страницы
     + count:25 (optional, number) - количество товаров на странице
+    + category_id (optional, number) - Id категории товаров
 
 
 + Request (application/json)
@@ -7506,6 +7508,46 @@ YCLIENTS поддерживает уведомления о создании, и
                     }
                 ]
               }
+            ]
+
+
+
+# Group Категории товаров
+
+Объект категории товаров имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  | id категории  |
+|  title  | string  | Название категории  |
+
+## Список категорий товаров [/goods_categories/{company_id}/{parent_category_id}]
+### Получить список категорий товаров [GET]
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + parent_category_id (optional, number) - ID родительской категории товара. По умолчанию 0 - выводятся категории верхнего уровня
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              {
+                "id": "1",
+                "title": "Категория 1",
+              },
+              {
+                "id": "2",
+                "title": "Категория 2",
+              },
             ]
 
 
