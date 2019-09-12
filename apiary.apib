@@ -7449,6 +7449,7 @@ YCLIENTS поддерживает уведомления о создании, и
 |  barcode  | number  | Штрих-код  |
 |  actual_amounts  | array  | Остатки на складах  |
 |  is_barcode  | number  | Товар по штрих-коду  |
+|  last_change_date  | string  | Дата последнего изменения сущности  |
 
 Объект из actual_amounts имеет следующие поля:
 
@@ -7458,12 +7459,14 @@ YCLIENTS поддерживает уведомления о создании, и
 |  amount  | number  | Количество  |
 
 
-## Получение товаров [/goods/{company_id}/{good_id}{?term,page,count,category_id}]
+## Получение товаров [/goods/{company_id}/{good_id}{?term,page,count,category_id,changed_after,changed_before}]
 ### Получить товары [GET]
 + term: Наименование, артикул или штрих-код
 + page (number, `1`) - Номер страницы (не используется, если передан good_id)
 + count (number, `25`) - Количество товаров на странице (не используется, если передан good_id)
 + category_id (number, `777`) - Id категории товаров (не используется, если передан good_id)
++ changed_after (string) - фильтрация товаров, измененных/созданных начиная с конкретной даты и времени (не используется, если передан good_id)
++ changed_before (string) - фильтрация товаров, измененных/созданных до конкретной даты и времени (не используется, если передан good_id)
 
 + Parameters
 
@@ -7473,6 +7476,8 @@ YCLIENTS поддерживает уведомления о создании, и
     + page:1 (optional, number) - номер страницы
     + count:25 (optional, number) - количество товаров на странице
     + category_id (optional, number) - Id категории товаров
+    + changed_after:`2017-01-01T12:00:00` (optional, string) - фильтрация товаров, измененных/созданных начиная с конкретной даты и времени
+    + changed_before:`2017-01-01T12:00:00+0400` (optional, string) - фильтрация товаров, измененных/созданных до конкретной даты и времени
 
 
 + Request (application/json)
@@ -7507,6 +7512,7 @@ YCLIENTS поддерживает уведомления о создании, и
                         "amount": "1000000"
                     }
                 ]
+                "last_change_date": "2017-01-01T12:00:00+0400",
               }
             ]
 
