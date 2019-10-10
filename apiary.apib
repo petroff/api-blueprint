@@ -246,6 +246,17 @@ API позволяет работать с основными сущностям
 + discount: 10 (optional, number) - Скидка на услугу
 + cost: 10 (optional, number) - Итоговая стоимость услуги
 
+## TechnologicalCardItemsArray
+
++ id: 141 (required, number) - id расходника
++ technological_card_id: 1000 (required, number) - id технологической карты
++ storage_id: 10 (required, number) - id склада
++ good_id: 123 (required, number) - id товара
++ amount: 1 (required, number) - количество товара
++ unit: 'л' (required, string) - единица измерения
++ price: 1.3421 (required, number) - себестоимость расходника
++ title: 'Тест' (required, string) - название товара
+
 ## GoodsTransactionsArray
 
 + id (required, number) - id складской транзакции
@@ -7556,6 +7567,131 @@ YCLIENTS поддерживает уведомления о создании, и
               },
             ]
 
+# Group Технологические карты
+
+Объект технологической карты имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  | id тех карты  |
+|  title  | string  | Название тех карты  |
+|  technological_card_items  | array  | Список расходников тех карты |
+
+## Список тех карт филиала [/technological_cards/{company_id}/{?page,count}]
+### Получить список тех карт [GET]
++ Parameters
+
+    + company_id (required, number) - ID филиала
+    + page:1 (optional, number) - номер страницы
+    + count:20 (optional, number) - количество тех карт на странице
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Attributes
+        + id (required, number) - ID тех карты
+        + title (required, string) - Название тех карты
+        + technological_card_items (required, array[TechnologicalCardItemsArray]) - Массив расходников тех карты
+
+    + Body
+
+            [
+              {
+                "id": "1",
+                "title": "Тех карта 1",
+                "technological_card_items" : [
+                    {
+                        "id": 3,
+                        "technological_card_id": 1,
+                        "storage_id": 4234,
+                        "good_id": 34234,
+                        "amount": 12,
+                        "unit": "л",
+                        "price": 0.0742,
+                        "title": "Расходник 3"
+                    }
+                ]
+              },
+              {
+                "id": "2",
+                "title": "Тех карта 2",
+                "technological_card_items": [
+                    {
+                        "id": 4,
+                        "technological_card_id": 2,
+                        "storage_id": 4234,
+                        "good_id": 34235,
+                        "amount": 10,
+                        "unit": "л",
+                        "price": 0.02412,
+                        "title": "Расходник 4"
+                    }
+                ]
+              },
+            ]
+
+## Технологическая карта для связи сотрудник-услуга [/technological_cards/default_for_staff_and_service/{company_id}/{staffId}/{serviceId}/{?page,count}]
+### Получить тех карту для связи сотрудник услуга [GET]
++ Parameters
+
+    + company_id (required, number) - ID филиала
+    + staffId (required, number) - ID сотрудника
+    + serviceId (required, number) - ID услуги
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Attributes
+        + id (required, number) - ID тех карты
+        + title (required, string) - Название тех карты
+        + technological_card_items (required, array[TechnologicalCardItemsArray]) - Массив расходников тех карты
+
+    + Body
+
+            [
+              {
+                "id": "1",
+                "title": "Тех карта 1",
+                "technological_card_items" : [
+                    {
+                        "id": 3,
+                        "technological_card_id": 1,
+                        "storage_id": 4234,
+                        "good_id": 34234,
+                        "amount": 12,
+                        "unit": "л",
+                        "price": 0.0742,
+                        "title": "Расходник 3"
+                    }
+                ]
+              },
+              {
+                "id": "2",
+                "title": "Тех карта 2",
+                "technological_card_items": [
+                    {
+                        "id": 4,
+                        "technological_card_id": 2,
+                        "storage_id": 4234,
+                        "good_id": 34235,
+                        "amount": 10,
+                        "unit": "л",
+                        "price": 0.02412,
+                        "title": "Расходник 4"
+                    }
+                ]
+              },
+            ]
 
 # Group Товарные транзакции
 
