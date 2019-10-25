@@ -329,6 +329,19 @@ API позволяет работать с основными сущностям
 + id: 2 (required, number) - id опции
 + title: "KKM" (required, string) - Название опции
 
+## LoyaltyGenerateCode200Option
+
++ code: "1" (required, string) - Сгенерированный код
+
+## LoyaltyGenerateCodeErrorMetaOption
+
++ message: "Не нейдено" (required, string) - Сообшение об ошибке
+
+## LoyaltyGenerateCodeErrorOption
+
++ success: false (required, boolean) - Ошибка
++ data: null (required, string) - Данные об ошибке
+
 ## Document
 
 + id: 2 (required, number) - id опции
@@ -9630,6 +9643,72 @@ Authorization: Bearer <partner token>
                 "error_code": 30,
                 "error_message": "explicit error message"
             }
+
+# Group Лояльность
+
+Сгенерированный объект кода имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  code  | string  |  Сгенерированный код  |
+
+## Генерация кода сертификата/абонемента [/loyalty/generate_code/{salonId}/{goodId}]
+
++ Параметры
+    + salonId (required, number, `1`) - ID салона
+    + goodId (required, number, `1`) - ID товара (сертификат/абонемент)
+
+### Генерация кода [GET]
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+
+    + Attributes (LoyaltyGenerateCode200Option)
+        + code(required, string)
+
+    + Body
+
+        {
+            "code": "1"
+        }
+
++ Response 403 (application/json)
+
+    + Attributes (LoyaltyGenerateCodeErrorOption)
+        + success(required, boolean)
+        + data(required, nullable)
+        + meta(required, LoyaltyGenerateCodeErrorMetaOption)
+
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недостаточно прав"
+            }
+        }
+
++ Response 404 (application/json)
+
+    + Attributes (LoyaltyGenerateCodeErrorOption)
+        + success(required, boolean)
+        + data(required, nullable)
+        + meta(required, LoyaltyGenerateCodeErrorMetaOption)
+
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не найдено"
+            }
+        }
 
 # Group Лицензии
 
