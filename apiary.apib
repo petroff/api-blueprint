@@ -329,9 +329,15 @@ API позволяет работать с основными сущностям
 + id: 2 (required, number) - id опции
 + title: "KKM" (required, string) - Название опции
 
-## LoyaltyGenerateCode200Option
+## LoyaltyGenerateCode200DataOption
 
 + code: "1" (required, string) - Сгенерированный код
+
+## LoyaltyGenerateCode200Option
+
++ success: true (required, boolean) - флаг показывающий, что ответ выполнен без ошибок (true)
++ data: {} (required, LoyaltyGenerateCode200DataOption) - метаданные (пустой массив)
++ meta: [] (required, array) - метаданные (пустой массив)
 
 ## LoyaltyGenerateCodeErrorMetaOption
 
@@ -9670,12 +9676,18 @@ Authorization: Bearer <partner token>
 
 
     + Attributes (LoyaltyGenerateCode200Option)
-        + code(required, string)
+        + success(required, boolean)
+        + data(required, LoyaltyGenerateCode200DataOption)
+        + meta(required, array)
 
     + Body
 
         {
-            "code": "1"
+            "success": true,
+            "data": {
+                "code": "1"
+            },
+            "meta": []
         }
 
 + Response 403 (application/json)
