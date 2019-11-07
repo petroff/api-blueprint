@@ -329,6 +329,27 @@ API позволяет работать с основными сущностям
 + id: 2 (required, number) - id опции
 + title: "KKM" (required, string) - Название опции
 
+## ClientLabelDataItem
+
++ id: 3 (required, number)
++ salon_id: 3 (required, number)
++ title: "Постоянный клиент" (required, string)
++ color: "tag" (required, string)
++ entity: "tag" (required, string)
++ deleted: 1 (required, number)
++ not_editable: 0 (required, number)
+
+## ClientLabelsCode200MetaOption
+
++ total: "50000" (required, number) - Всего найдено
++ total_count: "300" (required, number) - Максимальное количество записей выводимых на странице
+
+## ClientLabelsCode200Attributes
+
++ success: true (required, boolean) - флаг показывающий, что ответ выполнен без ошибок (true)
++ data: [] (required, array) - метаданные (пустой массив)
++ meta: {} (required, ClientLabelsCode200MetaOption) - метаданные (пустой массив)
+
 ## LoyaltyGenerateCode200DataOption
 
 + code: "1" (required, string) - Сгенерированный код
@@ -7362,6 +7383,99 @@ YCLIENTS поддерживает уведомления о создании, и
 |  deleted  | number  | Метка удаления  |
 |  not_editable  | number  |  Разрешены ли изменения категории (1 - разрешены, 0 - не разрешены)  |
 
+## Получение списка клиентских категорий филиала [/labels/{company_id}/clients?{page}=&{term}=клиент]
+### Получить клиентские категории с посиком по названию [GET]
+
++ Parameters
+
+    + company_id (required, number) - ID филиала
+    + page (required, number) - Номер страницы
+    + term (string) - Поиск по названию категории
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Attributes (ClientLabelsCode200Attributes)
+
+        + success(required, boolean)
+        + data(required, array)
+        + meta(required, ClientLabelsCode200MetaOption)
+
+    + Body
+        {
+            "success": true,
+            "data": {
+                {
+                    "id": 3,
+                    "salon_id": 4564,
+                    "title": "Постоянный клиент",
+                    "color": "#1f1038",
+                    "icon": "tag",
+                    "entity": 1,
+                    "deleted": 1,
+                    "not_editable": 0
+                }
+            },
+            "meta": {
+                "page": 1,
+                "total_count": 25
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недостаточно прав"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не найдено"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
 
 ## Получение категорий компании [/labels/{company_id}/{entity}]
 ### Получить категории [GET]
