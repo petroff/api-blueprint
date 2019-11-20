@@ -3175,15 +3175,82 @@ JSON-Объект содержащий параметры записи поль�
 |  status  | number  |  .......... |
 |  image_group | object | Группа изображений сотрудника |
 
-
-
 ## Коллекция сотрудников [/staff/{company_id}/{staff_id}]
 
 + Параметр
     + company_id (required, number, `1`) - ID компании
     + staff_id (optional, number, `1`) - ID сотрудника
 
-### Получить список сотрудников / конкретного сотрудника [GET]
+### Получить список сотрудников / конкретного сотрудника [GET /company/{company_id}/staff/{staff_id}]
+
++ Parameters
+
+    + company_id (required, number) - ID филиала
+    + staff_id (optional, number) - ID сотрудника, если нужно работать с конкретным сотрудником.
+
++ Request (application/json)
+
+  + Headers
+        Authorization: Bearer partner_token
+
++ Response 200 (application/json)
+    {
+         "success": true,
+         "data": [
+             {
+             "id": 1001539,
+             "name": "Сотрудник 1",
+             "company_id": 176275,
+             "specialization": "специалист",
+             "avatar": "https://yclients.com/images/no-master-sm.png",
+             "avatar_big": "https://yclients.com/images/no-master.png",
+             "fired": 0,
+             "status": 0,
+             "hidden": 0
+             }
+         ],
+         "meta": {
+            "total_count": 1
+         }
+    }
+
++ Response 403 (application/json)
+{
+     "success": true,
+     "data": null,
+     "meta": {
+         "message": Необходимо продлить лицензию в филиале с id: {company_id}"
+     }
+}
+
++ Response 404 (application/json)
+    {
+         "success": true,
+         "data": null,
+         "meta": {
+             "message": Не указан филиал."
+         }
+    }
+
++ Response 404 (application/json)
+    {
+         "success": true,
+         "data": null,
+         "meta": {
+             "message": Не указан сотрудник."
+         }
+    }
+
++ Response 404 (application/json)
+    {
+         "success": true,
+         "data": null,
+         "meta": {
+             "message": Сотрудник с ID {staff_id} не найден в филиале {company_id}."
+         }
+    }
+
+### Устаревшее. Получить список сотрудников / конкретного сотрудника [GET /staff/{company_id}/{staff_id}]
 
 + Parameters
 
