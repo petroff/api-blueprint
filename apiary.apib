@@ -2125,7 +2125,101 @@ JSON-Объект содержащий параметры записи поль�
     + id: 1 (optional, number) - ID категории услуг
     + staff_id: 1 (optional, number) - ID сотрудника (для получения категорий, привязанных к сотруднику)
 
-### Получить список категорий услуг [GET]
+### Получить список категорий услуг [GET /company/{company_id}/service_categories/{id}{?staff_id}]
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Bearer partner_token
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 345,
+                    "title": "Стрижки мужские",
+                    "api_id" : "adw322",
+                    "weight": 10,
+                    "staff": [
+                          5006,
+                          8901,
+                          26514,
+                          26516,
+                          26519,
+                          26520
+                    ]
+                },
+                {
+                    "id": 3456,
+                    "title": "Стрижки женские",
+                    "api_id" : "adw323",
+                    "weight": 9,
+                    "staff": [
+                      5006,
+                      8901
+                    ]
+                }
+            ],
+            meta: {
+                "total_count": 2
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Категория услуг не существует."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Сотрудник не найден."
+            }
+        }
+
+
+### Устаревшее. Получить список категорий услуг [GET /service_categories/{company_id}/{id}{?staff_id}]
 
 + Request (application/json)
 
@@ -2301,7 +2395,164 @@ JSON-Объект содержащий параметры записи поль�
     + company_id (required, number, `1`) - ID компании
     + service_id (optional, number, `1`) - ID услуги
 
-### Получить список услуг / конкретную услугу [GET]
+### Получить список услуг / конкретную услугу [GET /company/{company_id}/services/{service_id}{?staff_id,category_id}]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + service_id (optional, number) - ID услуги, если нужно работать с конкретной услугой.
+    + staff_id (optional, number) - ID сотрудника, если нужно отфильтровать по сотруднику
+    + category_id (optional, number) - ID категории, если нужно отфильтровать по категории
+
++ Request (application/json)
+
+    + Headers
+            Authorization: Bearer partner_token
+
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": "79067",
+                    "title": "Бритье головы",
+                    "category_id": "4",
+                    "price_min": "1000.00",
+                    "price_max": "1000.00",
+                    "discount": "0",
+                    "comment": "",
+                    "weight": "2",
+                    "active": "1",
+                    "api_id": "",
+                    "staff": []
+                },
+                {
+                    "id": "83169",
+                    "title": "Мужская стрижка",
+                    "category_id": "83167",
+                    "price_min": "1300.00",
+                    "price_max": "1300.00",
+                    "discount": "0",
+                    "comment": "",
+                    "weight": "6",
+                    "active": "1",
+                    "api_id": "00000000042",
+                    "staff": [
+                        {
+                            "id": "5905",
+                            "seance_length": "2700"
+                        },
+                        {
+                            "id": "5907",
+                            "seance_length": "3600"
+                        },
+                        {
+                            "id": "8973",
+                            "seance_length": "3600"
+                        },
+                        {
+                            "id": "13616",
+                            "seance_length": "3600"
+                        },
+                        {
+                            "id": "16681",
+                            "seance_length": "3600"
+                        },
+                        {
+                            "id": "17969",
+                            "seance_length": "3600"
+                        },
+                        {
+                            "id": "34006",
+                            "seance_length": "3600"
+                        }
+                    ],
+                    "image_group": {
+                        "id": 72234,
+                        "entity": "settings_service",
+                        "entity_id": 389927,
+                        "images": {
+                            "basic": {
+                                "id": "186791",
+                                "path": "https://yclients.com/path/to/image/tagret-image.jpeg",
+                                "width": "372",
+                                "height": "280",
+                                "type": "jpeg",
+                                "image_group_id": 72234,
+                                "version": "basic"
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "total_count": 2
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Услуга не указана."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Услуга не найдена."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Категория не найдена."
+            }
+        }
+
+### Устаревшее. Получить список услуг / конкретную услугу [GET /services/{company_id}/{service_id}{?staff_id,category_id}]
 
 + Parameters
 
@@ -2380,7 +2631,7 @@ JSON-Объект содержащий параметры записи поль�
                 "images": {
                   "basic": {
                     "id": "186791",
-                    "path": "https://yclients.com/uploads/setting_service_image/b/be/be09e5eb621d364_20170323150015.jpeg",
+                    "path": "https://yclients.com/path/to/image/tagret-image.jpeg",
                     "width": "372",
                     "height": "280",
                     "type": "jpeg",
