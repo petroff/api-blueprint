@@ -8165,6 +8165,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Attributes
         + service_id (required, number) - ID услуги записи
+        + record_id (required, number) - ID записи
         + technological_cards (required, array[TechnologicalCardsArray]) - Массив технологических карт для связи запись-услуга
         + consumables (required, array[Consumables]) - Массив расходников для связи запись-услуга
 
@@ -8173,6 +8174,7 @@ YCLIENTS поддерживает уведомления о создании, и
             [
               {
                   "service_id": 21558,
+                  "record_id": 1233243,
                   "technological_cards": [
                       {
                           "id": 36069,
@@ -8234,6 +8236,60 @@ YCLIENTS поддерживает уведомления о создании, и
     + Attributes
         + technological_card_id (required, number) - ID тех карты
 
++ Response 200 (application/json)
+
+    + Attributes
+        + service_id (required, number) - ID услуги записи
+        + record_id (required, number) - ID записи
+        + technological_cards (required, array[TechnologicalCardsArray]) - Массив технологических карт для связи запись-услуга
+        + consumables (required, array[Consumables]) - Массив расходников для связи запись-услуга
+
+    + Body
+
+            [
+              {
+                  "service_id": 21558,
+                  "record_id": 1233243,
+                  "technological_cards": [
+                      {
+                          "id": 36069,
+                          "title": "Тех карта",
+                          "technological_card_items": [
+                              {
+                                  "id": 208568,
+                                  "technological_card_id": 36069,
+                                  "storage_id": 91303,
+                                  "good_id": 6858783,
+                                  "amount": 10,
+                                  "price": 1000,
+                                  "good": {
+                                      "id": 6858783,
+                                      "title": "Товар",
+                                      "unit": "г"
+                                  }
+                              }
+                          ]
+                      }
+                  ],
+                  "consumables": [
+                      {
+                          "goods_transaction_id": 2180771,
+                          "record_id": 121793129,
+                          "service_id": 695486,
+                          "storage_id": 91303,
+                          "good_id": 6858783,
+                          "price": 1000,
+                          "amount": 10,
+                          "good": {
+                              "id": 6858783,
+                              "title": "Товар",
+                              "unit": "г"
+                          }
+                      }
+                  ]
+              },
+            ]
+
 ### Удалить технологическую из связи запись-услуга [DELETE /technological_cards/record_consumables/technological_cards/{company_id}/{record_id}/{service_id}/?{delete_consumables}]
 + Parameters
 
@@ -8249,6 +8305,60 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Attributes
         + delete_consumables (optional, number) - удалить ли расходники вместе с удалением тех карты. По умолчанию 0
+
++ Response 200 (application/json)
+
+    + Attributes
+        + service_id (required, number) - ID услуги записи
+        + record_id (required, number) - ID записи
+        + technological_cards (required, array[TechnologicalCardsArray]) - Массив технологических карт для связи запись-услуга
+        + consumables (required, array[Consumables]) - Массив расходников для связи запись-услуга
+
+    + Body
+
+            [
+              {
+                  "service_id": 21558,
+                  "record_id": 1233243,
+                  "technological_cards": [
+                      {
+                          "id": 36069,
+                          "title": "Тех карта",
+                          "technological_card_items": [
+                              {
+                                  "id": 208568,
+                                  "technological_card_id": 36069,
+                                  "storage_id": 91303,
+                                  "good_id": 6858783,
+                                  "amount": 10,
+                                  "price": 1000,
+                                  "good": {
+                                      "id": 6858783,
+                                      "title": "Товар",
+                                      "unit": "г"
+                                  }
+                              }
+                          ]
+                      }
+                  ],
+                  "consumables": [
+                      {
+                          "goods_transaction_id": 2180771,
+                          "record_id": 121793129,
+                          "service_id": 695486,
+                          "storage_id": 91303,
+                          "good_id": 6858783,
+                          "price": 1000,
+                          "amount": 10,
+                          "good": {
+                              "id": 6858783,
+                              "title": "Товар",
+                              "unit": "г"
+                          }
+                      }
+                  ]
+              },
+            ]
 
 ### Изменить список расходников связи запись-услуга [PUT /technological_cards/record_consumables/consumables/{company_id}/{record_id}/{service_id}/]
 + Parameters
@@ -8279,6 +8389,60 @@ YCLIENTS поддерживает уведомления о создании, и
 
     + Attributes
         + consumables (required, array[Consumables]) - список применяемых расходников
+
++ Response 200 (application/json)
+
+    + Attributes
+        + service_id (required, number) - ID услуги записи
+        + record_id (required, number) - ID записи
+        + technological_cards (required, array[TechnologicalCardsArray]) - Массив технологических карт для связи запись-услуга
+        + consumables (required, array[Consumables]) - Массив расходников для связи запись-услуга
+
+    + Body
+
+            [
+              {
+                  "service_id": 21558,
+                  "record_id": 1233243,
+                  "technological_cards": [
+                      {
+                          "id": 36069,
+                          "title": "Тех карта",
+                          "technological_card_items": [
+                              {
+                                  "id": 208568,
+                                  "technological_card_id": 36069,
+                                  "storage_id": 91303,
+                                  "good_id": 6858783,
+                                  "amount": 10,
+                                  "price": 1000,
+                                  "good": {
+                                      "id": 6858783,
+                                      "title": "Товар",
+                                      "unit": "г"
+                                  }
+                              }
+                          ]
+                      }
+                  ],
+                  "consumables": [
+                      {
+                          "goods_transaction_id": 2180771,
+                          "record_id": 121793129,
+                          "service_id": 695486,
+                          "storage_id": 91303,
+                          "good_id": 6858783,
+                          "price": 1000,
+                          "amount": 10,
+                          "good": {
+                              "id": 6858783,
+                              "title": "Товар",
+                              "unit": "г"
+                          }
+                      }
+                  ]
+              },
+            ]
 
 # Group Товарные транзакции
 
