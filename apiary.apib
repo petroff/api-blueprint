@@ -187,6 +187,207 @@ API позволяет работать с основными сущностям
 
 # Data Structures
 
+## FullClientSearchRequest (object)
+
++ page: 1 (number, optional) - номер страницы
+
++ page_size: (number, optional) - количество выводимых строк на странице. Максимум 200
+    + Default: `25`
+
++ fields: `id` (array, optional)
+    + Default: `id`
+    + Members
+        + `id` (string)
+        + `name` (string)
+        + `phone` (string)
+        + `email` (string)
+        + `discount` (string)
+        + `first_visit_date` (string)
+        + `last_visit_date` (string)
+        + `sold_amount` (string)
+        + `visits_count` (string)
+
++ order_by: `id` (enum, optional) - по какому полю сортировать
+    + Default: `id`
+    + Members
+        + `id` (string)
+        + `name` (string)
+        + `phone` (string)
+        + `email` (string)
+        + `discount` (string)
+        + `first_visit_date` (string)
+        + `last_visit_date` (string)
+        + `sold_amount` (string)
+        + `visits_count` (string)
+
++ order_by_direction: `ASC` (enum, optional) - как сортировать
+    + Default: `ASC`
+    + Members
+        + `DESC` (string)
+        + `ASC` (string)
+
++ operation: `AND` (enum[string], optional) - тип операции
+    + Default: `AND`
+    + Members
+        + `AND` (string)
+        + `OR` (string)
+
++ filters (ClientSearchFilters) - фильтры для поиска по клиентам
+
+## ClientIdFilter (object)
++ type: 'id' (required, string)
+    Поиск по идентификатору клиента
++ state: (object)
+    + invert: (optional, boolean)
+    + value: (array)
+        + `1` (number)
+        + `2` (number)
+
+## ClientQuickSearchFilter (object)
++ type: 'quick_search' (required, string)
+    Поиск по номеру телефона, дополнительному номеру телефона, имени, карте клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + value: `Владимир` (string)
+
+## ClientBirthdayFilter (object)
++ type: 'birthday' (required, string)
+    Поиск по дню рождения клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + from: `1985-03-22` (optional, string)
+        Дата начала поискового периода (формат гггг-мм-дд)
+    + to: `1985-03-23` (optional, string)
+        Дата конца поискового периода (формат гггг-мм-дд)
+
+## ClientSexFilter (object)
++ type: 'gender' (required, string)
+    Поиск по полу клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + value: (optional, array)
+        + Members
+            + `0` (number) - не указан
+            + `1` (number) - мужской
+            + `2` (number) - женский
+
+## ClientImportanceFilter (object)
++ type: 'importance' (required, string)
+    Поиск по важности клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + value: (optional, array)
+        + Members
+            + `0` (number) - не указан
+            + `1` (number) - бронза
+            + `2` (number) - серебро
+            + `3` (number) - золото
+
+## ClientHasPassTeamCardFilter (object)
++ type: 'has_passteam_card' (required, string)
+    Поиск по наличию карты Passteam у клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + value: (optional, boolean)
+
+## ClientCategoryFilter (object)
++ type: 'category' (required, string)
+    Поиск по категории клиента
++ state: (required, object)
+    + invert: (optional, boolean)
+    + value: `1` (required, array[number])
+        Список категорий
+
+## ClientHasMobileAppFilter (object)
++ type: 'has_mobile_app' (required, string)
+    Поиск по наличию установленного мобильного приложения у клиента
++ state: (object, required)
+    + invert: (optional, boolean)
+    + value: (required, boolean)
+
+## ClientSmsNotificationFilter (object)
++ type: 'sms_notification' (required, string)
+    Поиск по осуществлению смс рассылки за определённый период
++ state: (object, required)
+    + invert: (optional, boolean)
+    + from: (required, string)
+    + to: (required, string)
+
+## SoldAmountFilter (object)
++ type: 'sold_amount' (required, string)
+    Поиск по сумме проданного клиенту
++ state: (object, required)
+    + from: `0` (optional, number)
+        От
+    + to: `777.3` (optional, number)
+        До
+
+## RecordFilter (object)
++ type: 'record' (required, string)
+    Поиск по записям клиента
++ state: (object, required)
+    + invert: (optional, boolean)
+    + staff: (optional, object)
+        + value: `1` (required, array[number])
+            Список мастеров
+    + service: (optional, object)
+        + value: `1` (required, array[number])
+            Список услуг
+    + service_category: (optional, object)
+        + value: `1` (required, array[number])
+            Список категорий услуг
+    + status: (optional, object)
+        + value: `1` (required, array)
+            Список статусов
+            + Members
+                + `1` (number) - клиент не пришел
+                + `2` (number) - ожидание
+                + `3` (number) - клиент пришел
+                + `4` (number) - клиент подтвердил
+    + created: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата начала поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата конца поискового периода (формат гггг-мм-дд)
+    + records_count: (optional, object)
+        + from: `1` (optional,  number)
+            От
+        + to: `5` (optional, number)
+            До
+    + sold_amount: (optional, object)
+        + from: `1` (optional,  number)
+            От
+        + to: `5` (optional, number)
+            До
+
+## ClientFilter (object)
++ type: 'client' (required, string)
+    Частный случай поиска с использованием любых существующих фильтров
++ state: (object, required)
+    Содержит набор существующих фильтров где в качестве ключа укказан тип фильтра из перечисленных выше, а в качестве значения состояние фильтра.
+    Пример: {
+        "id": {
+            "value": [1, 2, 3]
+        },
+        "birthday": {
+            "from": "1985-03-22",
+            "to": "1985-03-23"
+        }
+    }
+
+## ClientSearchFilters (array)
++ (ClientIdFilter, optional)
++ (ClientQuickSearchFilter, optional)
++ (ClientBirthdayFilter, optional)
++ (ClientImportanceFilter, optional)
++ (ClientHasPassTeamCardFilter, optional)
++ (ClientCategoryFilter, optional)
++ (ClientHasMobileAppFilter, optional)
++ (RecordFilter, optional)
++ (SoldAmountFilter, optional)
++ (ClientSexFilter, optional)
++ (ClientFilter, optional)
+
 ## Seance (object)
 
 + time: '17:00' (required, string) - Время сеанса
@@ -3811,7 +4012,208 @@ JSON-Объект содержащий параметры записи поль�
 # Group Клиенты
 Для работы с клиентами
 
-## Коллекция клиентов [/clients/{company_id}{?fullname,phone,email,card,page,count,paid_min,paid_max,id}]
+## Коллекция клиентов [/clients/{company_id}/clients]
+
++ Параметр
+    + company_id (required, number, `1`) - ID компании
+
+### Получить список клиентов [POST]
+
++ Request (application/json)
+
+  + Headers
+
+        Authorization: Bearer partner_token, User user_token
+
+  + Attributes (FullClientSearchRequest)
+
+  + Body
+        {
+            "page": 1,
+            "page_size": 3,
+            "fields": [
+                "id",
+                "name"
+            ],
+            "order_by": "name",
+            "order_by_direction": "desc",
+            "operation": "AND",
+            "filters": {
+                {
+                    "type": "id",
+                    "state": {
+                        "value": [1, 2, 3]
+                    }
+                },
+                {
+                    "type": "sold_amount",
+                    "state": {
+                        "from": 0,
+                        "to": 100.77
+                    }
+                },
+                {
+                    "type": "quick_search",
+                    "state": {
+                        "value": "Иван"
+                    }
+                },
+                {
+                    "type": "importance",
+                    "state": {
+                        "value": [0, 1, 2, 3]
+                    }
+                },
+                {
+                    "type": "has_mobile_app",
+                    "state": {
+                        "value": true
+                    }
+                },
+                {
+                    "type": "category",
+                    "state": {
+                        "value": [1, 7]
+                    }
+                },
+                {
+                    "type": "has_passteam_card",
+                    "state": {
+                        "value": true
+                    }
+                },
+                {
+                    "type": "birthday",
+                    "state": {
+                        "from": "1985-03-22",
+                        "to": "1985-03-23"
+                    }
+                },
+                {
+                    "type": "gender",
+                    "state": {
+                        "value": [0, 1, 2]
+                    }
+                },
+                {
+                     "type": "record",
+                     "state": {
+                        "staff": {
+                            "value": [1, 2]
+                        },
+                        "service": {
+                            "value": [2, 3]
+                        },
+                        "service_category": {
+                            "value": [4, 5]
+                        },
+                        "status": {
+                            value": [1]
+                        },
+                        "created": {
+                            "from": "1985-03-22",
+                            "to": "1985-03-23"
+                        },
+                        "records_count": {
+                            "from": 1,
+                            "to": 99999
+                        },
+                        "sold_amount": {
+                            "from": 1.001,
+                            "to": 99999.09
+                        }
+                     }
+                },
+                {
+                    "type": "client",
+                    "state": {
+                        "id": {
+                            "value": [1, 2, 3]
+                        },
+                        "birthday": {
+                            "from": "1985-03-22",
+                            "to": "1985-03-23"
+                        }
+                    }
+                }
+            }
+        }
+
++ Response 200 (application/json)
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "name": "Петров",
+                    "id": 2
+                },
+                {
+                    "name": "Сидоров",
+                    "id": 3
+                },
+                {
+                    "name": "Иванов",
+                    "id": 1
+                },
+            ],
+            "meta": {
+                "total_count": 908,
+             }
+        }
+
++ Response 400 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недопустимое значение фильтра",
+                "errors": {
+                    "filters": [
+                        "Недопустимое значение состояния фильтра"
+                    ]
+                }
+            }
+        }
+
++ Response 402 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    Когда указан филиал не в виде целого числа
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не найдено",
+                "errors": {
+                    "filters": [
+                        "Недопустимое значение состояния фильтра"
+                    ]
+                }
+            }
+        }
+
+## Устаревшее. Коллекция клиентов [/clients/{company_id}{?fullname,phone,email,card,page,count,paid_min,paid_max,id}]
 
 + Параметр
     + company_id (required, number, `1`) - ID компании
@@ -3830,7 +4232,7 @@ JSON-Объект содержащий параметры записи поль�
 + id:66 (optional, number) - ID одного клиента для фильтрации клиентов
 + id[]: 66 (optional, array) - ID нескольких клиентов для фильтрации
 
-### Получить список клиентов [GET]
+### Устаревшее. Получить список клиентов [GET]
 
 
 + Parameters
@@ -6814,7 +7216,7 @@ custom_fields: {
 
 # Group Email рассылка
 
-## Email рассылка по списку клиентов [/email/clients/by_id/{company_id}]
+## Устаревшее. Email рассылка по списку клиентов [/email/clients/by_id/{company_id}]
 
 Объект для создания Email рассылки имеет следующие поля:
 
@@ -6855,7 +7257,7 @@ custom_fields: {
             []
 
 
-## Email рассылка по клиентам, подходящим под фильтры [/email/clients/by_filter/{company_id}{?fullname,phone,email,card}]
+## Устаревшее. Email рассылка по клиентам, подходящим под фильтры [/email/clients/by_filter/{company_id}{?fullname,phone,email,card}]
 
 Объект для создания Email рассылки имеет следующие поля:
 
