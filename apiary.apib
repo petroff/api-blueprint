@@ -8386,6 +8386,81 @@ YCLIENTS поддерживает уведомления о создании, и
               }
             ]
 
+## Создание клиентской категории компании [/labels/{company_id}/clients/create]
+### Создать категорию [POST]
+
++ Parameters
+
+    + company_id (required, number) - ID компании
+
++ Request (application/json)
+
+    + Headers
+        Authorization: Bearer partner_token, User user_token
+
+    + Attributes
+        + title (required, string) - Название категории
+        + color (required, string) - Цвет категории (В HEX формате. Например #aacc00 или #ac0)
+
++ Response 200 (application/json)
+    + Body
+        {
+            "success": true,
+            "data": null,
+            "meta": {
+                "message": "Accepted"
+            }
+        }
+
++ Response 400 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Категория с таким названием уже существует."
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недостаточно прав"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
 
 ## Создание категории компании [/labels/{company_id}{?title,color,entity,icon}]
 ### Создать категорию [POST]
