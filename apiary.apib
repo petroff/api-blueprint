@@ -11100,3 +11100,32 @@ Authorization: Bearer <partner token>
               },
               "meta": []
           }
+
+# Group Валидация данных
+
+## Валидация номера телефона [/validation/validate_phone/{phone}]
+
+Происходит проверка переданного номера телефона на соответствие правилам YCLIENTS.
+
+### Проверка формата номера телефона [GET]
+
++ Parameters
+    + phone (required, string) - Проверяемый номер телефона в формате `+71234567890` или `71234567890`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+          {
+              "success": true,
+              "data": {
+                  "is_valid": true
+              },
+              "meta": []
+          }
