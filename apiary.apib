@@ -8410,6 +8410,131 @@ YCLIENTS поддерживает уведомления о создании, и
               "finances_operation": 1
             }
 
+# Group Справочники
+
+## Получение списка бизнес-типов сгруппированных по группам [/references/business_groups_with_types]
+
+Объект бизнес-группы имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  | ID категории  |
+|  title  | string  | Название категории  |
+|  image  | string | Изображение группы  |
+|  types  | array | Связанные бизнес-типы  |
+
+Объект бизнес-типа имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  | ID типа  |
+|  title  | string  | Название типа  |
+|  business_group_id  | number  | ID бизнес-группы  |
+
+### Получить бизнес-типы по группам [GET]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Attributes (ClientLabelsCode200Attributes)
+
+        + success(required, boolean)
+        + data(required, array)
+        + meta(required, ClientLabelsCode200MetaOption)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 10,
+                    "title": "Бытовые услуги",
+                    "image": "http://u17.dev.yclients.tech/images/business-groups/services.png",
+                    "types": [
+                        {
+                            "id": 31,
+                            "title": "Ателье",
+                            "business_group_id": 10
+                        }
+                    ]
+                },
+                {
+                    "id": 1,
+                    "title": "Красота",
+                    "image": "http://u17.dev.yclients.tech/images/business-groups/beauty.png",
+                    "types": [
+                        {
+                            "id": 1,
+                            "title": "Салоны красоты",
+                            "business_group_id": 1
+                        },
+                        {
+                            "id": 25,
+                            "title": "Спа салон",
+                            "business_group_id": 1
+                        },
+                    ]
+                },
+            ],
+            "meta": {
+                "count": 10
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недостаточно прав"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не найдено"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
 
 # Group Категории
 Объект категории имеет следующие поля:
@@ -8469,55 +8594,6 @@ YCLIENTS поддерживает уведомления о создании, и
             }
         }
 
-+ Response 403 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
-            }
-        }
-
-+ Response 403 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Недостаточно прав"
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Не найдено"
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Не указан филиал."
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Филиал не найден."
-            }
-        }
 
 ## Получение категорий компании [/labels/{company_id}/{entity}]
 ### Получить категории [GET]
