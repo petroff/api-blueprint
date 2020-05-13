@@ -9936,56 +9936,6 @@ YCLIENTS поддерживает уведомления о создании, и
             }
         }
 
-+ Response 403 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
-            }
-        }
-
-+ Response 403 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Недостаточно прав"
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Не найдено"
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Не указан филиал."
-            }
-        }
-
-+ Response 404 (application/json)
-    + Body
-        {
-            "success": false,
-            "data": null,
-            "meta": {
-                "message": "Филиал не найден."
-            }
-        }
-
 # Group Категории
 Объект категории имеет следующие поля:
 
@@ -10044,6 +9994,55 @@ YCLIENTS поддерживает уведомления о создании, и
             }
         }
 
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Необходимо продлить лицензию в филиале с id: {company_id}"
+            }
+        }
+
++ Response 403 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Недостаточно прав"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не найдено"
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Не указан филиал."
+            }
+        }
+
++ Response 404 (application/json)
+    + Body
+        {
+            "success": false,
+            "data": null,
+            "meta": {
+                "message": "Филиал не найден."
+            }
+        }
 
 ## Получение категорий компании [/labels/{company_id}/{entity}]
 ### Получить категории [GET]
@@ -11885,6 +11884,62 @@ YCLIENTS поддерживает уведомления о создании, и
                 "exchange": "50"
               },
             ]
+
+# Group Города
+
+Объект города имеет следующие поля:
+
+| Поле  | Тип | Описание |
+| ------------- | ------------- | ------------- |
+|  id  | number  |  ID города  |
+|  title  | string  | Краткое название города  |
+|  country_id  | number  | ID страны  |
+
+## Получение городов [/cities?country_id=1&salon_id=1]
+### Получить список городов [GET]
+
++ Parameters
+
+    + country_id: 1 (optional, number) - ID страны, из которой нужно получить города
+    + salon_id: 1 (optional, number) - ID филиала. Если передан, будет возвращен так же город филиала, независимо от того, относится он к указанной стране или нет
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
++ Response 200 (application/json)
+
+    + Body
+
+        [
+            {
+              "id": 2,
+              "country_id": 1,
+              "title": "Москва"
+            },
+            {
+              "id": 1,
+              "country_id": 1,
+              "title": "Санкт-Петербург"
+            },
+            {
+              "id": 1040,
+              "country_id": 30,
+              "title": "Belfast"
+            },
+            {
+              "id": 1201,
+              "country_id": 38,
+              "title": "București"
+            },
+            {
+              "id": 1334,
+              "country_id": 31,
+              "title": "Budapest"
+            },
+        ]
 
 # Group Изображения
 
