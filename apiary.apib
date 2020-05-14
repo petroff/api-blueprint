@@ -5656,6 +5656,7 @@ custom_fields: {
 
 
 # Group Визиты
+<a name="visits"></a>
 
 Для работы с визитами
 
@@ -7667,951 +7668,6 @@ custom_fields: {
                  "meta": []
              }
 
-
-# Group Транзакции оплаты в кассу
-<a name="payments-transactions"></a>
-
-Объект Транзакции оплаты в кассу имеет следующую структуру:
-
-| Поле             | Тип              | Описание                 |
-| -----------------| ---------------- | ------------------------ |
-|  id           | integer             | ID Транзакции оплаты |
-|  document_id  | integer        | ID документа            |
-|  sale_item_id | integer | ID [проданной единицы](#sale-sale_item-type) |
-|  sale_item_type | string | Тип проданной единицы  |
-|  expense_id | integer | ID cтатьи платежа |
-|  account_id | integer | ID кассы |
-|  amount | float | Сумма транзакции |
-|  created_at | string |  Дата создания |
-|  account | [account](#accounts) |  Касса |
-|  account.id | integer |  ID кассы |
-|  account.title | string |  Название кассы |
-|  account.is_cash | boolean |  Является ли наличной |
-|  account.is_default | boolean |  Является ли кассой по умолчанию |
-|  expense | [expense](#payment-transactions-expenses-types) |  Cтатья платежа |
-|  expense.id | integer |  ID статьи платежа |
-|  expense.title | string | Название статьи платежа |
-
-
-<a name="payment-transactions-expenses-types"></a>
-Типы статей платежа
-
-| Значение  | Описание |
-| ------------- | ------------- |
-|  1  | Закупка материалов. Используется при оплате расходных материалов |
-|  2  | Закупка товаров. Используется при оплате товаров для продажи |
-|  3  | Зарплата персонала. Используется при выплате зарплаты персоналу |
-|  4  | Налоги и сборы. Используется при оплате налогов и сборов |
-|  5  | Оказание услуг. Используется при приеме оплаты услуг у клиентов |
-|  6  | Продажа абонементов. Используется при продаже абонементов |
-|  7  | Продажа товаров. Используется при продаже товаров клиентам |
-|  8  | Прочие доходы. Используется для приема прочих оплат |
-|  9  | Прочие расходы. Используется для прочих выплат |
-|  10 | Пополнение счета. Используется при внесении клиентом средств на личный счет |
-|  11 | Комиссия за эквайринг |
-
-### Удаление транзакции оплаты в кассу [DELETE /company/{salon_id}/sale/{operation_id}/payment/payment_transaction/{payment_transaction_id}]
-
-В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
-
-+ Parameters
-    + salon_id (required, integer) - ID салона
-    + operation_id: (required, integer) - ID операции продажи
-    + payment_transaction_id: (required, integer) - ID транзакции
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer partner_token, User user_token
-
-+ Response 200 (application/json)
-
-    + Body
-
-{
-   "state":{
-      "items":[
-         {
-            "id":2181520,
-            "type":"good",
-            "title":"товар 12",
-            "amount":1,
-            "default_cost_per_unit":1300,
-            "default_cost_total":1300,
-            "client_discount_percent":10,
-            "cost_to_pay_total":1170
-         },
-         {
-           "id":22017,
-           "type":"service",
-           "document_id":8200391,
-           "title":"Маникюр",
-           "amount":1,
-           "default_cost_per_unit":500,
-           "default_cost_total":500,
-           "client_discount_percent":10,
-           "cost_to_pay_total":450
-        }
-      ],
-      "loyalty_transactions":[
-      {
-         "id":25042,
-         "document_id":8201102,
-         "sale_item_id":2181521,
-         "sale_item_type":"good",
-         "amount":9.9,
-         "type_id":11,
-         "created_at":"2020-04-30 16:52:24",
-         "deposit_transaction_id":775,
-         "chain":{
-            "id":500,
-            "title":"Сеть YC BE"
-         },
-         "type":{
-            "id":11,
-            "title":"Списание с личного счета"
-         },
-         "deposit":{
-            "id":220,
-            "balance":990.1,
-            "type":{
-               "id":5,
-               "title":"депозит 1"
-            }
-         }
-      },
-      {
-         "id":25043,
-         "document_id":8201102,
-         "sale_item_id":null,
-         "sale_item_type":null,
-         "amount":0.1,
-         "type_id":2,
-         "created_at":"2020-04-30 16:55:21",
-         "loyalty_card_id":185395,
-         "loyalty_program_id":264,
-         "chain":{
-            "id":231,
-            "title":"Yclients."
-         },
-         "type":{
-            "id":2,
-            "title":"Начисление по программам лояльности"
-         },
-         "loyalty_card":{
-            "id":185395,
-            "type_id":265,
-            "number":"0000023100185395",
-            "balance":50.15,
-            "type":{
-               "id":265,
-               "type":"Тест шаблонов программ лояльности"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         },
-         "loyalty_program":{
-            "id":264,
-            "title":"CASHBACK BigBro",
-            "type_id":7,
-            "is_value_percent":true,
-            "type":{
-               "id":7,
-               "title":"Накопительный кэшбэк (оплачено)"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         }
-      },
-      {
-         "id":25050,
-         "document_id":8201102,
-         "sale_item_id":2181521,
-         "sale_item_type":"good",
-         "amount":100,
-         "type_id":8,
-         "created_at":"2020-04-30 18:32:43",
-         "loyalty_certificate_id":339,
-         "chain":{
-            "id":79,
-            "title":"Bank 24"
-         },
-         "type":{
-            "id":8,
-            "title":"Списание с сертификата"
-         },
-         "loyalty_certificate":{
-            "id":339,
-            "balance":0,
-            "applicable_balance":0,
-            "type":{
-               "id":20,
-               "title":"Тестовый сертификат",
-               "is_code_required":true
-            }
-         }
-      }
-   ],
-      "payment_transactions":[
-         {
-            "id":6033940,
-            "document_id":8200904,
-            "sale_item_id":2181442,
-            "sale_item_type":"good",
-            "expense_id":7,
-            "account_id":90218,
-            "amount":32,
-            "created_at":null,
-            "account":{
-                "id":90218,
-                "title":"Наличная касса по умолчанию",
-                "is_cash":true,
-                "is_default": true
-            },
-            "expense":{
-                "id":7,
-                "title":"Продажа товаров"
-            }
-         },
-         {
-            "id":6033941,
-            "document_id":8200904,
-            "sale_item_id":2181442,
-            "sale_item_type":"good",
-            "expense_id":7,
-            "account_id":90218,
-            "amount":27,
-            "created_at":null,
-            "account":{
-               "id":90218,
-               "title":"Наличная касса",
-               "is_cash":true,
-               "is_default": false
-            },
-            "expense":{
-               "id":7,
-               "title":"Продажа товаров"
-            }
-         },
-         {
-             "id": 6034121,
-             "document_id": 8201102,
-             "sale_item_id": 2181521,
-             "sale_item_type": "good",
-             "expense_id": 7,
-             "account_id": 23182,
-             "amount": 43,
-             "account": {
-                 "id": 23182,
-                 "title": "Карты - эквайринг по умолчанию",
-                 "is_cash": false,
-                 "is_default": true
-             },
-             "expense": {
-                 "id": 7,
-                 "title": "Продажа товаров"
-             }
-         },
-         {
-             "id": 6034122,
-             "document_id": 8201102,
-             "sale_item_id": 2181521,
-             "sale_item_type": "good",
-             "expense_id": 7,
-             "account_id": 23182,
-             "amount": 12,
-             "account": {
-                 "id": 23182,
-                 "title": "Карты - эквайринг",
-                 "is_cash": false,
-                 "is_default": false
-             },
-             "expense": {
-                 "id": 7,
-                 "title": "Продажа товаров"
-             }
-         }
-      ]
-   },
-   "kkm_state":{
-      "last_operation_type":1,
-      "transactions":[
-         {
-            "id":2424,
-            "document_id":8200904,
-            "print_date":"2020-04-22 11:53:12",
-            "printed_count":0,
-            "sum":0,
-            "type":{
-               "id":0,
-               "title":"Операция продажи"
-            },
-            "status":{
-               "id":1,
-               "title":"Успешно"
-            },
-            "document":{
-               "id":7215,
-               "type":1,
-               "type_title":"Продажа товара"
-            },
-            "cashier":{
-               "id":746310,
-               "name":"Андрей Панов"
-            }
-         }
-      ]
-   },
-   "payment_methods":[
-      {
-         "slug":"account",
-         "is_applicable":false,
-         "applicable_amount":1170,
-         "applicable_count":0,
-         "applicable_value":0,
-         "account_id":36785,
-         "account":{
-            "id":36785,
-            "title":"Касса - безналичные",
-            "is_cash":false
-         }
-      },
-      {
-         "slug":"loyalty_card",
-         "is_applicable":true,
-         "applicable_amount":51.65,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_card_id":19283,
-         "loyalty_card":{
-            "id":19283,
-            "type_id":155,
-            "number":"0000031200019283",
-            "balance":51.65,
-            "type":{
-               "id":155,
-               "type":"скидочная карта"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         }
-      },
-      {
-         "slug":"loyalty_program",
-         "is_applicable":true,
-         "applicable_amount":234,
-         "applicable_count":0,
-         "applicable_value":20,
-         "loyalty_card_id":19283,
-         "loyalty_program_id":183,
-         "loyalty_card":{
-            "id":19283,
-            "type_id":155,
-            "number":"0000031200019283",
-            "balance":51.65,
-            "type":{
-               "id":155,
-               "type":"скидочная карта"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         },
-         "loyalty_program":{
-            "id":183,
-            "title":"скидка постоянная",
-            "type_id":1,
-            "is_value_percent":true,
-            "type":{
-               "id":1,
-               "title":"Фиксированная скидка"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         }
-      },
-      {
-         "slug":"loyalty_abonement",
-         "is_applicable":false,
-         "applicable_amount":0,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_abonement_id":27,
-         "loyalty_abonement":{
-            "id":27,
-            "is_united_balance":false,
-            "united_balance":0,
-            "type":{
-               "id":7,
-               "title":"абонемент на 5000 QA net",
-               "is_code_required":true
-            },
-            "balance_container":{
-               "links":[
-                  {
-                     "count":5,
-                     "category":{
-                        "id":229680,
-                        "category_id":1,
-                        "title":"Маникюр"
-                     }
-                  },
-                  {
-                     "count":5,
-                     "category":{
-                        "id":429813,
-                        "category_id":429812,
-                        "title":"1 Занятие"
-                     }
-                  }
-               ]
-            }
-         }
-      },
-      {
-         "slug":"loyalty_certificate",
-         "is_applicable":true,
-         "applicable_amount":1170,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_certificate_id":338,
-         "loyalty_certificate":{
-            "id":338,
-            "balance":10000,
-            "applicable_balance":10000,
-            "type":{
-               "id":130,
-               "title":"test",
-               "is_code_required":true
-            }
-         }
-      },
-      {
-         "slug":"referral_loyalty_program",
-         "is_applicable":false,
-         "applicable_amount":0,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_program_id":424,
-         "loyalty_program":{
-            "id":424,
-            "title":"Фиксированная скидка",
-            "type_id":1,
-            "is_value_percent":true,
-            "type":{
-               "id":1,
-               "title":"Фиксированная скидка"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         }
-      },
-      {
-         "slug":"deposit",
-         "is_applicable":true,
-         "applicable_amount":9.9,
-         "applicable_count":0,
-         "applicable_value":0,
-         "deposit_id":220,
-         "deposit":{
-            "id":220,
-            "balance":1000,
-            "type":{
-               "id":5,
-               "title":"депозит 1"
-            }
-         }
-      }
-   ]
-}
-
-# Group Транзакции оплаты лояльностью
-<a name="loyalty-transactions"></a>
-
-Объект Транзакции оплаты лояльностью имеет следующую структуру:
-
-| Поле             | Тип              | Описание                 |
-| -----------------| ---------------- | ------------------------ |
-|  id           | integer             | ID Транзакции лояльности |
-|  document_id  | integer        | ID документа            |
-|  sale_item_id | integer | ID проданной единицы |
-|  sale_item_type | string | Тип проданной единицы  |
-|  amount | float | Сумма транзакции |
-|  type_id | integer | ID типа транзакции |
-|  created_at | string |  Дата создания |
-|  chain | object |   |
-|  chain.id | integer | ID сети салонов |
-|  chain.title | string | Название сети салонов |
-|  type | object | [Тип транзакции](#loyalty-transactions-types) |
-|  type.id | integer | ID типа транзакции |
-|  type.title | string | Название типа транзакции |
-|  deposit | object(optional) | Связанная сущность (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_card | object(optional) | Связанная сущность (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_program | object(optional) | Связанная сущность (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_certificate | object(optional) | Связанная сущность (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_abonement | object(optional) | Связанная сущность (зависит от [типа](#loyalty-transactions-types)) |
-|  deposit_transaction_id | integer(optional) | ID транзакции (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_card_id | integer(optional) | ID карты лояльности (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_program_id | integer(optional) | ID программы лояльности (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_certificate_id | integer(optional) | ID сертификата (зависит от [типа](#loyalty-transactions-types)) |
-|  loyalty_abonement_id | integer(optional) | ID абонемента (зависит от [типа](#loyalty-transactions-types)) |
-
-<a name="loyalty-transactions-types"></a>
-Все типы транзакций оплаты лояльностью:
-
-| Значение  | Описание |
-| ------------- | ------------- |
-|  1  | Скидка по акции |
-|  2  | Начисление по программам лояльности |
-|  3  | Списание с карты лояльности |
-|  4  | Начисление по реферальной программе |
-|  5  | Ручное пополнение |
-|  6  | Ручное списание  |
-|  7  | Списание просроченных баллов |
-|  8  | Списание с сертификата |
-|  9  | Использование абонемента |
-|  10 | Перерасчет стоимости по абонементу |
-|  11 | Списание с личного счета |
-
-### Удаление транзакции оплаты лояльностью [DELETE /company/{salon_id}/sale/{operation_id}/payment/loyalty_transaction/{paymentTransactionId}]
-
-В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
-
-+ Parameters
-    + salon_id (required, integer) - ID салона
-    + operation_id: (required, integer) - ID операции продажи
-    + payment_transaction_id: (required, integer) - ID транзакции
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer partner_token, User user_token
-
-+ Response 200 (application/json)
-
-    + Body
-
-{
-   "state":{
-      "items":[
-         {
-            "id":2181520,
-            "type":"good",
-            "title":"товар 12",
-            "amount":1,
-            "default_cost_per_unit":1300,
-            "default_cost_total":1300,
-            "client_discount_percent":10,
-            "cost_to_pay_total":1170
-         },
-         {
-           "id":22017,
-           "type":"service",
-           "document_id":8200391,
-           "title":"Маникюр",
-           "amount":1,
-           "default_cost_per_unit":500,
-           "default_cost_total":500,
-           "client_discount_percent":10,
-           "cost_to_pay_total":450
-        }
-      ],
-      "loyalty_transactions":[
-      {
-         "id":25042,
-         "document_id":8201102,
-         "sale_item_id":2181521,
-         "sale_item_type":"good",
-         "amount":9.9,
-         "type_id":11,
-         "created_at":"2020-04-30 16:52:24",
-         "deposit_transaction_id":775,
-         "chain":{
-            "id":500,
-            "title":"Сеть YC BE"
-         },
-         "type":{
-            "id":11,
-            "title":"Списание с личного счета"
-         },
-         "deposit":{
-            "id":220,
-            "balance":990.1,
-            "type":{
-               "id":5,
-               "title":"депозит 1"
-            }
-         }
-      },
-      {
-         "id":25043,
-         "document_id":8201102,
-         "sale_item_id":null,
-         "sale_item_type":null,
-         "amount":0.1,
-         "type_id":2,
-         "created_at":"2020-04-30 16:55:21",
-         "loyalty_card_id":185395,
-         "loyalty_program_id":264,
-         "chain":{
-            "id":231,
-            "title":"Yclients."
-         },
-         "type":{
-            "id":2,
-            "title":"Начисление по программам лояльности"
-         },
-         "loyalty_card":{
-            "id":185395,
-            "type_id":265,
-            "number":"0000023100185395",
-            "balance":50.15,
-            "type":{
-               "id":265,
-               "type":"Тест шаблонов программ лояльности"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         },
-         "loyalty_program":{
-            "id":264,
-            "title":"CASHBACK BigBro",
-            "type_id":7,
-            "is_value_percent":true,
-            "type":{
-               "id":7,
-               "title":"Накопительный кэшбэк (оплачено)"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         }
-      },
-      {
-         "id":25050,
-         "document_id":8201102,
-         "sale_item_id":2181521,
-         "sale_item_type":"good",
-         "amount":100,
-         "type_id":8,
-         "created_at":"2020-04-30 18:32:43",
-         "loyalty_certificate_id":339,
-         "chain":{
-            "id":79,
-            "title":"Bank 24"
-         },
-         "type":{
-            "id":8,
-            "title":"Списание с сертификата"
-         },
-         "loyalty_certificate":{
-            "id":339,
-            "balance":0,
-            "applicable_balance":0,
-            "type":{
-               "id":20,
-               "title":"Тестовый сертификат",
-               "is_code_required":true
-            }
-         }
-      }
-   ],
-      "payment_transactions":[
-         {
-            "id":6033940,
-            "document_id":8200904,
-            "sale_item_id":2181442,
-            "sale_item_type":"good",
-            "expense_id":7,
-            "account_id":90218,
-            "amount":32,
-            "created_at":null,
-            "account":{
-                "id":90218,
-                "title":"Наличная касса по умолчанию",
-                "is_cash":true,
-                "is_default": true
-            },
-            "expense":{
-                "id":7,
-                "title":"Продажа товаров"
-            }
-         },
-         {
-            "id":6033941,
-            "document_id":8200904,
-            "sale_item_id":2181442,
-            "sale_item_type":"good",
-            "expense_id":7,
-            "account_id":90218,
-            "amount":27,
-            "created_at":null,
-            "account":{
-               "id":90218,
-               "title":"Наличная касса",
-               "is_cash":true,
-               "is_default": false
-            },
-            "expense":{
-               "id":7,
-               "title":"Продажа товаров"
-            }
-         },
-         {
-             "id": 6034121,
-             "document_id": 8201102,
-             "sale_item_id": 2181521,
-             "sale_item_type": "good",
-             "expense_id": 7,
-             "account_id": 23182,
-             "amount": 43,
-             "account": {
-                 "id": 23182,
-                 "title": "Карты - эквайринг по умолчанию",
-                 "is_cash": false,
-                 "is_default": true
-             },
-             "expense": {
-                 "id": 7,
-                 "title": "Продажа товаров"
-             }
-         },
-         {
-             "id": 6034122,
-             "document_id": 8201102,
-             "sale_item_id": 2181521,
-             "sale_item_type": "good",
-             "expense_id": 7,
-             "account_id": 23182,
-             "amount": 12,
-             "account": {
-                 "id": 23182,
-                 "title": "Карты - эквайринг",
-                 "is_cash": false,
-                 "is_default": false
-             },
-             "expense": {
-                 "id": 7,
-                 "title": "Продажа товаров"
-             }
-         }
-      ]
-   },
-   "kkm_state":{
-      "last_operation_type":1,
-      "transactions":[
-         {
-            "id":2424,
-            "document_id":8200904,
-            "print_date":"2020-04-22 11:53:12",
-            "printed_count":0,
-            "sum":0,
-            "type":{
-               "id":0,
-               "title":"Операция продажи"
-            },
-            "status":{
-               "id":1,
-               "title":"Успешно"
-            },
-            "document":{
-               "id":7215,
-               "type":1,
-               "type_title":"Продажа товара"
-            },
-            "cashier":{
-               "id":746310,
-               "name":"Андрей Панов"
-            }
-         }
-      ]
-   },
-   "payment_methods":[
-      {
-         "slug":"account",
-         "is_applicable":false,
-         "applicable_amount":1170,
-         "applicable_count":0,
-         "applicable_value":0,
-         "account_id":36785,
-         "account":{
-            "id":36785,
-            "title":"Касса - безналичные",
-            "is_cash":false
-         }
-      },
-      {
-         "slug":"loyalty_card",
-         "is_applicable":true,
-         "applicable_amount":51.65,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_card_id":19283,
-         "loyalty_card":{
-            "id":19283,
-            "type_id":155,
-            "number":"0000031200019283",
-            "balance":51.65,
-            "type":{
-               "id":155,
-               "type":"скидочная карта"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         }
-      },
-      {
-         "slug":"loyalty_program",
-         "is_applicable":true,
-         "applicable_amount":234,
-         "applicable_count":0,
-         "applicable_value":20,
-         "loyalty_card_id":19283,
-         "loyalty_program_id":183,
-         "loyalty_card":{
-            "id":19283,
-            "type_id":155,
-            "number":"0000031200019283",
-            "balance":51.65,
-            "type":{
-               "id":155,
-               "type":"скидочная карта"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         },
-         "loyalty_program":{
-            "id":183,
-            "title":"скидка постоянная",
-            "type_id":1,
-            "is_value_percent":true,
-            "type":{
-               "id":1,
-               "title":"Фиксированная скидка"
-            },
-            "chain":{
-               "id":312,
-               "title":"Trinity group"
-            }
-         }
-      },
-      {
-         "slug":"loyalty_abonement",
-         "is_applicable":false,
-         "applicable_amount":0,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_abonement_id":27,
-         "loyalty_abonement":{
-            "id":27,
-            "is_united_balance":false,
-            "united_balance":0,
-            "type":{
-               "id":7,
-               "title":"абонемент на 5000 QA net",
-               "is_code_required":true
-            },
-            "balance_container":{
-               "links":[
-                  {
-                     "count":5,
-                     "category":{
-                        "id":229680,
-                        "category_id":1,
-                        "title":"Маникюр"
-                     }
-                  },
-                  {
-                     "count":5,
-                     "category":{
-                        "id":429813,
-                        "category_id":429812,
-                        "title":"1 Занятие"
-                     }
-                  }
-               ]
-            }
-         }
-      },
-      {
-         "slug":"loyalty_certificate",
-         "is_applicable":true,
-         "applicable_amount":1170,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_certificate_id":338,
-         "loyalty_certificate":{
-            "id":338,
-            "balance":10000,
-            "applicable_balance":10000,
-            "type":{
-               "id":130,
-               "title":"test",
-               "is_code_required":true
-            }
-         }
-      },
-      {
-         "slug":"referral_loyalty_program",
-         "is_applicable":false,
-         "applicable_amount":0,
-         "applicable_count":0,
-         "applicable_value":0,
-         "loyalty_program_id":424,
-         "loyalty_program":{
-            "id":424,
-            "title":"Фиксированная скидка",
-            "type_id":1,
-            "is_value_percent":true,
-            "type":{
-               "id":1,
-               "title":"Фиксированная скидка"
-            },
-            "chain":{
-               "id":231,
-               "title":"Yclients."
-            }
-         }
-      },
-      {
-         "slug":"deposit",
-         "is_applicable":true,
-         "applicable_amount":9.9,
-         "applicable_count":0,
-         "applicable_value":0,
-         "deposit_id":220,
-         "deposit":{
-            "id":220,
-            "balance":1000,
-            "type":{
-               "id":5,
-               "title":"депозит 1"
-            }
-         }
-      }
-   ]
-}
-
 # Group Операция продажи
 
 Объект операции продажи имеет следующую структуру:
@@ -8663,17 +7719,24 @@ custom_fields: {
 |  loyalty_abonement | object(optional) | Связанная сущность (зависит от [slug](#sale-payment_method-slugs)) |
 
 <a name="sale-payment_method-slugs"></a>
-Все типы методов оплаты:
+Все типы методов оплаты делятся на две группы:
+
+1 - Оплата в кассу:
 
 | Значение  | Описание |
 | ------------- | ------------- |
 |  account  | Оплата в кассу |
+
+2 - Оплата лояльностью:
+
+| Значение  | Описание |
+| ------------- | ------------- |
 |  deposit  | Списание с личного счета |
 |  loyalty_program  | Использование программы лояльности |
 |  loyalty_card  | Списание с карты лояльности |
 |  loyalty_certificate  | Списание с сертификата |
-|  loyalty_abonement  | Использование абонемента |
-|  referral_loyalty_program  | Использование реферальной программы  |
+|  loyalty_abonement  | Использование абонемента (применяется только к [визиту](#visits)) |
+|  referral_loyalty_program  | Использование реферальной программы (применяется только к [визиту](#visits)) |
 
 <a name="sale-sale_item-type"></a>
 Тип **sale_item** имеет следующие поля:
@@ -8689,12 +7752,1951 @@ custom_fields: {
 |  cost_to_pay_total | float | Цена к оплате |
 |  client_discount_percent | float | Процент скидки |
 
-## Получение Операции продажи [/company/{salon_id}/sale/{operation_id}]
+## Работа с операцией продажи [/company/{salon_id}/sale/{operation_id}]
 ### Получение Операции продажи [GET]
 
 + Parameters
     + salon_id (required, integer) - ID салона
     + operation_id: (required, integer) - ID операции продажи
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+{
+   "state":{
+      "items":[
+         {
+            "id":2181520,
+            "type":"good",
+            "title":"товар 12",
+            "amount":1,
+            "default_cost_per_unit":1300,
+            "default_cost_total":1300,
+            "client_discount_percent":10,
+            "cost_to_pay_total":1170
+         },
+         {
+           "id":22017,
+           "type":"service",
+           "document_id":8200391,
+           "title":"Маникюр",
+           "amount":1,
+           "default_cost_per_unit":500,
+           "default_cost_total":500,
+           "client_discount_percent":10,
+           "cost_to_pay_total":450
+        }
+      ],
+      "loyalty_transactions":[
+      {
+         "id":25042,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":9.9,
+         "type_id":11,
+         "created_at":"2020-04-30 16:52:24",
+         "deposit_transaction_id":775,
+         "chain":{
+            "id":500,
+            "title":"Сеть YC BE"
+         },
+         "type":{
+            "id":11,
+            "title":"Списание с личного счета"
+         },
+         "deposit":{
+            "id":220,
+            "balance":990.1,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      },
+      {
+         "id":25043,
+         "document_id":8201102,
+         "sale_item_id":null,
+         "sale_item_type":null,
+         "amount":0.1,
+         "type_id":2,
+         "created_at":"2020-04-30 16:55:21",
+         "loyalty_card_id":185395,
+         "loyalty_program_id":264,
+         "chain":{
+            "id":231,
+            "title":"Yclients."
+         },
+         "type":{
+            "id":2,
+            "title":"Начисление по программам лояльности"
+         },
+         "loyalty_card":{
+            "id":185395,
+            "type_id":265,
+            "number":"0000023100185395",
+            "balance":50.15,
+            "type":{
+               "id":265,
+               "type":"Тест шаблонов программ лояльности"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         },
+         "loyalty_program":{
+            "id":264,
+            "title":"CASHBACK BigBro",
+            "type_id":7,
+            "is_value_percent":true,
+            "type":{
+               "id":7,
+               "title":"Накопительный кэшбэк (оплачено)"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "id":25050,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":100,
+         "type_id":8,
+         "created_at":"2020-04-30 18:32:43",
+         "loyalty_certificate_id":339,
+         "chain":{
+            "id":79,
+            "title":"Bank 24"
+         },
+         "type":{
+            "id":8,
+            "title":"Списание с сертификата"
+         },
+         "loyalty_certificate":{
+            "id":339,
+            "balance":0,
+            "applicable_balance":0,
+            "type":{
+               "id":20,
+               "title":"Тестовый сертификат",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      }
+   ],
+      "payment_transactions":[
+         {
+            "id":6033940,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":32,
+            "created_at":null,
+            "account":{
+                "id":90218,
+                "title":"Наличная касса по умолчанию",
+                "is_cash":true,
+                "is_default": true
+            },
+            "expense":{
+                "id":7,
+                "title":"Продажа товаров"
+            }
+         },
+         {
+            "id":6033941,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":27,
+            "created_at":null,
+            "account":{
+               "id":90218,
+               "title":"Наличная касса",
+               "is_cash":true,
+               "is_default": false
+            },
+            "expense":{
+               "id":7,
+               "title":"Продажа товаров"
+            }
+         },
+         {
+             "id": 6034121,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 43,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг по умолчанию",
+                 "is_cash": false,
+                 "is_default": true
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         },
+         {
+             "id": 6034122,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 12,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг",
+                 "is_cash": false,
+                 "is_default": false
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         }
+      ]
+   },
+   "kkm_state":{
+      "last_operation_type":1,
+      "transactions":[
+         {
+            "id":2424,
+            "document_id":8200904,
+            "print_date":"2020-04-22 11:53:12",
+            "printed_count":0,
+            "sum":0,
+            "type":{
+               "id":0,
+               "title":"Операция продажи"
+            },
+            "status":{
+               "id":1,
+               "title":"Успешно"
+            },
+            "document":{
+               "id":7215,
+               "type":1,
+               "type_title":"Продажа товара"
+            },
+            "cashier":{
+               "id":746310,
+               "name":"Андрей Панов"
+            }
+         }
+      ]
+   },
+   "payment_methods":[
+      {
+         "slug":"account",
+         "is_applicable":false,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "account_id":36785,
+         "account":{
+            "id":36785,
+            "title":"Касса - безналичные",
+            "is_cash":false
+         }
+      },
+      {
+         "slug":"loyalty_card",
+         "is_applicable":true,
+         "applicable_amount":51.65,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_card_id":19283,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_program",
+         "is_applicable":true,
+         "applicable_amount":234,
+         "applicable_count":0,
+         "applicable_value":20,
+         "loyalty_card_id":19283,
+         "loyalty_program_id":183,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         },
+         "loyalty_program":{
+            "id":183,
+            "title":"скидка постоянная",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_abonement",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_abonement_id":27,
+         "loyalty_abonement":{
+            "id":27,
+            "is_united_balance":false,
+            "united_balance":0,
+            "type":{
+               "id":7,
+               "title":"абонемент на 5000 QA net",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            },
+            "balance_container":{
+               "links":[
+                  {
+                     "count":5,
+                     "category":{
+                        "id":229680,
+                        "category_id":1,
+                        "title":"Маникюр"
+                     }
+                  },
+                  {
+                     "count":5,
+                     "category":{
+                        "id":429813,
+                        "category_id":429812,
+                        "title":"1 Занятие"
+                     }
+                  }
+               ]
+            }
+         }
+      },
+      {
+         "slug":"loyalty_certificate",
+         "is_applicable":true,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_certificate_id":338,
+         "loyalty_certificate":{
+            "id":338,
+            "balance":10000,
+            "applicable_balance":10000,
+            "type":{
+               "id":130,
+               "title":"test",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"referral_loyalty_program",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_program_id":424,
+         "loyalty_program":{
+            "id":424,
+            "title":"Фиксированная скидка",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"deposit",
+         "is_applicable":true,
+         "applicable_amount":9.9,
+         "applicable_count":0,
+         "applicable_value":0,
+         "deposit_id":220,
+         "deposit":{
+            "id":220,
+            "balance":1000,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      }
+   ]
+}
+
+## Процесс оплаты [/company/{salon_id}/sale/{operation_id}/payment]
+Оплата может быть произведена следующими способами:
+
+1. Оплата в кассу
+2. Оплата лояльностью
+
+Способ определяется передаваемым в запросе параметром - "**slug**" (string), который определяет [метод оплаты](#sale-payment_method-slugs).
+В запросе также необходимо указать ID связанной с методом оплаты сущности.
+В случае оплаты сертификатом и абонементом, если у пользователя нет права "*Оплата сертификатом и абонементом без кода*" в теле запроса
+также необходимо передать пераметр "**number**" (string), содержащий код сертификата/абонемента.
+
+### Оплата в кассу [POST]
+
+В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "account",
+                    account_id: 90218
+                },
+                amount: 123
+            }
+        }
+
+
++ Response 200 (application/json)
+
+    + Body
+
+{
+   "state":{
+      "items":[
+         {
+            "id":2181520,
+            "type":"good",
+            "title":"товар 12",
+            "amount":1,
+            "default_cost_per_unit":1300,
+            "default_cost_total":1300,
+            "client_discount_percent":10,
+            "cost_to_pay_total":1170
+         },
+         {
+           "id":22017,
+           "type":"service",
+           "document_id":8200391,
+           "title":"Маникюр",
+           "amount":1,
+           "default_cost_per_unit":500,
+           "default_cost_total":500,
+           "client_discount_percent":10,
+           "cost_to_pay_total":450
+        }
+      ],
+      "loyalty_transactions":[
+      {
+         "id":25042,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":9.9,
+         "type_id":11,
+         "created_at":"2020-04-30 16:52:24",
+         "deposit_transaction_id":775,
+         "chain":{
+            "id":500,
+            "title":"Сеть YC BE"
+         },
+         "type":{
+            "id":11,
+            "title":"Списание с личного счета"
+         },
+         "deposit":{
+            "id":220,
+            "balance":990.1,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      },
+      {
+         "id":25043,
+         "document_id":8201102,
+         "sale_item_id":null,
+         "sale_item_type":null,
+         "amount":0.1,
+         "type_id":2,
+         "created_at":"2020-04-30 16:55:21",
+         "loyalty_card_id":185395,
+         "loyalty_program_id":264,
+         "chain":{
+            "id":231,
+            "title":"Yclients."
+         },
+         "type":{
+            "id":2,
+            "title":"Начисление по программам лояльности"
+         },
+         "loyalty_card":{
+            "id":185395,
+            "type_id":265,
+            "number":"0000023100185395",
+            "balance":50.15,
+            "type":{
+               "id":265,
+               "type":"Тест шаблонов программ лояльности"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         },
+         "loyalty_program":{
+            "id":264,
+            "title":"CASHBACK BigBro",
+            "type_id":7,
+            "is_value_percent":true,
+            "type":{
+               "id":7,
+               "title":"Накопительный кэшбэк (оплачено)"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "id":25050,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":100,
+         "type_id":8,
+         "created_at":"2020-04-30 18:32:43",
+         "loyalty_certificate_id":339,
+         "chain":{
+            "id":79,
+            "title":"Bank 24"
+         },
+         "type":{
+            "id":8,
+            "title":"Списание с сертификата"
+         },
+         "loyalty_certificate":{
+            "id":339,
+            "balance":0,
+            "applicable_balance":0,
+            "type":{
+               "id":20,
+               "title":"Тестовый сертификат",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      }
+   ],
+      "payment_transactions":[
+         {
+            "id":6033940,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":32,
+            "created_at":null,
+            "account":{
+                "id":90218,
+                "title":"Наличная касса по умолчанию",
+                "is_cash":true,
+                "is_default": true
+            },
+            "expense":{
+                "id":7,
+                "title":"Продажа товаров"
+            }
+         },
+         {
+            "id":6033941,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":27,
+            "created_at":null,
+            "account":{
+               "id":90218,
+               "title":"Наличная касса",
+               "is_cash":true,
+               "is_default": false
+            },
+            "expense":{
+               "id":7,
+               "title":"Продажа товаров"
+            }
+         },
+         {
+             "id": 6034121,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 43,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг по умолчанию",
+                 "is_cash": false,
+                 "is_default": true
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         },
+         {
+             "id": 6034122,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 12,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг",
+                 "is_cash": false,
+                 "is_default": false
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         }
+      ]
+   },
+   "kkm_state":{
+      "last_operation_type":1,
+      "transactions":[
+         {
+            "id":2424,
+            "document_id":8200904,
+            "print_date":"2020-04-22 11:53:12",
+            "printed_count":0,
+            "sum":0,
+            "type":{
+               "id":0,
+               "title":"Операция продажи"
+            },
+            "status":{
+               "id":1,
+               "title":"Успешно"
+            },
+            "document":{
+               "id":7215,
+               "type":1,
+               "type_title":"Продажа товара"
+            },
+            "cashier":{
+               "id":746310,
+               "name":"Андрей Панов"
+            }
+         }
+      ]
+   },
+   "payment_methods":[
+      {
+         "slug":"account",
+         "is_applicable":false,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "account_id":36785,
+         "account":{
+            "id":36785,
+            "title":"Касса - безналичные",
+            "is_cash":false
+         }
+      },
+      {
+         "slug":"loyalty_card",
+         "is_applicable":true,
+         "applicable_amount":51.65,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_card_id":19283,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_program",
+         "is_applicable":true,
+         "applicable_amount":234,
+         "applicable_count":0,
+         "applicable_value":20,
+         "loyalty_card_id":19283,
+         "loyalty_program_id":183,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         },
+         "loyalty_program":{
+            "id":183,
+            "title":"скидка постоянная",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_abonement",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_abonement_id":27,
+         "loyalty_abonement":{
+            "id":27,
+            "is_united_balance":false,
+            "united_balance":0,
+            "type":{
+               "id":7,
+               "title":"абонемент на 5000 QA net",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            },
+            "balance_container":{
+               "links":[
+                  {
+                     "count":5,
+                     "category":{
+                        "id":229680,
+                        "category_id":1,
+                        "title":"Маникюр"
+                     }
+                  },
+                  {
+                     "count":5,
+                     "category":{
+                        "id":429813,
+                        "category_id":429812,
+                        "title":"1 Занятие"
+                     }
+                  }
+               ]
+            }
+         }
+      },
+      {
+         "slug":"loyalty_certificate",
+         "is_applicable":true,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_certificate_id":338,
+         "loyalty_certificate":{
+            "id":338,
+            "balance":10000,
+            "applicable_balance":10000,
+            "type":{
+               "id":130,
+               "title":"test",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"referral_loyalty_program",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_program_id":424,
+         "loyalty_program":{
+            "id":424,
+            "title":"Фиксированная скидка",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"deposit",
+         "is_applicable":true,
+         "applicable_amount":9.9,
+         "applicable_count":0,
+         "applicable_value":0,
+         "deposit_id":220,
+         "deposit":{
+            "id":220,
+            "balance":1000,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      }
+   ]
+}
+
+### Оплата лояльностью (различными методами) [POST]
+
+В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
+
++ Request Оплата при помощи личного счета - депозита (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "deposit",
+                    deposit_id: 220
+                },
+                amount: 123
+            }
+        }
+
++ Request Оплата при помощи сертификата (application/json)
+ В случае оплаты сертификатом, если у пользователя нет права "*Оплата сертификатом и абонементом без кода*" в теле запроса
+ также необходимо передать пераметр "**number**" (string), содержащий код сертификата.
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "loyalty_certificate",
+                    loyalty_certificate_id: 325
+                },
+                amount: 123,
+                number: "123123"
+            }
+        }
+
+
++ Request Оплата при помощи абонемента - работает только для визита. (application/json)
+ В случае оплаты абонементом, если у пользователя нет права "*Оплата сертификатом и абонементом без кода*" в теле запроса
+ также необходимо передать пераметр "**number**" (string), содержащий код абонемента.
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "loyalty_abonement",
+                    loyalty_abonement_id: 275
+                },
+                number: "123123"
+            }
+        }
+
++ Request Оплата при помощи реферальной программы - работает только для визита (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "referral_loyalty_program",
+                    loyalty_program_id: 717
+                },
+                referrer_phone: "71000004260"
+            }
+        }
+
++ Request Оплата при помощи карты лояльности (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "loyalty_card",
+                    loyalty_card_id: 185395
+                },
+                amount: 123
+            }
+        }
+
++ Request Оплата при помощи программы лояльности (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
+    + Body
+
+        {
+            payment: {
+                method: {
+                    slug: "loyalty_program",
+                    loyalty_program_id: 339,
+                    loyalty_card_id: 185395
+                }
+            }
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+{
+   "state":{
+      "items":[
+         {
+            "id":2181520,
+            "type":"good",
+            "title":"товар 12",
+            "amount":1,
+            "default_cost_per_unit":1300,
+            "default_cost_total":1300,
+            "client_discount_percent":10,
+            "cost_to_pay_total":1170
+         },
+         {
+           "id":22017,
+           "type":"service",
+           "document_id":8200391,
+           "title":"Маникюр",
+           "amount":1,
+           "default_cost_per_unit":500,
+           "default_cost_total":500,
+           "client_discount_percent":10,
+           "cost_to_pay_total":450
+        }
+      ],
+      "loyalty_transactions":[
+      {
+         "id":25042,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":9.9,
+         "type_id":11,
+         "created_at":"2020-04-30 16:52:24",
+         "deposit_transaction_id":775,
+         "chain":{
+            "id":500,
+            "title":"Сеть YC BE"
+         },
+         "type":{
+            "id":11,
+            "title":"Списание с личного счета"
+         },
+         "deposit":{
+            "id":220,
+            "balance":990.1,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      },
+      {
+         "id":25043,
+         "document_id":8201102,
+         "sale_item_id":null,
+         "sale_item_type":null,
+         "amount":0.1,
+         "type_id":2,
+         "created_at":"2020-04-30 16:55:21",
+         "loyalty_card_id":185395,
+         "loyalty_program_id":264,
+         "chain":{
+            "id":231,
+            "title":"Yclients."
+         },
+         "type":{
+            "id":2,
+            "title":"Начисление по программам лояльности"
+         },
+         "loyalty_card":{
+            "id":185395,
+            "type_id":265,
+            "number":"0000023100185395",
+            "balance":50.15,
+            "type":{
+               "id":265,
+               "type":"Тест шаблонов программ лояльности"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         },
+         "loyalty_program":{
+            "id":264,
+            "title":"CASHBACK BigBro",
+            "type_id":7,
+            "is_value_percent":true,
+            "type":{
+               "id":7,
+               "title":"Накопительный кэшбэк (оплачено)"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "id":25050,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":100,
+         "type_id":8,
+         "created_at":"2020-04-30 18:32:43",
+         "loyalty_certificate_id":339,
+         "chain":{
+            "id":79,
+            "title":"Bank 24"
+         },
+         "type":{
+            "id":8,
+            "title":"Списание с сертификата"
+         },
+         "loyalty_certificate":{
+            "id":339,
+            "balance":0,
+            "applicable_balance":0,
+            "type":{
+               "id":20,
+               "title":"Тестовый сертификат",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      }
+   ],
+      "payment_transactions":[
+         {
+            "id":6033940,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":32,
+            "created_at":null,
+            "account":{
+                "id":90218,
+                "title":"Наличная касса по умолчанию",
+                "is_cash":true,
+                "is_default": true
+            },
+            "expense":{
+                "id":7,
+                "title":"Продажа товаров"
+            }
+         },
+         {
+            "id":6033941,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":27,
+            "created_at":null,
+            "account":{
+               "id":90218,
+               "title":"Наличная касса",
+               "is_cash":true,
+               "is_default": false
+            },
+            "expense":{
+               "id":7,
+               "title":"Продажа товаров"
+            }
+         },
+         {
+             "id": 6034121,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 43,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг по умолчанию",
+                 "is_cash": false,
+                 "is_default": true
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         },
+         {
+             "id": 6034122,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 12,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг",
+                 "is_cash": false,
+                 "is_default": false
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         }
+      ]
+   },
+   "kkm_state":{
+      "last_operation_type":1,
+      "transactions":[
+         {
+            "id":2424,
+            "document_id":8200904,
+            "print_date":"2020-04-22 11:53:12",
+            "printed_count":0,
+            "sum":0,
+            "type":{
+               "id":0,
+               "title":"Операция продажи"
+            },
+            "status":{
+               "id":1,
+               "title":"Успешно"
+            },
+            "document":{
+               "id":7215,
+               "type":1,
+               "type_title":"Продажа товара"
+            },
+            "cashier":{
+               "id":746310,
+               "name":"Андрей Панов"
+            }
+         }
+      ]
+   },
+   "payment_methods":[
+      {
+         "slug":"account",
+         "is_applicable":false,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "account_id":36785,
+         "account":{
+            "id":36785,
+            "title":"Касса - безналичные",
+            "is_cash":false
+         }
+      },
+      {
+         "slug":"loyalty_card",
+         "is_applicable":true,
+         "applicable_amount":51.65,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_card_id":19283,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_program",
+         "is_applicable":true,
+         "applicable_amount":234,
+         "applicable_count":0,
+         "applicable_value":20,
+         "loyalty_card_id":19283,
+         "loyalty_program_id":183,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         },
+         "loyalty_program":{
+            "id":183,
+            "title":"скидка постоянная",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_abonement",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_abonement_id":27,
+         "loyalty_abonement":{
+            "id":27,
+            "is_united_balance":false,
+            "united_balance":0,
+            "type":{
+               "id":7,
+               "title":"абонемент на 5000 QA net",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            },
+            "balance_container":{
+               "links":[
+                  {
+                     "count":5,
+                     "category":{
+                        "id":229680,
+                        "category_id":1,
+                        "title":"Маникюр"
+                     }
+                  },
+                  {
+                     "count":5,
+                     "category":{
+                        "id":429813,
+                        "category_id":429812,
+                        "title":"1 Занятие"
+                     }
+                  }
+               ]
+            }
+         }
+      },
+      {
+         "slug":"loyalty_certificate",
+         "is_applicable":true,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_certificate_id":338,
+         "loyalty_certificate":{
+            "id":338,
+            "balance":10000,
+            "applicable_balance":10000,
+            "type":{
+               "id":130,
+               "title":"test",
+               "is_code_required":true
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"referral_loyalty_program",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_program_id":424,
+         "loyalty_program":{
+            "id":424,
+            "title":"Фиксированная скидка",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"deposit",
+         "is_applicable":true,
+         "applicable_amount":9.9,
+         "applicable_count":0,
+         "applicable_value":0,
+         "deposit_id":220,
+         "deposit":{
+            "id":220,
+            "balance":1000,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      }
+   ]
+}
+
+## Транзакциии оплаты в кассу [/company/{salon_id}/sale/{operation_id}/payment/payment_transaction/{payment_transaction_id}]
+<a name="payments-transactions"></a>
+
+Объект Транзакции оплаты в кассу имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  id           | integer             | ID Транзакции оплаты |
+|  document_id  | integer        | ID документа            |
+|  sale_item_id | integer | ID [проданной единицы](#sale-sale_item-type) |
+|  sale_item_type | string | Тип проданной единицы  |
+|  expense_id | integer | ID cтатьи платежа |
+|  account_id | integer | ID кассы |
+|  amount | float | Сумма транзакции |
+|  created_at | string |  Дата создания |
+|  account | [account](#accounts) |  Касса |
+|  account.id | integer |  ID кассы |
+|  account.title | string |  Название кассы |
+|  account.is_cash | boolean |  Является ли наличной |
+|  account.is_default | boolean |  Является ли кассой по умолчанию |
+|  expense | [expense](#payment-transactions-expenses-types) |  Cтатья платежа |
+|  expense.id | integer |  ID статьи платежа |
+|  expense.title | string | Название статьи платежа |
+
+
+<a name="payment-transactions-expenses-types"></a>
+Типы статей платежа
+
+| Значение  | Описание |
+| ------------- | ------------- |
+|  1  | Закупка материалов. Используется при оплате расходных материалов |
+|  2  | Закупка товаров. Используется при оплате товаров для продажи |
+|  3  | Зарплата персонала. Используется при выплате зарплаты персоналу |
+|  4  | Налоги и сборы. Используется при оплате налогов и сборов |
+|  5  | Оказание услуг. Используется при приеме оплаты услуг у клиентов |
+|  6  | Продажа абонементов. Используется при продаже абонементов |
+|  7  | Продажа товаров. Используется при продаже товаров клиентам |
+|  8  | Прочие доходы. Используется для приема прочих оплат |
+|  9  | Прочие расходы. Используется для прочих выплат |
+|  10 | Пополнение счета. Используется при внесении клиентом средств на личный счет |
+|  11 | Комиссия за эквайринг |
+
+### Удаление транзакции оплаты в кассу [DELETE]
+
+В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
+
++ Parameters
+    + salon_id (required, integer) - ID салона
+    + operation_id: (required, integer) - ID операции продажи
+    + payment_transaction_id: (required, integer) - ID транзакции
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+{
+   "state":{
+      "items":[
+         {
+            "id":2181520,
+            "type":"good",
+            "title":"товар 12",
+            "amount":1,
+            "default_cost_per_unit":1300,
+            "default_cost_total":1300,
+            "client_discount_percent":10,
+            "cost_to_pay_total":1170
+         },
+         {
+           "id":22017,
+           "type":"service",
+           "document_id":8200391,
+           "title":"Маникюр",
+           "amount":1,
+           "default_cost_per_unit":500,
+           "default_cost_total":500,
+           "client_discount_percent":10,
+           "cost_to_pay_total":450
+        }
+      ],
+      "loyalty_transactions":[
+      {
+         "id":25042,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":9.9,
+         "type_id":11,
+         "created_at":"2020-04-30 16:52:24",
+         "deposit_transaction_id":775,
+         "chain":{
+            "id":500,
+            "title":"Сеть YC BE"
+         },
+         "type":{
+            "id":11,
+            "title":"Списание с личного счета"
+         },
+         "deposit":{
+            "id":220,
+            "balance":990.1,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      },
+      {
+         "id":25043,
+         "document_id":8201102,
+         "sale_item_id":null,
+         "sale_item_type":null,
+         "amount":0.1,
+         "type_id":2,
+         "created_at":"2020-04-30 16:55:21",
+         "loyalty_card_id":185395,
+         "loyalty_program_id":264,
+         "chain":{
+            "id":231,
+            "title":"Yclients."
+         },
+         "type":{
+            "id":2,
+            "title":"Начисление по программам лояльности"
+         },
+         "loyalty_card":{
+            "id":185395,
+            "type_id":265,
+            "number":"0000023100185395",
+            "balance":50.15,
+            "type":{
+               "id":265,
+               "type":"Тест шаблонов программ лояльности"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         },
+         "loyalty_program":{
+            "id":264,
+            "title":"CASHBACK BigBro",
+            "type_id":7,
+            "is_value_percent":true,
+            "type":{
+               "id":7,
+               "title":"Накопительный кэшбэк (оплачено)"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "id":25050,
+         "document_id":8201102,
+         "sale_item_id":2181521,
+         "sale_item_type":"good",
+         "amount":100,
+         "type_id":8,
+         "created_at":"2020-04-30 18:32:43",
+         "loyalty_certificate_id":339,
+         "chain":{
+            "id":79,
+            "title":"Bank 24"
+         },
+         "type":{
+            "id":8,
+            "title":"Списание с сертификата"
+         },
+         "loyalty_certificate":{
+            "id":339,
+            "balance":0,
+            "applicable_balance":0,
+            "type":{
+               "id":20,
+               "title":"Тестовый сертификат",
+               "is_code_required":true
+            }
+         }
+      }
+   ],
+      "payment_transactions":[
+         {
+            "id":6033940,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":32,
+            "created_at":null,
+            "account":{
+                "id":90218,
+                "title":"Наличная касса по умолчанию",
+                "is_cash":true,
+                "is_default": true
+            },
+            "expense":{
+                "id":7,
+                "title":"Продажа товаров"
+            }
+         },
+         {
+            "id":6033941,
+            "document_id":8200904,
+            "sale_item_id":2181442,
+            "sale_item_type":"good",
+            "expense_id":7,
+            "account_id":90218,
+            "amount":27,
+            "created_at":null,
+            "account":{
+               "id":90218,
+               "title":"Наличная касса",
+               "is_cash":true,
+               "is_default": false
+            },
+            "expense":{
+               "id":7,
+               "title":"Продажа товаров"
+            }
+         },
+         {
+             "id": 6034121,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 43,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг по умолчанию",
+                 "is_cash": false,
+                 "is_default": true
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         },
+         {
+             "id": 6034122,
+             "document_id": 8201102,
+             "sale_item_id": 2181521,
+             "sale_item_type": "good",
+             "expense_id": 7,
+             "account_id": 23182,
+             "amount": 12,
+             "account": {
+                 "id": 23182,
+                 "title": "Карты - эквайринг",
+                 "is_cash": false,
+                 "is_default": false
+             },
+             "expense": {
+                 "id": 7,
+                 "title": "Продажа товаров"
+             }
+         }
+      ]
+   },
+   "kkm_state":{
+      "last_operation_type":1,
+      "transactions":[
+         {
+            "id":2424,
+            "document_id":8200904,
+            "print_date":"2020-04-22 11:53:12",
+            "printed_count":0,
+            "sum":0,
+            "type":{
+               "id":0,
+               "title":"Операция продажи"
+            },
+            "status":{
+               "id":1,
+               "title":"Успешно"
+            },
+            "document":{
+               "id":7215,
+               "type":1,
+               "type_title":"Продажа товара"
+            },
+            "cashier":{
+               "id":746310,
+               "name":"Андрей Панов"
+            }
+         }
+      ]
+   },
+   "payment_methods":[
+      {
+         "slug":"account",
+         "is_applicable":false,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "account_id":36785,
+         "account":{
+            "id":36785,
+            "title":"Касса - безналичные",
+            "is_cash":false
+         }
+      },
+      {
+         "slug":"loyalty_card",
+         "is_applicable":true,
+         "applicable_amount":51.65,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_card_id":19283,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_program",
+         "is_applicable":true,
+         "applicable_amount":234,
+         "applicable_count":0,
+         "applicable_value":20,
+         "loyalty_card_id":19283,
+         "loyalty_program_id":183,
+         "loyalty_card":{
+            "id":19283,
+            "type_id":155,
+            "number":"0000031200019283",
+            "balance":51.65,
+            "type":{
+               "id":155,
+               "type":"скидочная карта"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         },
+         "loyalty_program":{
+            "id":183,
+            "title":"скидка постоянная",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":312,
+               "title":"Trinity group"
+            }
+         }
+      },
+      {
+         "slug":"loyalty_abonement",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_abonement_id":27,
+         "loyalty_abonement":{
+            "id":27,
+            "is_united_balance":false,
+            "united_balance":0,
+            "type":{
+               "id":7,
+               "title":"абонемент на 5000 QA net",
+               "is_code_required":true
+            },
+            "balance_container":{
+               "links":[
+                  {
+                     "count":5,
+                     "category":{
+                        "id":229680,
+                        "category_id":1,
+                        "title":"Маникюр"
+                     }
+                  },
+                  {
+                     "count":5,
+                     "category":{
+                        "id":429813,
+                        "category_id":429812,
+                        "title":"1 Занятие"
+                     }
+                  }
+               ]
+            }
+         }
+      },
+      {
+         "slug":"loyalty_certificate",
+         "is_applicable":true,
+         "applicable_amount":1170,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_certificate_id":338,
+         "loyalty_certificate":{
+            "id":338,
+            "balance":10000,
+            "applicable_balance":10000,
+            "type":{
+               "id":130,
+               "title":"test",
+               "is_code_required":true
+            }
+         }
+      },
+      {
+         "slug":"referral_loyalty_program",
+         "is_applicable":false,
+         "applicable_amount":0,
+         "applicable_count":0,
+         "applicable_value":0,
+         "loyalty_program_id":424,
+         "loyalty_program":{
+            "id":424,
+            "title":"Фиксированная скидка",
+            "type_id":1,
+            "is_value_percent":true,
+            "type":{
+               "id":1,
+               "title":"Фиксированная скидка"
+            },
+            "chain":{
+               "id":231,
+               "title":"Yclients."
+            }
+         }
+      },
+      {
+         "slug":"deposit",
+         "is_applicable":true,
+         "applicable_amount":9.9,
+         "applicable_count":0,
+         "applicable_value":0,
+         "deposit_id":220,
+         "deposit":{
+            "id":220,
+            "balance":1000,
+            "type":{
+               "id":5,
+               "title":"депозит 1"
+            }
+         }
+      }
+   ]
+}
+
+## Транзакции оплаты лояльностью [/company/{salon_id}/sale/{operation_id}/payment/loyalty_transaction/{payment_transaction_id}]
+<a name="loyalty-transactions"></a>
+
+Объект Транзакции оплаты лояльностью имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  id           | integer             | ID Транзакции лояльности |
+|  document_id  | integer        | ID документа            |
+|  sale_item_id | integer | ID проданной единицы |
+|  sale_item_type | string | Тип проданной единицы  |
+|  amount | float | Сумма транзакции |
+|  type_id | integer | ID типа транзакции |
+|  created_at | string |  Дата создания |
+|  chain | object |   |
+|  chain.id | integer | ID сети салонов |
+|  chain.title | string | Название сети салонов |
+|  type | object | [Тип транзакции](#sale-payment_method-slugs) |
+|  type.id | integer | ID типа транзакции |
+|  type.title | string | Название типа транзакции |
+|  deposit | object(optional) | Связанная сущность (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_card | object(optional) | Связанная сущность (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_program | object(optional) | Связанная сущность (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_certificate | object(optional) | Связанная сущность (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_abonement | object(optional) | Связанная сущность (зависит от [типа](#sale-payment_method-slugs)) |
+|  deposit_transaction_id | integer(optional) | ID транзакции (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_card_id | integer(optional) | ID карты лояльности (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_program_id | integer(optional) | ID программы лояльности (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_certificate_id | integer(optional) | ID сертификата (зависит от [типа](#sale-payment_method-slugs)) |
+|  loyalty_abonement_id | integer(optional) | ID абонемента (зависит от [типа](#sale-payment_method-slugs)) |
+
+### Удаление транзакции оплаты лояльностью [DELETE]
+
+В качестве ответа возвращается информация об [Операции продажи](#sale-operation)
+
++ Parameters
+    + salon_id (required, integer) - ID салона
+    + operation_id: (required, integer) - ID операции продажи
+    + payment_transaction_id: (required, integer) - ID транзакции
 
 + Request (application/json)
 
