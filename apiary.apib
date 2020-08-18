@@ -7727,12 +7727,12 @@ custom_fields: {
 |  cost_to_pay_total | float | Цена к оплате |
 |  client_discount_percent | float | Процент скидки |
 
-## Работа с операцией продажи [/company/{salon_id}/sale/{operation_id}]
+## Работа с операцией продажи [/company/{salon_id}/sale/{document_id}]
 ### Получение Операции продажи [GET]
 
 + Parameters
     + salon_id (required, integer) - ID салона
-    + operation_id: (required, integer) - ID операции продажи
+    + document_id: (required, integer) - ID документа продажи
 
 + Request (application/json)
 
@@ -8164,7 +8164,7 @@ custom_fields: {
    ]
 }
 
-## Процесс оплаты [/company/{salon_id}/sale/{operation_id}/payment]
+## Процесс оплаты [/company/{salon_id}/sale/{document_id}/payment]
 Оплата может быть произведена следующими способами:
 
 1. Оплата в кассу
@@ -9164,7 +9164,7 @@ custom_fields: {
    ]
 }
 
-## Транзакциии оплаты в кассу [/company/{salon_id}/sale/{operation_id}/payment/payment_transaction/{payment_transaction_id}]
+## Транзакциии оплаты в кассу [/company/{salon_id}/sale/{document_id}/payment/payment_transaction/{payment_transaction_id}]
 <a name="payments-transactions"></a>
 
 Объект Транзакции оплаты в кассу имеет следующую структуру:
@@ -9212,7 +9212,7 @@ custom_fields: {
 
 + Parameters
     + salon_id (required, integer) - ID салона
-    + operation_id: (required, integer) - ID операции продажи
+    + document_id: (required, integer) - ID документа продажи
     + payment_transaction_id: (required, integer) - ID транзакции
 
 + Request (application/json)
@@ -9633,7 +9633,7 @@ custom_fields: {
    ]
 }
 
-## Транзакции оплаты лояльностью [/company/{salon_id}/sale/{operation_id}/payment/loyalty_transaction/{payment_transaction_id}]
+## Транзакции оплаты лояльностью [/company/{salon_id}/sale/{document_id}/payment/loyalty_transaction/{payment_transaction_id}]
 <a name="loyalty-transactions"></a>
 
 Объект Транзакции оплаты лояльностью имеет следующую структуру:
@@ -9670,7 +9670,7 @@ custom_fields: {
 
 + Parameters
     + salon_id (required, integer) - ID салона
-    + operation_id: (required, integer) - ID операции продажи
+    + document_id: (required, integer) - ID документа продажи
     + payment_transaction_id: (required, integer) - ID транзакции
 
 + Request (application/json)
@@ -12811,6 +12811,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 
 # Group Страны
+<a name="countries"></a>
 
 Объект страны имеет следующие поля:
 
@@ -13941,3 +13942,442 @@ Authorization: Bearer <partner token>
               },
               "meta": []
           }
+
+
+# Group Фискализация чеков
+
+Система YCLIENTS позволяет партнерам реализовывать API фискализации чеков. В систему добавляется партнер, реализовавший этот API.
+После этого у тех пользователей YCLIENTS, которые находятся в той же стране, что и партнер, появляется возможность выбрать
+этого партнера в списке возможных решений для фискализации чеков.
+Для того, чтобы партнер был добавлен в список возможных решений, он должен связаться с YCLIENTS посредством email: **partner@yclients.tech**.
+
+## Процесс фискализации [/https://your-api.url]
+
+YCLIENTS создает [документ продажи](#fiscalization-sale-document), и отправляет его на сервер фискализации по адресу, указанному партнером.
+Отвечая на HTTP-запрос, сервер фискализации должен вернуть HTTP-ответ со статусом **200** в том случае, если документ успешно получен
+и передан в обработку, либо со статусом **400** в случае ошибки.
+Тело ответа должно содержать данные [определенного формата](#fiscalization-response),
+описывающие текущий [статус документа](#fiscalization-response-status).
+При обновлении статуса сервер фискализации должен отправить [callback запрос](#fiscalization-callback) с данными того же [формата](#fiscalization-response).
+
+<a name="fiscalization-sale-document"></a>
+**Документ продажи** имеет следующую структуру:
+
++ Структура документа (json):
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "date": "2020-07-31T14:11:36+04:00",
+            "document_id": 239083104,
+            "type": "sale",
+            "print_receipt": true,
+            "customer": {
+                "email": "customer@example.com",
+                "phone": "91111111111"
+            },
+            "positions": [
+                {
+                    "type": "service",
+                    "title": "Consultation",
+                    "price": 10.5,
+                    "quantity": 1.0,
+                    "discount_amount": 2.5,
+                    "vat": "ru_vat_10",
+                    "payment_method": "payment",
+                    "barcode": "12345"
+                }
+            ],
+            "payments": [
+                {
+                    "type": "card",
+                    "sum": 5.5
+                },
+                {
+                    "type": "cash",
+                    "sum": 4.5
+                },
+                {
+                    "type": "prepaid",
+                    "sum": 0.5
+                }
+            ],
+            "tax": "ru_osn",
+            "cashier": {
+                "uid": "4895-9395-0133195612a4",
+                "name": "John Smith",
+                "position": "Cashier"
+            },
+            "pos": {
+                "enabled": true,
+                "slip_count": 2
+            },
+            "callback_url": "https://yclients.com/api/v1/integration/kkm/callback/",
+            "custom_text": "some custom text"
+        }
+
+**Описание полей структуры документа:**
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  id              | integer          | Уникальный идентификатор документа продажи |
+|  date            | string           | Дата и время отправки документа на печать (в формате ISO-8601) |
+|  document_id     | integer          | Внутренний идентификатор документа в системе YCLIENTS |
+|  type            | enum(string)     | Тип документа ([список возможных значений](#fiscalization-print-request-type)) |
+|  print_receipt   | boolean          | Печатать ли бумажный чек на кассе при фискализации |
+|  customer        | object([Customer](#fiscalization-print-request-customer)) | Сущность клиента |
+|  positions       | Array of objects([Position](#fiscalization-print-request-position)[]) | Список позиций в чеке |
+|  payments        | Array of objects([Payment](#fiscalization-print-request-payment)[]) | Список оплат, применяемых на чек |
+|  tax             | enum(string)     | Тип системы налогообложения (**slug** из [списка систем налогообложения](#fiscalization-tax)) |
+|  cashier         | object([Cashier](#fiscalization-print-request-cashier)) | Сущность кассира |
+|  pos             | object([POS](#fiscalization-print-request-pos)) | Опции для подключенного POS-терминала |
+|  callback_url    | string           | Ссылка для [обновления статуса фискализации](#fiscalization-callback) |
+|  custom_text     | string \| null   | Произвольный текст для печати на чеке |
+
+
+<a name="fiscalization-print-request-type"></a>
+**Тип документа**
+
+| Значение  | Описание      |
+| --------- | ------------- |
+|  sale     | Приход        |
+|  return   | Возврат прихода |
+
+
+<a name="fiscalization-print-request-customer"></a>
+**Сущность клиента** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  email           | string \| null   | E-mail клиента           |
+|  phone           | string \| null   | Телефон клиента          |
+
+
+<a name="fiscalization-print-request-position"></a>
+**Позиция в чеке** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  type            | enum(string)     | Тип позиции ("**service**" — услуга / "**commodity**" — товар / "**payment**" — платеж) |
+|  title           | string           | Название позиции |
+|  price           | float            | Цена позиции с точностью 2 знака после запятой |
+|  quantity        | float            | Количество |
+|  discount_amount | float            | Скидка, примененная к позиции с точностью 2 знака после запятой |
+|  vat             | enum(string)     | Тип НДС (**slug** из [списка НДС](#fiscalization-vat)) |
+|  payment_method  | enum(string)     | Признак расчета ("**payment**" — оплата / "**prepayment**" — предоплата) |
+|  barcode         | string \| null   | Штрихкод товара |
+
+
+<a name="fiscalization-print-request-payment"></a>
+**Оплата, применяемая на чек**, имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  type            | enum(string)     | Тип оплаты ("**card**" - безналичная оплата / "**cash**" — оплата наличными / "**prepaid**" — предварительная оплата) |
+|  sum             | float            | Сумма оплаты с точностью 2 знака после запятой |
+
+
+<a name="fiscalization-print-request-cashier"></a>
+**Сущность кассира** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  id              | string           | Уникальный идентификатор кассира |
+|  name            | string           | Имя кассира              |
+|  position        | string           | Должность кассира (максимальная длина строки – 64 символа) |
+
+
+<a name="fiscalization-print-request-pos"></a>
+**Опции для подключенного POS-терминала** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  enabled         | boolean          | Надо ли перед фискализацией принять карту через POS-терминал |
+|  slip_count      | integer          | Количество чеков, которые необходимо распечатать после успешной транзакции по POS-терминалу |
+
+
+<a name="fiscalization-response"></a>
+**Ответ**, описывающий текущий статус документа, должен содержать идентификатор документа, текущий статус фискализации,
+соответствующий статусу [код ответа](#fiscalization-response-code),
+а также произвольное сообщение, которое может быть показано пользователю или использовано для отладки (например, сообщние об ошибке).
+
+**Ответ** должен иметь следующую структуру:
+
++ Структура ответа (json):
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "status": "error",
+            "code": 2002,
+            "message": "Кассовое оборудование недоступно по причине..."
+        }
+
+**Описание полей структуры ответа:**
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  id              | integer          | Уникальный идентификатор [документа продажи](#fiscalization-sale-document) |
+|  status          | enum(string)     | Статус печати чека ([список возможных значений](#fiscalization-response-status)) |
+|  code            | enum(integer)    | Код ошибки ([список возможных значений](#fiscalization-response-code)) |
+|  message         | string           | Детальное сообщние, которое может быть показано пользователю (например, сообщние об ошибке) |
+
+
+<a name="fiscalization-response-status"></a>
+**Статус печати чека**
+
+Статус **pending** должен быть отправлен в ответ на запрос фискализации документа в том случае, если документ успешно получен и находится в обработке.
+Статус **success** может быть отправлен в [callback](#fiscalization-callback) только при обновлении статуса документа, уже находящегося в статусе **pending**.
+В случае ошибки статус **error** может быть отправлен как в ответ на запрос фискализации документа, так и в [callback](#fiscalization-callback)
+
+| Значение  | Описание      |
+| --------- | ------------- |
+|  success  | Документ успешно фискализирован (отрпавляется в [callback](#fiscalization-callback)) |
+|  pending  | Документ получен и находится в обработке (отправляется в ответ на запрос фискализации документа) |
+|  error    | Произошла ошибка |
+
+
+<a name="fiscalization-response-code"></a>
+**Код ошибки** (код результата обработки запроса)
+
+| Значение  | Соответсвует статусу   | Описание      |
+| --------- | ---------------------- | ------------- |
+|  0        | "success" \| "pending" | Без ошибок    |
+|  1001     | "error"                | Ошибка данных документа |
+|  1002     | "error"                | Ошибка в позициях документа |
+|  1003     | "error"                | Ошибка в оплатах документа |
+|  1004     | "error"                | Ошибка в данных клиента |
+|  1005     | "error"                | Ошибка в данных кассира |
+|  2001     | "error"                | Ошибка кассового оборудования |
+|  2002     | "error"                | Кассовое оборудование недоступно |
+
+### Пример запроса на фискализацию документа [POST]
+
++ Request (application/json)
+
+    + Body
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "date": "2020-07-31T14:11:36+04:00",
+            "document_id": 239083104,
+            "type": "sale",
+            "print_receipt": true,
+            "customer": {
+                "email": "customer@example.com",
+                "phone": "91111111111"
+            },
+            "positions": [
+                {
+                    "type": "service",
+                    "title": "Consultation",
+                    "price": 13.19,
+                    "quantity": 1,
+                    "discount_amount": 2.54,
+                    "vat": "ru_vat_10",
+                    "payment_method": "payment",
+                    "barcode": "12345"
+                }
+            ],
+            "payments": [
+                {
+                    "type": "card",
+                    "sum": 5.55
+                },
+                {
+                    "type": "cash",
+                    "sum": 4.55
+                },
+                {
+                    "type": "prepaid",
+                    "sum": 0.55
+                }
+            ],
+            "tax": "ru_osn",
+            "cashier": {
+                "uid": "4895-9395-0133195612a4",
+                "name": "John Smith",
+                "position": "Cashier"
+            },
+            "pos": {
+                "enabled": true,
+                "slip_count": 2
+            },
+            "callback_url": "https://yclients.com/api/v1/integration/kkm/callback/",
+            "custom_text": "some custom text"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "status": "success",
+            "code": 0,
+            "message": "OK"
+        }
+
+## Callback обновления статуса документа [/integration/kkm/callback/]
+<a name="fiscalization-callback"></a>
+
+При обновлении статуса документа сервер фискализации должен отправить HTTP-запрос с данными [определенного формата](#fiscalization-response) на адрес,
+указанный в поле "**callback_url**" [документа](#fiscalization-sale-document).
+
+### Пример запроса в случае успешной фискализации [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
+    + Body
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "status": "success",
+            "code": 0,
+            "message": "OK"
+        }
+
++ Response 200 (application/json)
+
+### Пример запроса в случае ошибки [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
+    + Body
+
+        {
+            "id": "d72fece5-6825-4895-9395-0133195612a4",
+            "status": "error",
+            "code": 2002,
+            "message": "Кассовое оборудование недоступно по причине..."
+        }
+
++ Response 200 (application/json)
+
+
+## Системы налогообложения и НДС [/integration/kkm/references/tax_system/{countryId}]
+
+
+Список доступных для страны **систем налогообложения** и **НДС** можно получить, сделав запрос с указанием индентификатора страны, для которой необходимо получить список.
+Идентификатор страны можно получить из [списка стран](#countries).
+
+Список представляет собой массив [систем налогообложения](#fiscalization-tax) со вложенным массивом [НДС](#fiscalization-vat) для каждой системы налогообложения.
+
+<a name="fiscalization-tax"></a>
+**Cистема налогообложения** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  title           | string           | Название системы налогообложения |
+|  slug            | string           | Кодовое название системы налогообложения |
+|  vats            | Array of objects([Vat](#fiscalization-vat)[]) | Список доступных НДС для системы налогообложения |
+
+<a name="fiscalization-vat"></a>
+**НДС** имеет следующую структуру:
+
+| Поле             | Тип              | Описание                 |
+| -----------------| ---------------- | ------------------------ |
+|  title           | string           | Название НДС             |
+|  slug            | string           | Кодовое название НДС     |
+
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + countryId: `1` (required, number) - ID страны
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "title": "Общая ОСН",
+                    "slug": "ru_osn",
+                    "vats": [
+                        {
+                            "title": "0%",
+                            "slug": "ru_vat_0"
+                        },
+                        {
+                            "title": "10%",
+                            "slug": "ru_vat_10"
+                        },
+                        {
+                            "title": "20%",
+                            "slug": "ru_vat_20"
+                        },
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                },
+                {
+                    "title": "Упрощенная УСН (Доход)",
+                    "slug": "ru_usn",
+                    "vats": [
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                },
+                {
+                    "title": "Упрощенная УСН (Доход минус Расход)",
+                    "slug": "ru_usnr",
+                    "vats": [
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                },
+                {
+                    "title": "Единый налог на вмененный доход ЕНВД",
+                    "slug": "ru_envd",
+                    "vats": [
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                },
+                {
+                    "title": "Единый сельскохозяйственный налог ЕСН",
+                    "slug": "ru_esn",
+                    "vats": [
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                },
+                {
+                    "title": "Патентная система налогообложения",
+                    "slug": "ru_psn",
+                    "vats": [
+                        {
+                            "title": "не облагается",
+                            "slug": "ru_vat_none"
+                        }
+                    ]
+                }
+            ],
+            "meta": {
+                "count": 6
+            }
+        }
