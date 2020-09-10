@@ -368,6 +368,58 @@ API позволяет работать с основными сущностям
             + `service_amount` (string) - по стоимости оказанных услуг
             + `paid_in_cash` (string) - по оплаченным услугам для записей со статусом "Клиент пришел"
 
+## SaleFilter (object)
++ type: 'sale' (required, string)
+    Поиск по продажам
++ state: (object, required)
+    + goods: (optional, object)
+        + good_ids: `1` (optional, array[number])
+            Список идентификаторов товаров
+        + good_category_ids: `1` (optional, array[number])
+            Список идентификаторов категорий товаров
+    + good_sale_date: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата продажи товара - начало поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата продажи товара - конец поискового периода (формат гггг-мм-дд)
+    + abonement_types: (optional, object)
+        + value: `1` (required, array[number])
+            Список идентификаторов типов абонемента
+    + abonement_sale_date: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата продажи абонемента - начало поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата продажи абонемента - конец поискового периода (формат гггг-мм-дд)
+    + abonement_expire_date: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата сгорания абонемента - начало поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата сгорания абонемента - конец поискового периода (формат гггг-мм-дд)
+    + abonement_status: (optional, object)
+        + value: `true` (required, boolean)
+            Использован ли абонемент? true - использован, false - не использован
+    + certificate_types: (optional, object)
+        + value: `1` (required, array[number])
+            Список идентификаторов типов сертификата
+    + certificate_sale_date: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата продажи сертификата - начало поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата продажи сертификата - конец поискового периода (формат гггг-мм-дд)
+    + certificate_expire_date: (optional, object)
+        + from: `1985-03-22` (optional, string)
+            Дата сгорания сертификата - начало поискового периода (формат гггг-мм-дд)
+        + to: `1985-03-23` (optional, string)
+            Дата сгорания сертификата - конец поискового периода (формат гггг-мм-дд)
+    + certificate_balance: (optional, object)
+        + from: `99.9` (optional, number)
+            Баланс абонемента - минимальное значение
+        + to: `500.5` (optional, number)
+            Баланс абонемента - максимальное значение
+    + certificate_status: (optional, object)
+        + value: `true` (required, boolean)
+            Использован ли сертификата? true - использован, false - не использован
+
 ## ClientFilter (object)
 + type: 'client' (required, string)
     Частный случай поиска с использованием любых существующих фильтров
@@ -392,6 +444,7 @@ API позволяет работать с основными сущностям
 + (ClientCategoryFilter, optional)
 + (ClientHasMobileAppFilter, optional)
 + (RecordFilter, optional)
++ (SaleFilter, optional)
 + (SoldAmountFilter, optional)
 + (ClientSexFilter, optional)
 + (ClientFilter, optional)
@@ -11466,6 +11519,179 @@ YCLIENTS поддерживает уведомления о создании, и
               },
             ]
 
+## Список категорий товаров по идентификатору [/goods_categories/multiple/{company_id}?ids[]={id}]
+### Получить список категорий товаров [GET]
++ Parameters
+
+    + company_id (required, number) - ID компании
+    + id: 1 (optional, number) - ID товарной категории (можно указать несколько дополнительными параметрами `&ids[]={id}`
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              {
+                "id": "1",
+                "title": "Категория 1",
+              },
+              {
+                "id": "2",
+                "title": "Категория 2",
+              },
+            ]
+
+
+## Список товаров и товарных категорий [/goods/search/{company_id}?term={search_term}&count={max_count}]
+
+Список **товаров и товарных категорий** можно получить, сделав запрос с указанием индентификатора филиала.
+Список можно отфильтровать по названию или артикулу категории товаров, по названию, артикулу или штрихкоду товара, передав параметр `search_term`.
+Количество результатов ограничивается параметром `max_count`.
+
+Если `search_term` не передан, выводится список корневых категорий филиала без учета `max_count`. Если `search_term` передан, сначала производится поиск по категориям, затем (если найдено меньше, чем `max_count`) - по товарам
+
+Список представляет собой массив [элементов дерева товаров](#good-category-tree-node).
+
+<a name="good-category-tree-node"></a>
+**Элемент дерева товаров** имеет следующую структуру:
+
+| Поле          | Тип     | Описание                                                                                    |
+| --------------| ------- | ------------------------------------------------------------------------------------------- |
+|  parent_id    | number  | Идентификатор родительского элемента (0 для корневых элементов)                             |
+|  item_id      | number  | Идентификатор товара (0, если элемент - категория)                                          |
+|  category_id  | number  | Идентификатор товарной категории (0, если элемент - товар)                                  |
+|  title        | string  | Название товара или товарной категории                                                      |
+|  is_chain     | boolean | Является ли элемент привязанным к сети? true - элемент привязан к сети, false - не привязан |
+|  is_category  | boolean | Является ли элемент категорией? true - категория, false - товар                             |
+|  is_item      | boolean | Является ли элемент товаром? true - товар, false - категория                                |
+
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + search_term (optional, string) - поисковый запрос по названию, артикулу или штрихкоду
+    + max_count: (optional, number) - количество выводимых строк на странице. Максимум 100
+        + Default: `25`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "parent_id": 0,
+                    "item_id": 0,
+                    "category_id": 123,
+                    "title": "Корневая категория 1",
+                    "is_chain": true,
+                    "is_category": true,
+                    "is_item": false
+                },
+                {
+                    "parent_id": 0,
+                    "item_id": 0,
+                    "category_id": 456,
+                    "title": "Корневая категория 2",
+                    "is_chain": true,
+                    "is_category": true,
+                    "is_item": false
+                }
+            ],
+            "meta": {
+                "count": 2
+            }
+        }
+
+
+## Состав товарной категории [/goods/category_node/{company_id}/{category_id}?page={page}&count={count}]
+
+Информацию по товарной категории и ее потомкам можно получить, сделав запрос с указанием индентификатора филиала и товарной категории.
+Поддерживается постраничный вывод, задаваемый параметрами `page` и `count`.
+
+**Состав товарной категории** имеет следующую структуру:
+
+| Поле            | Тип     | Описание                                                                                            |
+| ----------------| ------- | --------------------------------------------------------------------------------------------------- |
+|  parent_id      | number  | Идентификатор родительского элемента (0 для корневых элементов)                                     |
+|  item_id        | number  | Идентификатор товара (всегда 0)                                                                     |
+|  category_id    | number  | Идентификатор товарной категории                                                                    |
+|  title          | string  | Название товарной категории                                                                         |
+|  is_chain       | boolean | Является ли элемент привязанным к сети? true - элемент привязан к сети, false - не привязан         |
+|  is_category    | boolean | Является ли элемент категорией? всегда true                                                         |
+|  is_item        | boolean | Является ли элемент товаром? всегда false                                                           |
+|  children       | Array of objects([Элемент дерева товаров](#good-category-tree-node)) | Дочерние элементы товарной категории |
+|  children_count | number  | Полное число дочерних товаров и категорий (без рекурсии)                                            |
+
+
+### Пример запроса на получение состава категории [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + category_id (required, number) - ID товарной категории
+    + page: 1 (optional, number) - номер страницы
+    + count: (optional, number) - количество выводимых товаров на странице. Максимум 1000
+        + Default: `1000`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": {
+                "parent_id": 0,
+                "item_id": 0,
+                "category_id": 123,
+                "title": "Корневая категория 1",
+                "is_chain": false,
+                "is_category": true,
+                "is_item": false,
+                "children": [
+                    {
+                       "parent_id": 123,
+                       "item_id": 0,
+                       "category_id": 456,
+                       "title": "Дочерняя категория",
+                       "is_chain": false,
+                       "is_category": true,
+                       "is_item": false
+                    },
+                    {
+                       "parent_id": 123,
+                       "item_id": 789,
+                       "category_id": 0,
+                       "title": "Дочерний товар",
+                       "is_chain": false,
+                       "is_category": false,
+                       "is_item": true
+                    }
+                ],
+                "children_count": 2
+            }
+        }
+
+
+
 # Group Технологические карты и расходники
 
 Объект технологической карты имеет следующие поля:
@@ -13947,6 +14173,291 @@ Authorization: Bearer <partner token>
                 "message": "Не найдено"
             }
         }
+
+## Список доступных типов абонементов [/company/{company_id}/loyalty/abonement_types/search?title={title}&page={page}&page_size={page_size}]
+
+Список **типов абонементов**, доступных в филиале, можно получить, сделав запрос с указанием индентификатора филиала.
+Список можно отфильтровать по названию типа абонемента, передав параметр `title`.
+Поддерживается постраничный вывод, задаваемый параметрами `page` и `page_size`.
+
+Список представляет собой массив [типов абонементов](#loyalty-abonement-type).
+
+<a name="loyalty-abonement-type"></a>
+**Тип абонемента** имеет следующую структуру:
+
+| Поле                           | Тип     | Описание                                                                                                                         |
+| -------------------------------| ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+|  id                            | number  | Идентификатор типа абонемента                                                                                                    |
+|  title                         | string  | Название типа абонемента                                                                                                         |
+|  allow_freeze                  | boolean | Допускается ли заморозка абонементов? true - допускается, false - не допускается                                                 |
+|  freeze_limit                  | number  | Максимальный общий период заморозки (дни)                                                                                        |
+|  salon_group_id                | number  | Идентификатор сети, в которой действует тип абонемента                                                                           |
+|  period                        | number  | Срок действия абонемента (0, если не задан)                                                                                      |
+|  period_unit_id                | number  | Единица измерения срока действия абонемента ([список возможных значений](#loyalty-abonement-expiration-unit), если не задан - 0) |
+|  is_allow_empty_code           | boolean | Разрешить продажу абонемента без кода? true - разрешить, false - не разрешать                                                    |
+|  is_united_balance             | boolean | Общий или раздельный баланс абонемента: true - общий, false - раздельный                                                         |
+|  united_balance_services_count | number  | Количество посещений для общего баланса                                                                                          |
+
+
+<a name="loyalty-abonement-expiration-unit"></a>
+**Единицы измерения срока действия типа абонемента**
+
+| Значение  | Описание  |
+| --------- | --------- |
+|  1        | День      |
+|  2        | Неделя    |
+|  3        | Месяц     |
+|  4        | Год       |
+
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + title (optional, string) - название типа абонемента
+    + page: 1 (optional, number) - номер страницы
+    + page_size: (optional, number) - количество выводимых строк на странице. Максимум 100
+        + Default: `25`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 12233,
+                    "salon_group_id": 123,
+                    "title": "Абонемент с возможностью заморозки на 14 дней",
+                    "period": 0,
+                    "period_unit_id": 0,
+                    "allow_freeze": true,
+                    "freeze_limit": 14,
+                    "is_allow_empty_code": false,
+                    "is_united_balance": false,
+                    "united_balance_services_count": 0
+                },
+                {
+                    "id": 255789,
+                    "salon_group_id": 456,
+                    "title": "Абонемент на 6 месяцев",
+                    "period": 6,
+                    "period_unit_id": 3,
+                    "allow_freeze": false,
+                    "freeze_limit": 0,
+                    "is_allow_empty_code": false,
+                    "is_united_balance": false,
+                    "united_balance_services_count": 0
+                }
+            ],
+            "meta": {
+                "count": 2
+            }
+        }
+
+## Список типов абонементов по идентификатору [/company/{company_id}/loyalty/abonement_types/fetch?ids[]={id}]
+
+Список **типов абонементов**, доступных в филиале, можно получить, сделав запрос с указанием индентификатора филиала и идентификаторов типов абонементов.
+
+Список представляет собой массив [типов абонементов](#loyalty-abonement-type).
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + id: 1 (optional, number) - ID типа абонемента (можно указать несколько дополнительными параметрами `&ids[]={id}`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 12233,
+                    "salon_group_id": 123,
+                    "title": "Абонемент с возможностью заморозки на 14 дней",
+                    "period": 0,
+                    "period_unit_id": 0,
+                    "allow_freeze": true,
+                    "freeze_limit": 14,
+                    "is_allow_empty_code": false,
+                    "is_united_balance": false,
+                    "united_balance_services_count": 0
+                }
+            ],
+            "meta": {
+                "count": 1
+            }
+        }
+
+## Список доступных типов сертификатов [/company/{company_id}/loyalty/certificate_types/search?title={title}&page={page}&page_size={page_size}]
+
+Список **типов сертификатов**, доступных в филиале, можно получить, сделав запрос с указанием индентификатора филиала.
+Список можно отфильтровать по названию типа сертификата, передав параметр `title`.
+Поддерживается постраничный вывод, задаваемый параметрами `page` и `page_size`.
+
+Список представляет собой массив [типов сертификатов](#loyalty-certificate-type).
+
+<a name="loyalty-certificate-type"></a>
+**Тип сертификата** имеет следующую структуру:
+
+| Поле                        | Тип     | Описание                                                                                                                                              |
+| ----------------------------| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  id                         | number  | Идентификатор типа сертификата                                                                                                                        |
+|  title                      | string  | Название типа сертификата                                                                                                                             |
+|  balance                    | number  | Номинал сертификата                                                                                                                                   |
+|  is_multi                   | boolean | Тип списания: true - многократное списание, false - однократное списание                                                                              |
+|  company_group_id           | number  | Идентификатор сети, в которой действует тип сертификата                                                                                               |
+|  item_type_id               | number  | Ограничение применения ([список возможных значений](#loyalty-certificate-item-type))                                                                  |
+|  expiration_type_id         | number  | Ограничение срока действия ([список возможных значений](#loyalty-certificate-expiration-type))                                                        |
+|  expiration_date            | string  | Фиксированная дата сгорания в формате ISO8601 (null, если не задана)                                                                                  |
+|  expiration_timeout         | number  | Срок действия сертификата с момента продажи (0, если не задан)                                                                                        |
+|  expiration_timeout_unit_id | number  | Единица измерения срока действия сертификата с момента продажи ([список возможных значений](#loyalty-certificate-expiration-unit), если не задан - 0) |
+|  is_allow_empty_code        | boolean | Разрешить продажу сертификата без кода? true - разрешить, false - не разрешать                                                                        |
+
+
+<a name="loyalty-certificate-item-type"></a>
+**Ограничение применения типа сертификата**
+
+| Значение  | Описание                        |
+| --------- | ------------------------------- |
+|  0        | Без ограничений                 |
+|  1        | Любые услуги без товаров        |
+|  2        | Любые товары без услуг          |
+|  3        | Некоторые услуги без товаров    |
+|  4        | Некоторые услуги и любые товары |
+
+
+<a name="loyalty-certificate-expiration-type"></a>
+**Ограничение срока действия типа сертификата**
+
+| Значение  | Описание                                      |
+| --------- | --------------------------------------------- |
+|  0        | Без ограничения срока действия                |
+|  1        | Фиксированная дата для всех экземпляров       |
+|  2        | Фиксированный срок действия с момента продажи |
+
+<a name="loyalty-certificate-expiration-unit"></a>
+**Единицы измерения срока действия типа сертификата**
+
+| Значение  | Описание  |
+| --------- | --------- |
+|  1        | День      |
+|  2        | Неделя    |
+|  3        | Месяц     |
+|  4        | Год       |
+
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + title (optional, string) - название типа сертификата
+    + page: 1 (optional, number) - номер страницы
+    + page_size: (optional, number) - количество выводимых строк на странице. Максимум 100
+        + Default: `25`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 1,
+                    "title": "Сертификат с фиксированной датой сгорания без ограничений применения",
+                    "balance": 10,
+                    "is_multi": true,
+                    "company_group_id": 12,
+                    "item_type_id": 0,
+                    "expiration_type_id": 1,
+                    "expiration_date": "2016-12-26T19:25:43+04:00",
+                    "expiration_timeout": 0,
+                    "expiration_timeout_unit_id": 0,
+                    "is_allow_empty_code": true
+                },
+                {
+                    "id": 11,
+                    "title": "Сертификат, действующий 6 месяцев с момента продажи на любые товары без услуг",
+                    "balance": 100,
+                    "is_multi": false,
+                    "company_group_id": 12,
+                    "item_type_id": 2,
+                    "expiration_type_id": 2,
+                    "expiration_date": null,
+                    "expiration_timeout": 6,
+                    "expiration_timeout_unit_id": 3,
+                    "is_allow_empty_code": false
+                }
+            ],
+            "meta": {
+                "count": 2
+            }
+        }
+
+## Список типов сертификатов по идентификатору [/company/{company_id}/loyalty/certificate_types/fetch?ids[]={id}]
+
+Список **типов сертификатов**, доступных в филиале, можно получить, сделав запрос с указанием индентификатора филиала и идентификаторов типов сертификатов.
+
+Список представляет собой массив [типов сертификатов](#loyalty-certificate-type).
+
+### Пример запроса на получение списка [GET]
+
++ Parameters
+    + company_id (required, number) - ID компании
+    + id: 1 (optional, number) - ID типа сертификата (можно указать несколько дополнительными параметрами `&ids[]={id}`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer partner_token, User user_token
+
++ Response 200 (application/json)
+
+    + Body
+        {
+            "success": true,
+            "data": [
+                {
+                    "id": 1,
+                    "title": "Сертификат с фиксированной датой сгорания без ограничений применения",
+                    "balance": 10,
+                    "is_multi": true,
+                    "company_group_id": 12,
+                    "item_type_id": 0,
+                    "expiration_type_id": 1,
+                    "expiration_date": "2016-12-26T19:25:43+04:00",
+                    "expiration_timeout": 0,
+                    "expiration_timeout_unit_id": 0,
+                    "is_allow_empty_code": true
+                }
+            ],
+            "meta": {
+                "count": 1
+            }
+        }
+
+
 
 # Group Лицензии
 
