@@ -362,6 +362,11 @@ API позволяет работать с основными сущностям
             От
         + to: `5` (optional, number)
             До
+        + type: `service_amount` (optional, enum)
+            Режим поиска
+            + Default: `service_amount`
+            + `service_amount` (string) - по стоимости оказанных услуг
+            + `paid_in_cash` (string) - по оплаченным услугам для записей со статусом "Клиент пришел"
 
 ## ClientFilter (object)
 + type: 'client' (required, string)
@@ -12276,7 +12281,7 @@ YCLIENTS поддерживает уведомления о создании, и
 
 + Attributes
 
-    + type_id (required, number) - тип документа (1 продажа, 3 приход, 7 списание)
+    + type_id (required, number) - тип документа (1 продажа, 3 приход, 4 списание, 5 перемещение)
     + storage_id (required, number) - ID склада
     + comment (optional, string) - комментарий
     + create_date (required, string) - дата создания документа
